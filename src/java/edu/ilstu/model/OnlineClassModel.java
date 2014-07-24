@@ -26,7 +26,7 @@ public class OnlineClassModel {
         
         this.title=title;
         this.description=description;
-        roomid=rn.nextInt(9999-1000)+1000;     
+        roomid=rn.nextInt(9999-1000)+1000;    
         
     }
 
@@ -84,6 +84,15 @@ public class OnlineClassModel {
     */ 
    public void generateRoomId(){
        Random rn= new Random();
-       roomid= rn.nextInt(9999-1000)+1000;
+        setRoomid(rn.nextInt(9999-1000)+1000);
    }
+
+    /**
+     * @param roomid the roomid to set
+     */
+    public void setRoomid(int roomid) {
+        this.roomid = roomid;
+    }
+   
+   
 }

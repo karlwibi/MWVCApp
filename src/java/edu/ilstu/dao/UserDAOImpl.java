@@ -149,12 +149,34 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public ArrayList<UserModel> getAllUsers() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        ArrayList<UserModel> allUsers=new ArrayList<UserModel>();
+        StudentDAO sdao= new StudentDAOImpl();
+        TeacherDAO tdao = new TeacherDAOImpl();
+        
+        allUsers.addAll(tdao.getTeachers());
+        allUsers.addAll(sdao.getStudents());
+        
+        return allUsers;    
+              
+        
     }
 
     @Override
     public UserModel getUserBy(int userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        UserModel aUserModel=null;
+        
+        StudentDAO sdao = new StudentDAOImpl();
+        TeacherDAO tdAO = new TeacherDAOImpl();
+        
+        if(sdao.findStudentById(userId)!=null){
+            aUserModel=sdao.findStudentById(userId);
+        }else{
+            aUserModel=tdAO.findTeacherById(userId);
+        }
+        
+        
+        return aUserModel;
     }
 
 }

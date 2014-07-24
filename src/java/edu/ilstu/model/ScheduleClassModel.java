@@ -15,6 +15,7 @@ import java.sql.Time;
  */
 public class ScheduleClassModel {
     
+    private int scheduleClassId;
     private int teacherId;
     private int onlineClassId;
     private Date startDate;
@@ -37,13 +38,16 @@ public class ScheduleClassModel {
          this.endDate=endDate;
         
     }
-    public ScheduleClassModel(int teacherId, int onlineClassId, Date startDate, Date endDate, Time startTime, Time endTime){
+    public ScheduleClassModel(int scheduleClassId,int teacherId, int onlineClassId, Date startDate, Date endDate, Time startTime, Time endTime){
          this(teacherId,onlineClassId,startDate,endDate);
          this.startTime=startTime;
          this.endTime=endTime;
+         this.scheduleClassId=scheduleClassId;
         
     }
 
+     
+    
     /**
      * @return the teacherId
      */
@@ -126,6 +130,20 @@ public class ScheduleClassModel {
      */
     public void setEndTime(Time endTime) {
         this.endTime = endTime;
+    }
+
+    /**
+     * @return the scheduleClassId
+     */
+    public int getScheduleClassId() {
+        return scheduleClassId;
+    }
+
+    /**
+     * @param scheduleClassId the scheduleClassId to set
+     */
+    public void setScheduleClassId(int scheduleClassId) {
+        this.scheduleClassId = scheduleClassId;
     }
         
     

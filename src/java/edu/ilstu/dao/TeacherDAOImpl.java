@@ -87,23 +87,149 @@ public class TeacherDAOImpl implements TeacherDAO {
                
     }
     
-    public void updateTeacherTbl(int identity, TeacherModel aTeacher, Connection con){
-        
-    }
+    
 
     @Override
     public UserModel findTeacherById(int userId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int i = 1;
+        int j = 1;
+        ResultSet rs = null;
+        TeacherModel userModel = new TeacherModel();
+        
+        Connection con = ConnectionDB.getConnInst();
+
+        try {
+
+            PreparedStatement p = con.prepareStatement("Select t.userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a, department  "
+                    + "FROM user u"
+                    + "INNER JOIN teacher t "
+                    + " WHERE u.userid=t.userid AND t.userid=?");
+            
+            p.setInt(j++, userId);
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+                
+                userModel.setUserid(rs.getInt(i++));
+                userModel.setFname(rs.getString(i++));
+                userModel.setLname(rs.getString(i++));
+                userModel.setUsername(rs.getString(i++));
+                userModel.setPassword(rs.getString(i++));
+                userModel.setSecurityq(rs.getString(i++));
+                userModel.setSecuritya(rs.getString(i++));
+                userModel.setEmail(rs.getString(i++));
+                userModel.setPhone(rs.getInt(i++));
+                userModel.setStreet(rs.getString(i++));
+                userModel.setCity(rs.getString(i++));
+                userModel.setState(rs.getString(i++));
+                userModel.setZipCode(rs.getInt(i++));
+                userModel.setCountry(rs.getString(i++));
+                userModel.setIs_a(rs.getString(i++).charAt(0));
+                userModel.setDepartment(rs.getString(i++));
+                
+             }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }
+
+        return userModel;
     }
 
     @Override
     public ArrayList<UserModel> getTeachers() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      int i = 1;
+        ResultSet rs = null;
+        TeacherModel userModel = new TeacherModel();
+        ArrayList<UserModel> teacherList = new ArrayList<UserModel>();
+        Connection con = ConnectionDB.getConnInst();
+
+        try {
+
+            PreparedStatement p = con.prepareStatement("Select t.userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a, department  "
+                    + "FROM user u"
+                    + "INNER JOIN teacher t "
+                    + " WHERE u.userid=t.userid");
+
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+
+                userModel.setUserid(rs.getInt(i++));
+                userModel.setFname(rs.getString(i++));
+                userModel.setLname(rs.getString(i++));
+                userModel.setUsername(rs.getString(i++));
+                userModel.setPassword(rs.getString(i++));
+                userModel.setSecurityq(rs.getString(i++));
+                userModel.setSecuritya(rs.getString(i++));
+                userModel.setEmail(rs.getString(i++));
+                userModel.setPhone(rs.getInt(i++));
+                userModel.setStreet(rs.getString(i++));
+                userModel.setCity(rs.getString(i++));
+                userModel.setState(rs.getString(i++));
+                userModel.setZipCode(rs.getInt(i++));
+                userModel.setCountry(rs.getString(i++));
+                userModel.setIs_a(rs.getString(i++).charAt(0));
+                userModel.setDepartment(rs.getString(i++));
+                
+                teacherList.add(userModel);
+
+            }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }
+
+        return teacherList;
     }
 
     @Override
     public void deleteTeacher(TeacherModel aTeacher) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int i = 1;
+
+        Connection con = ConnectionDB.getConnInst();
+
+        try {
+
+            PreparedStatement p = con.prepareStatement("DELETE FROM user where userid=?");
+            p.setInt(i++, aTeacher.getUserid());
+
+            p.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }
+
     }
     
 }

@@ -47,5 +47,10 @@ public interface OnlineClassDAO {
      */
     public void deleteOnlineClass(OnlineClassModel onlineClass);
     
-    
+    /**
+     * 
+     * @param roomId
+     * @return 
+     */
+    public OnlineClassModel findByRoomId(int roomId);
 }

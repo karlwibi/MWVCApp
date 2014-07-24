@@ -19,8 +19,15 @@ public interface ScheduleClassDAO {
      * 
      * @param scheduleClass 
      */
-    public void createSchedule(ScheduleClassModel scheduleClass);
+    public int createSchedule(ScheduleClassModel scheduleClass);
     
+    
+    /**
+     * 
+     * @param scheduleClassId
+     * @return 
+     */
+    public ScheduleClassModel getScheduleClassById(int scheduleClassId);
     /**
      * 
      * @param teacherId
@@ -41,7 +48,7 @@ public interface ScheduleClassDAO {
      * @param onlineClassId
      * @return 
      */
-    public ScheduleClassModel findScheduleClassByTIdAndOCId(int teacherid, int onlineClassId);
+    public ArrayList<ScheduleClassModel> findScheduleClassByTIdAndOCId(int teacherid, int onlineClassId);
     
     
    /**

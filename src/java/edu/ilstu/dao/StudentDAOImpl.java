@@ -72,25 +72,23 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public ArrayList<UserModel> getStudents() {
-        int i=1;
-          ResultSet rs = null;
-          UserModel userModel= new StudentModel();
-          ArrayList<UserModel> studentList=new ArrayList<UserModel>();
+        int i = 1;
+        ResultSet rs = null;
+        StudentModel userModel = new StudentModel();
+        ArrayList<UserModel> studentList = new ArrayList<UserModel>();
         Connection con = ConnectionDB.getConnInst();
-        
+
         try {
 
-            
-            PreparedStatement p = con.prepareStatement("Select u.userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a  "
+            PreparedStatement p = con.prepareStatement("Select u.userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a , major "
                     + "FROM user u"
                     + "INNER JOIN student s "
                     + " WHERE u.userid=s.userid");
 
-           
-            rs=p.executeQuery();
-            
-            while(rs.next()){
-                
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+
                 userModel.setUserid(rs.getInt(i++));
                 userModel.setFname(rs.getString(i++));
                 userModel.setLname(rs.getString(i++));
@@ -101,12 +99,75 @@ public class StudentDAOImpl implements StudentDAO {
                 userModel.setEmail(rs.getString(i++));
                 userModel.setPhone(rs.getInt(i++));
                 userModel.setStreet(rs.getString(i++));
-                
-                
-                
+                userModel.setCity(rs.getString(i++));
+                userModel.setState(rs.getString(i++));
+                userModel.setZipCode(rs.getInt(i++));
+                userModel.setCountry(rs.getString(i++));
+                userModel.setIs_a(rs.getString(i++).charAt(0));
+                userModel.setMajor(rs.getString(i++));
+
+                studentList.add(userModel);
+
             }
-            
-            
+
+            rs.close();
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }
+
+        return studentList;
+    }
+
+    @Override
+    public UserModel findStudentById(int userid) {
+        int i = 1;
+        int j = 1;
+
+        ResultSet rs = null;
+        StudentModel userModel = new StudentModel();
+
+        Connection con = ConnectionDB.getConnInst();
+
+        try {
+
+            PreparedStatement p = con.prepareStatement("Select u.userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a, major  "
+                    + "FROM user u"
+                    + "INNER JOIN student s "
+                    + " WHERE u.userid=s.userid AND u.userid=?");
+            p.setInt(j++, userid);
+
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+
+                userModel.setUserid(rs.getInt(i++));
+                userModel.setFname(rs.getString(i++));
+                userModel.setLname(rs.getString(i++));
+                userModel.setUsername(rs.getString(i++));
+                userModel.setPassword(rs.getString(i++));
+                userModel.setSecurityq(rs.getString(i++));
+                userModel.setSecuritya(rs.getString(i++));
+                userModel.setEmail(rs.getString(i++));
+                userModel.setPhone(rs.getInt(i++));
+                userModel.setStreet(rs.getString(i++));
+                userModel.setCity(rs.getString(i++));
+                userModel.setState(rs.getString(i++));
+                userModel.setZipCode(rs.getInt(i++));
+                userModel.setCountry(rs.getString(i++));
+                userModel.setIs_a(rs.getString(i++).charAt(0));
+                userModel.setMajor(rs.getString(i++));
+
+            }
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -119,18 +180,36 @@ public class StudentDAOImpl implements StudentDAO {
                 }
             }
         }
-        
-        return studentList;
-    }
 
-    @Override
-    public UserModel findStudentById(int userid) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return userModel;
     }
 
     @Override
     public void deleteStudent(StudentModel aStudent) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+        int i = 1;
+
+        Connection con = ConnectionDB.getConnInst();
+
+        try {
+
+            PreparedStatement p = con.prepareStatement("DELETE FROM user where userid=?");
+            p.setInt(i++, aStudent.getUserid());
+
+            p.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }
+
     }
 
 }
