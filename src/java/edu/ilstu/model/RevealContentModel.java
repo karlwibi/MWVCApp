@@ -6,13 +6,14 @@
 
 package edu.ilstu.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  *
  * @author kawibi
  */
-public class RevealContentModel extends RessourceModel {
+public class RevealContentModel extends RessourceModel implements Serializable {
  
     private int revealId;
     

@@ -7,6 +7,7 @@
 package edu.ilstu.dao;
 
 import edu.ilstu.model.RoomParticipantModel;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  *
  * @author kawibi
  */
-public class RoomParticipantDAOImpl implements RoomParticipantDAO {
+public class RoomParticipantDAOImpl implements RoomParticipantDAO, Serializable {
 
     @Override
     public void addStudentToRoomModel(RoomParticipantModel room) {
@@ -59,8 +60,7 @@ public class RoomParticipantDAOImpl implements RoomParticipantDAO {
         Connection con = ConnectionDB.getConnInst();
         try {
 
-            PreparedStatement p = con.prepareStatement("INSERT INTO roomparticipant(onlineclassid, studentid)"
-                    + "values (?,?)");
+            PreparedStatement p = con.prepareStatement("DELETE FROM roomparticipant WHERE onliclassid=? and studentid=?");
 
             p.setInt(i++, room.getOnlineClassId());
             p.setInt(i++, room.getStudentId());
@@ -83,13 +83,46 @@ public class RoomParticipantDAOImpl implements RoomParticipantDAO {
     }
 
     @Override
-    public ArrayList<RoomParticipantModel> findallStudentforRoom(int roomid) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<RoomParticipantModel> findallStudentforRoom(int onlineclassid) {
+        int i = 1;
+        ResultSet rs=null;
+        Connection con = ConnectionDB.getConnInst();
+        RoomParticipantModel rpm = null;
+        ArrayList<RoomParticipantModel> roomParticipantModels=new ArrayList();
+        try {
+
+            PreparedStatement p = con.prepareStatement("SELECT * FROM roomparticipant WHERE onlineclassid=?");
+
+            p.setInt(i++, onlineclassid);
+           
+            
+            rs=p.executeQuery();
+            
+            while(rs.next()){
+                int j=1;
+                rpm = new RoomParticipantModel();
+                rpm.setOnlineClassId(rs.getInt(j++));
+                rpm.setStudentId(rs.getInt(j++));
+                
+                roomParticipantModels.add(rpm);
+            }
+
+            
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+    
+        return roomParticipantModels;
+                
     }
 
-    @Override
-    public ArrayList<RoomParticipantModel> updateRoom(RoomParticipantModel room) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
 }

@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="headerInfo"> 
+            <title>Module WebRTC Video Conferencing</title>
+        </ui:define>
+        <ui:define name="content"> 
+            <div class="row">
+                <h:form class="form-group">
+                   
+                    <p:outputLabel  for="title" value="title"/>
+                    <p:inputText id="title" class="form-control" value="#{onlineClassController.ocm.title}"/>
+                    
+                     <p:outputLabel  for="description" value="Description"/>
+                     <p:inputText id="description" class="form-control" value="#{onlineClassController.ocm.description}"/>
+                    
+                     <p:outputLabel  for="startdate" value="Class Start Date"/><br/>
+                     <p:calendar id="startdate" value="#{onlineClassController.startDate}"/><br/>
+                      
+                     <p:outputLabel  for="enddate" value="Class End Date"/><br/>
+                     <p:calendar id="enddate"  value="#{onlineClassController.endDate}"/><br/>
+                     
+                     <p:outputLabel  for="starttime" value="Class Start Time"/><br/>
+                     <pe:timePicker  id="starttime" value="#{onlineClassController.startTime}" mode="spinner" /> <br/>
+                     
+                    <p:outputLabel  for="endtime" value="Class End Time"/><br/>
+                    <pe:timePicker  id="endtime" value="#{onlineClassController.endTime}" mode="spinner" /> <br/>
+                    
+                    
+                    <p:commandButton action="#{onlineClassController.addClass()}" value="Create Class"/>
+                </h:form>
+            </div>
+        </ui:define> 
+    </ui:composition>
+</html>
+
+

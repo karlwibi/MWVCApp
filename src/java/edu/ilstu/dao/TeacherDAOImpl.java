@@ -8,6 +8,7 @@ package edu.ilstu.dao;
 
 import edu.ilstu.model.TeacherModel;
 import edu.ilstu.model.UserModel;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +22,7 @@ import java.util.logging.Logger;
  *
  * @author kawibi
  */
-public class TeacherDAOImpl implements TeacherDAO {
+public class TeacherDAOImpl implements TeacherDAO, Serializable {
 
     @Override
     public int createTeacher(TeacherModel aTeacher) {
@@ -91,7 +92,7 @@ public class TeacherDAOImpl implements TeacherDAO {
 
     @Override
     public UserModel findTeacherById(int userId) {
-        int i = 1;
+        
         int j = 1;
         ResultSet rs = null;
         TeacherModel userModel = new TeacherModel();
@@ -100,16 +101,16 @@ public class TeacherDAOImpl implements TeacherDAO {
 
         try {
 
-            PreparedStatement p = con.prepareStatement("Select t.userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a, department  "
-                    + "FROM user u"
-                    + "INNER JOIN teacher t "
+            PreparedStatement p = con.prepareStatement("Select t.userid as userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a, department  "
+                    + " FROM user u"
+                    + " INNER JOIN teacher t "
                     + " WHERE u.userid=t.userid AND t.userid=?");
             
             p.setInt(j++, userId);
             rs = p.executeQuery();
 
             while (rs.next()) {
-                
+               int i = 1;  
                 userModel.setUserid(rs.getInt(i++));
                 userModel.setFname(rs.getString(i++));
                 userModel.setLname(rs.getString(i++));
@@ -149,7 +150,7 @@ public class TeacherDAOImpl implements TeacherDAO {
 
     @Override
     public ArrayList<UserModel> getTeachers() {
-      int i = 1;
+      
         ResultSet rs = null;
         TeacherModel userModel = new TeacherModel();
         ArrayList<UserModel> teacherList = new ArrayList<UserModel>();
@@ -157,16 +158,16 @@ public class TeacherDAOImpl implements TeacherDAO {
 
         try {
 
-            PreparedStatement p = con.prepareStatement("Select t.userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a, department  "
-                    + "FROM user u"
-                    + "INNER JOIN teacher t "
+            PreparedStatement p = con.prepareStatement("Select t.userid as userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a, department  "
+                    + " FROM user u"
+                    + " INNER JOIN teacher t "
                     + " WHERE u.userid=t.userid");
 
             rs = p.executeQuery();
 
             while (rs.next()) {
-
-                userModel.setUserid(rs.getInt(i++));
+                int i = 1;
+                 userModel.setUserid(rs.getInt(i++));
                 userModel.setFname(rs.getString(i++));
                 userModel.setLname(rs.getString(i++));
                 userModel.setUsername(rs.getString(i++));

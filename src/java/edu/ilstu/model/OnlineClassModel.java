@@ -3,31 +3,37 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.ilstu.model;
 
+import edu.ilstu.dao.OnlineClassDAO;
+import edu.ilstu.dao.OnlineClassDAOImpl;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
  *
  * @author kawibi
  */
-public class OnlineClassModel {
- 
+public class OnlineClassModel implements Serializable {
+
     private int onlineClassId;
     private String title;
     private String description;
     private int roomid;
+    private OnlineClassDAO ocdao;
     
-    public OnlineClassModel(){}
-    
-    public  OnlineClassModel(String title, String description){
-        Random rn= new Random();
-        
-        this.title=title;
-        this.description=description;
-        roomid=rn.nextInt(9999-1000)+1000;    
-        
+    public OnlineClassModel() {
+        Random rn = new Random();
+        ocdao=new OnlineClassDAOImpl();
+        this.roomid = (rn.nextInt(9999 - 1000)) + 1000;
+    }
+
+    public OnlineClassModel(String title, String description) {
+        this();
+        this.title = title;
+        this.description = description;
+
     }
 
     /**
@@ -78,14 +84,14 @@ public class OnlineClassModel {
     public int getRoomid() {
         return roomid;
     }
-   /**
-    * Generates a new 
-    * roomid
-    */ 
-   public void generateRoomId(){
-       Random rn= new Random();
-        setRoomid(rn.nextInt(9999-1000)+1000);
-   }
+
+    /**
+     * Generates a new roomid
+     */
+    public void generateRoomId() {
+        Random rn = new Random();
+        setRoomid(rn.nextInt(9999 - 1000) + 1000);
+    }
 
     /**
      * @param roomid the roomid to set
@@ -93,6 +99,45 @@ public class OnlineClassModel {
     public void setRoomid(int roomid) {
         this.roomid = roomid;
     }
-   
-   
+
+    
+    public int saveClass(){
+        
+        return ocdao.createOnlineClass(this);
+    }
+    
+    
+    public void updateClass(){
+        
+        ocdao.updateOnlineClass(this);
+        
+    }
+    
+    public void deleteClass(){
+        
+        ocdao.deleteOnlineClass(this);
+    }
+    
+    
+    public ArrayList<OnlineClassModel> getClasses(){
+        
+        ArrayList<OnlineClassModel> list= ocdao.getOnliceClasses();
+        
+        return list;
+    }
+    
+    public OnlineClassModel getAClass(){
+        
+        OnlineClassModel ocm = ocdao.getfindOnlineClassById(this.onlineClassId);
+        
+        return ocm;
+    }
+    
+    public OnlineClassModel getClassByRoomId(){
+        
+        OnlineClassModel ocm = ocdao.findByRoomId(roomid);
+        
+        return ocm;
+    }
+    
 }

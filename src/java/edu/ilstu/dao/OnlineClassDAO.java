@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author kawibi
  */
-public interface OnlineClassDAO {
+public interface OnlineClassDAO  {
     
     /**
      * 

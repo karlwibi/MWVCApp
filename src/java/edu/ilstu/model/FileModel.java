@@ -6,11 +6,13 @@
 
 package edu.ilstu.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author kawibi
  */
-public class FileModel {
+public class FileModel implements Serializable {
     
 
 private int fileId;

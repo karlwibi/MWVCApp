@@ -6,13 +6,14 @@
 
 package edu.ilstu.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  *
  * @author kawibi
  */
-public abstract class RessourceModel {
+public abstract class RessourceModel implements Serializable{
     
     private int ressourceId;
     private int teacherId;

@@ -6,6 +6,7 @@
 package edu.ilstu.dao;
 
 import edu.ilstu.model.OnlineClassModel;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  *
  * @author kawibi
  */
-public class OnlineClassDAOImpl implements OnlineClassDAO {
+public class OnlineClassDAOImpl implements OnlineClassDAO, Serializable {
 
     @Override
     public int createOnlineClass(OnlineClassModel onlineClass) {
@@ -28,7 +29,7 @@ public class OnlineClassDAOImpl implements OnlineClassDAO {
         Connection con = ConnectionDB.getConnInst();
         try {
 
-            PreparedStatement p = con.prepareStatement("INSERT INTO onlineclass (title,desciption,roomid)"
+            PreparedStatement p = con.prepareStatement("INSERT INTO onlineclass (title,description,roomid)"
                     + "VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
 
             p.setString(i++, onlineClass.getTitle());

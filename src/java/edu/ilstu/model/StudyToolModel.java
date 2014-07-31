@@ -6,13 +6,14 @@
 
 package edu.ilstu.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  *
  * @author kawibi
  */
-public class StudyToolModel extends RessourceModel{
+public class StudyToolModel extends RessourceModel implements Serializable{
 
     private String articleLink;
     private String videolink;

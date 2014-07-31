@@ -6,6 +6,7 @@
 package edu.ilstu.dao;
 
 import edu.ilstu.model.ScheduleClassModel;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  *
  * @author kawibi
  */
-public class ScheduleClassDAOImpl implements ScheduleClassDAO {
+public class ScheduleClassDAOImpl implements ScheduleClassDAO, Serializable {
 
     @Override
     public int createSchedule(ScheduleClassModel scheduleClass) {
@@ -307,6 +308,49 @@ public class ScheduleClassDAOImpl implements ScheduleClassDAO {
         }
 
         return scm;
+    }
+
+    @Override
+    public ArrayList<ScheduleClassModel> getAllSchedules() {
+        
+        ResultSet rs = null;
+        Connection con = ConnectionDB.getConnInst();
+        ScheduleClassModel scm = new ScheduleClassModel();
+        ArrayList<ScheduleClassModel> scheduleClassModels = new ArrayList<ScheduleClassModel>();
+
+        try {
+
+            PreparedStatement p = con.prepareStatement("SELECT * FROM scheduleclass");
+
+            
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+                int j = 1;
+                scm.setTeacherId(rs.getInt(j++));
+                scm.setOnlineClassId(rs.getInt(j++));
+                scm.setStartDate(rs.getDate(j++));
+                scm.setEndDate(rs.getDate(j++));
+                scm.setStartTime(rs.getTime(j++));
+                scm.setEndTime(rs.getTime(j++));
+
+                scheduleClassModels.add(scm);
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+
+        return scheduleClassModels;
     }
 
 }

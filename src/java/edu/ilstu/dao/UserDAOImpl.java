@@ -8,6 +8,7 @@ package edu.ilstu.dao;
 import edu.ilstu.model.StudentModel;
 import edu.ilstu.model.TeacherModel;
 import edu.ilstu.model.UserModel;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
  *
  * @author kawibi
  */
-public class UserDAOImpl implements UserDAO {
+public class UserDAOImpl implements UserDAO, Serializable {
 
     @Override
     public int createNewUser(UserModel aUser) {
@@ -179,4 +180,16 @@ public class UserDAOImpl implements UserDAO {
         return aUserModel;
     }
 
+    @Override
+    public void deleteUser(UserModel userModel){
+                    
+        StudentDAO sdao = new StudentDAOImpl();
+        TeacherDAO tdAO = new TeacherDAOImpl();
+        
+        if(userModel instanceof TeacherModel){
+            tdAO.deleteTeacher((TeacherModel)userModel);
+        }else{
+            sdao.deleteStudent((StudentModel)userModel);
+        }
+    }
 }

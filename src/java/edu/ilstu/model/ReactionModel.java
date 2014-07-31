@@ -6,11 +6,13 @@
 
 package edu.ilstu.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author kawibi
  */
-public class ReactionModel {
+public class ReactionModel implements Serializable{
     
     private int reactionId;
     private int discussionId;

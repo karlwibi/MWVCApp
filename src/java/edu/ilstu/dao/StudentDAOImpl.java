@@ -7,6 +7,7 @@ package edu.ilstu.dao;
 
 import edu.ilstu.model.StudentModel;
 import edu.ilstu.model.UserModel;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  *
  * @author kawibi
  */
-public class StudentDAOImpl implements StudentDAO {
+public class StudentDAOImpl implements StudentDAO, Serializable {
 
     @Override
     public int createStudent(StudentModel aStudent) {
@@ -50,7 +51,7 @@ public class StudentDAOImpl implements StudentDAO {
         try {
 
             int i = 1;
-            PreparedStatement p = con.prepareStatement("UPDATE teacher set major=? WHERE userId=?)");
+            PreparedStatement p = con.prepareStatement("UPDATE student set major=? WHERE userId=?)");
 
             p.setString(i++, aStudent.getMajor());
             p.setInt(i++, aStudent.getUserid());
@@ -71,24 +72,25 @@ public class StudentDAOImpl implements StudentDAO {
     }
 
     @Override
-    public ArrayList<UserModel> getStudents() {
-        int i = 1;
+    public ArrayList<StudentModel> getStudents() {
+        
         ResultSet rs = null;
-        StudentModel userModel = new StudentModel();
-        ArrayList<UserModel> studentList = new ArrayList<UserModel>();
+        StudentModel userModel = null;
+        ArrayList<StudentModel> studentList = new ArrayList<StudentModel>();
         Connection con = ConnectionDB.getConnInst();
 
         try {
 
-            PreparedStatement p = con.prepareStatement("Select u.userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a , major "
-                    + "FROM user u"
-                    + "INNER JOIN student s "
+            PreparedStatement p = con.prepareStatement("SELECT u.userid as userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a ,major"
+                    + " FROM user u"
+                    + " INNER JOIN student s"
                     + " WHERE u.userid=s.userid");
 
             rs = p.executeQuery();
 
             while (rs.next()) {
-
+                int i = 1;
+                userModel = new StudentModel();
                 userModel.setUserid(rs.getInt(i++));
                 userModel.setFname(rs.getString(i++));
                 userModel.setLname(rs.getString(i++));
@@ -129,20 +131,20 @@ public class StudentDAOImpl implements StudentDAO {
     }
 
     @Override
-    public UserModel findStudentById(int userid) {
-        int i = 1;
+    public StudentModel findStudentById(int userid) {
+       
         int j = 1;
 
         ResultSet rs = null;
-        StudentModel userModel = new StudentModel();
+        StudentModel userModel = null;
 
         Connection con = ConnectionDB.getConnInst();
 
         try {
 
-            PreparedStatement p = con.prepareStatement("Select u.userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a, major  "
-                    + "FROM user u"
-                    + "INNER JOIN student s "
+            PreparedStatement p = con.prepareStatement("Select u.userid as userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a, major  "
+                    + " FROM user u"
+                    + " INNER JOIN student s "
                     + " WHERE u.userid=s.userid AND u.userid=?");
             p.setInt(j++, userid);
 
@@ -150,6 +152,8 @@ public class StudentDAOImpl implements StudentDAO {
 
             while (rs.next()) {
 
+                 int i = 1;
+                 userModel = new StudentModel();
                 userModel.setUserid(rs.getInt(i++));
                 userModel.setFname(rs.getString(i++));
                 userModel.setLname(rs.getString(i++));

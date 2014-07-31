@@ -28,17 +28,11 @@ public interface RoomParticipantDAO {
 
     /**
      * 
-     * @param roomid
-     * @return 
+     * @param onlineclassid
+1     * @return 
      */
-    public ArrayList<RoomParticipantModel> findallStudentforRoom(int roomid);
+    public ArrayList<RoomParticipantModel> findallStudentforRoom(int onlineclassid);
 
     
-    /**
-     * 
-     * @param room
-     * @return 
-     */
-    public ArrayList<RoomParticipantModel> updateRoom(RoomParticipantModel room);
-
+    
 }

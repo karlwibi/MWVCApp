@@ -6,11 +6,16 @@
 
 package edu.ilstu.model;
 
+import edu.ilstu.dao.UserDAO;
+import edu.ilstu.dao.UserDAOImpl;
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  *
  * @author kawibi
  */
-public abstract class UserModel {
+public abstract class UserModel implements Serializable{
     
     private int userid;
     private String fname;
@@ -27,8 +32,12 @@ public abstract class UserModel {
     private int zipCode;
     private String country;
     private char is_a;
+    private UserDAO udao;
     
-    public UserModel(){}
+    public UserModel(){
+    
+        udao=new UserDAOImpl();
+    }
     
     public UserModel(int userid){
         this.userid=userid;
@@ -269,7 +278,32 @@ public abstract class UserModel {
         this.country = country;
     }
     
+        
+    public int saveUser(){
+                      
+       return udao.createNewUser(this);
+        
+    }
+    
+    public void updateUser(){
+                
+        udao.updateUser(this);
+        
+    }
+    
+    public void deleteUser(){
+                
+        udao.deleteUser(this);
+        
+    }
     
     
-    
+    public ArrayList<UserModel> getAllUsers(){
+        
+        ArrayList<UserModel> userList= udao.getAllUsers();       
+                
+        return userList;
+        
+        
+    }
 }

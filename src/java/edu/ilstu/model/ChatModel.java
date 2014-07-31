@@ -6,13 +6,14 @@
 
 package edu.ilstu.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  *
  * @author kawibi
  */
-public class ChatModel {
+public class ChatModel implements Serializable {
     
     private int chatid;
     private int onlineClassId;

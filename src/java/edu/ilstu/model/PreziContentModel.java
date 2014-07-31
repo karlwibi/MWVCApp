@@ -6,13 +6,14 @@
 
 package edu.ilstu.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  *
  * @author kawibi
  */
-public class PreziContentModel extends RessourceModel {
+public class PreziContentModel extends RessourceModel implements Serializable {
  
     
     private String preziId;

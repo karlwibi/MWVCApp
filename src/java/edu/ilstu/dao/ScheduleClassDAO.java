@@ -64,5 +64,5 @@ public interface ScheduleClassDAO {
     public void deleteSchedule(ScheduleClassModel scheduleClass);
     
      
-    
+    public ArrayList<ScheduleClassModel> getAllSchedules();
 }

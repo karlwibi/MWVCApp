@@ -6,6 +6,7 @@
 
 package edu.ilstu.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
 
@@ -13,7 +14,7 @@ import java.sql.Time;
  *
  * @author kawibi
  */
-public class DiscussionModel {
+public class DiscussionModel implements Serializable {
     
     private int discussionId;
     private String title;

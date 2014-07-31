@@ -20,9 +20,9 @@ public interface StudentDAO {
    
     public void upadteStudent(StudentModel aStudent);
     
-    public ArrayList<UserModel> getStudents();
+    public ArrayList<StudentModel> getStudents();
     
-    public UserModel findStudentById(int userid);
+    public StudentModel findStudentById(int userid);
     
     public void deleteStudent(StudentModel aStudent);
 }

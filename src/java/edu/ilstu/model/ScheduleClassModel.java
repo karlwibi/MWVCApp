@@ -6,14 +6,18 @@
 
 package edu.ilstu.model;
 
+import edu.ilstu.dao.ScheduleClassDAO;
+import edu.ilstu.dao.ScheduleClassDAOImpl;
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 
 /**
  *
  * @author kawibi
  */
-public class ScheduleClassModel {
+public class ScheduleClassModel implements Serializable {
     
     private int scheduleClassId;
     private int teacherId;
@@ -22,9 +26,12 @@ public class ScheduleClassModel {
     private Date endDate;
     private Time startTime;
     private Time endTime;
+    private ScheduleClassDAO scdao;
     
+    public ScheduleClassModel(){
     
-    public ScheduleClassModel(){}
+        scdao=new ScheduleClassDAOImpl();
+    }
     
     public ScheduleClassModel(int teacherId, int onlineClassId){
          
@@ -147,4 +154,25 @@ public class ScheduleClassModel {
     }
         
     
+    public void saveSchedule(){
+        
+        scdao.createSchedule(this);
+        
+    }
+    
+    public void updateSchedule(){
+        scdao.updateSchedule(this);
+    }
+    
+    public void deleteSchedule(){
+        
+        scdao.deleteSchedule(this);
+    }
+    
+    public ArrayList<ScheduleClassModel> getAllSchedules(){
+        
+        ArrayList<ScheduleClassModel> list= scdao.getAllSchedules();
+        
+        return list;
+    }
 }

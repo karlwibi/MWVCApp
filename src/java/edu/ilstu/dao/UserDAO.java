@@ -23,6 +23,8 @@ public interface UserDAO {
     
     public UserModel getUserBy(int userId);
     
+    public void deleteUser(UserModel userModel);
+    
             
     
 }

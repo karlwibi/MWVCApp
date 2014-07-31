@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="headerInfo"> 
+            <f:metadata>
+                <f:viewParam name="roomid" value="#{roomParticipant.roomid}"/>
+                <f:viewAction action="#{roomParticipant.init()}" onPostback="false" />
+            </f:metadata>
+            <title>Module WebRTC Video Conferencing</title>
+
+
+        </ui:define>
+        <ui:define name="content"> 
+
+            <h:form>
+                
+                <i class="fa fa-tasks fa-2x"></i>&nbsp;
+                    <p:outputLabel  style="font-size: 24px" value="Insert student for Room :"/>
+                <p:outputLabel  style="font-size: 24px"   value="#{roomParticipant.roomid}"/><br/><br/>
+                <p:outputLabel  style="font-size: 24px"   value="#{roomParticipant.ocm.title}"/><br/><br/>
+                <p:outputLabel  style="font-size: 24px"   value="#{roomParticipant.ocm.description}"/><br/><br/>
+                <p:outputLabel  style="font-size: 24px"   value="List of Students"/><br/><br/>
+
+                
+                    
+                <div class="row">
+                    <div class="col-lg-4 text-center">
+                        
+                        <h:selectManyListbox id="availableList" style="width: 300px;height: 150px" value="#{roomParticipant.selectedStudents}">
+                            <f:selectItems value="#{roomParticipant.studentList}" var="s" itemLabel="#{s.email}" itemValue="#{s.userid}"/> 
+                        </h:selectManyListbox>
+                    </div>
+                    
+                    <div class="col-lg-4 text-center">
+                        <div class="row">
+                            <p:commandButton value="&gt;">
+                                <f:ajax  listener="#{roomParticipant.addStudentToClass()}" execute="availableList" render="selectedList availableList"  />
+                                
+                            </p:commandButton>
+                                
+                                
+                        
+                        </div>
+                        <div class="row">
+                            
+                            <p:commandButton value="&gt;&gt;">
+                                
+                                <f:ajax  listener="#{roomParticipant.addAll()}"  render="selectedList availableList"  />
+                                
+                            </p:commandButton>
+                        
+                        </div>
+                        <div class="row">
+                            <p:commandButton value="&lt;">
+                                
+                                <f:ajax  listener="#{roomParticipant.removeStudentFromClass}" execute="selectedList" render="selectedList availableList"  />
+                            </p:commandButton>
+                        
+                        </div>
+                        <div class="row">
+                            <p:commandButton value="&lt;&lt;">
+                                <f:ajax  listener="#{roomParticipant.removeAll()}"  render="selectedList availableList"  />
+                            </p:commandButton>
+                        </div>
+                        
+                    </div>
+                    <div class="col-lg-4 text-center">
+                        <h:selectManyListbox id="selectedList" style="width: 300px; height: 150px" value="#{roomParticipant.selectedStudents2}">
+                            <f:selectItems value="#{roomParticipant.studentList2}" var="s" itemLabel="#{s.email}" itemValue="#{s.userid}"/> 
+                            
+                        </h:selectManyListbox>
+                    </div>
+                </div>
+                
+                <p:commandButton value="Save" action="#{roomParticipant.save()}"/>
+                
+                
+
+
+            </h:form>            
+        </ui:define> 
+    </ui:composition>
+</html>
+
+

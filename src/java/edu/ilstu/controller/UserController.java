@@ -5,12 +5,7 @@
  */
 package edu.ilstu.controller;
 
-import edu.ilstu.dao.StudentDAO;
-import edu.ilstu.dao.StudentDAOImpl;
-import edu.ilstu.dao.TeacherDAO;
-import edu.ilstu.dao.TeacherDAOImpl;
-import edu.ilstu.dao.UserDAO;
-import edu.ilstu.dao.UserDAOImpl;
+
 import edu.ilstu.model.StudentModel;
 import edu.ilstu.model.TeacherModel;
 import edu.ilstu.model.UserModel;
@@ -50,9 +45,11 @@ public class UserController {
         aUserModel.setUsername(getUsername());
         aUserModel.setPassword(getPassword());
         aUserModel.setIs_a(is_a);
+        
+        aUserModel.saveUser();
 
-        UserDAO udao = new UserDAOImpl();
-        udao.createNewUser(aUserModel);
+//        UserDAO udao = new UserDAOImpl();
+//        udao.createNewUser(aUserModel);
     }
 
     /**

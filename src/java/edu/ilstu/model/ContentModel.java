@@ -6,11 +6,13 @@
 
 package edu.ilstu.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author kawibi
  */
-public class ContentModel {
+public class ContentModel implements Serializable {
     
     private int contentId;
     private int revealId;

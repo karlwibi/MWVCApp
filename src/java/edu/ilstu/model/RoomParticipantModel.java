@@ -6,19 +6,29 @@
 
 package edu.ilstu.model;
 
+import edu.ilstu.dao.RoomParticipantDAO;
+import edu.ilstu.dao.RoomParticipantDAOImpl;
+import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  *
  * @author kawibi
  */
-public class RoomParticipantModel {
+public class RoomParticipantModel implements Serializable{
  
     private int onlineClassId;
     private int studentId;
+    private RoomParticipantDAO rpdao;
     
     
-    public RoomParticipantModel(){}
+    public RoomParticipantModel(){
+    
+        rpdao=new RoomParticipantDAOImpl();
+    }
     
     public RoomParticipantModel(int onlineClassId, int studentId){
+        this();
         this.onlineClassId=onlineClassId;
         this.studentId=studentId;
     }
@@ -52,5 +62,21 @@ public class RoomParticipantModel {
     }
     
     
+    public void addParticipant(){
+        
+        rpdao.addStudentToRoomModel(this);
+    }
     
+    public void deleteParticipant(){
+        
+        rpdao.deleteStudenRoomModelmRoom(this);
+    }
+    
+    public ArrayList<RoomParticipantModel> getAllParticipantForRoom(){
+        
+     
+        ArrayList<RoomParticipantModel> list=rpdao.findallStudentforRoom(this.onlineClassId);
+        
+        return list;
+    }
 }
