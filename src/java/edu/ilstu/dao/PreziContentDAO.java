@@ -6,7 +6,7 @@
 
 package edu.ilstu.dao;
 
-import edu.ilstu.model.RessourceModel;
+import edu.ilstu.model.PreziContentModel;
 import java.util.ArrayList;
 
 /**
@@ -15,14 +15,14 @@ import java.util.ArrayList;
  */
 public interface PreziContentDAO {
     
-    public int createPreziRessource(RessourceModel ressource);
+    public int createPreziRessource(PreziContentModel ressource);
     
-    public void updatePreziRessource(RessourceModel ressource);
+    public void updatePreziRessource(PreziContentModel ressource);
     
-    public void deletePreziRessource(RessourceModel ressource);
+    public void deletePreziRessource(PreziContentModel ressource);
     
-    public RessourceModel getPreziRessourcesByRessourceId(int ressourceId);
+    public PreziContentModel getPreziRessourcesByRessourceId(int ressourceId);
     
-    public ArrayList<RessourceModel> getPreziRessourcebyOnlineClassId(int onlineClassId);
+    public ArrayList<PreziContentModel> getPreziRessourcebyOnlineClassId(int onlineClassId);
     
   }

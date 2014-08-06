@@ -22,7 +22,7 @@ public interface DiscussionDAO {
     
     public DiscussionModel findDiscussionsbyId(int discussionid);
     
-    public ArrayList<DiscussionModel> findDiscussionbyOnlinecalss(int onlinecalssid);
+    public ArrayList<DiscussionModel> findDiscussionbyOnlineClass(int onlinecalssid);
     
     public ArrayList<DiscussionModel> findDiscussionByOwner(int teacherId);
     
@@ -30,6 +30,9 @@ public interface DiscussionDAO {
     
     public void deleteDiscussion(DiscussionModel discussion);
     
+    public DiscussionModel findDiscussionsByTitle(String title);
+    
+    public ArrayList<DiscussionModel> findDiscussionsByDescriptionKeyWord(String keyWord);
     
     
     

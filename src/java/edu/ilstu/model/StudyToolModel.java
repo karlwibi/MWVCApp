@@ -24,16 +24,16 @@ public class StudyToolModel extends RessourceModel implements Serializable{
         super(ressourceId);
     }
     
-    public StudyToolModel(int teacherId, Date dateCreated, int onlineClassId, char hasPresentation, char hasStudyTool, String articleLink,String videoLink ){
-        super(teacherId,dateCreated,onlineClassId,hasPresentation,hasStudyTool);
+    public StudyToolModel(int teacherId, Date dateCreated, int onlineClassId, char hasPrezi,char hasReveal, char hasStudyTool, String articleLink,String videoLink ){
+        super(teacherId,dateCreated,onlineClassId, hasPrezi, hasReveal,hasStudyTool);
         this.articleLink=articleLink;
         this.videolink=videoLink;
     }
     
     
-    public StudyToolModel(int ressourceId,int teacherId, Date dateCreated, int onlineClassId, char hasPresentation, char hasStudyTool, String articleLink,String videoLink ){
+    public StudyToolModel(int ressourceId,int teacherId, Date dateCreated, int onlineClassId, char hasPrezi,char hasReveal, char hasStudyTool, String articleLink,String videoLink ){
     
-        super(ressourceId,teacherId,dateCreated, onlineClassId, hasPresentation, hasStudyTool);
+        super(ressourceId,teacherId,dateCreated, onlineClassId, hasPrezi,hasReveal, hasStudyTool);
         this.articleLink=articleLink;
         this.videolink=videoLink;
     }

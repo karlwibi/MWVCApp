@@ -7,6 +7,7 @@
 package edu.ilstu.dao;
 
 import edu.ilstu.model.RessourceModel;
+import edu.ilstu.model.StudyToolModel;
 import java.util.ArrayList;
 
 /**
@@ -15,15 +16,15 @@ import java.util.ArrayList;
  */
 public interface StudyToolDAO {
     
-    public int createStudyRessource(RessourceModel ressource);
+    public int createStudyRessource(StudyToolModel ressource);
     
-    public void updateStudyRessource(RessourceModel ressource);
+    public void updateStudyRessource(StudyToolModel ressource);
     
-    public void deleteStudyRessource(RessourceModel ressource);
+    public void deleteStudyRessource(StudyToolModel ressource);
     
-    public RessourceModel getRessourceById(int ressourceId);
+    public StudyToolModel getRessourceById(int ressourceId);
     
-    public ArrayList<RessourceModel> getRessourceByOnlinceClasseId(int onlinceClassId);
+    public ArrayList<StudyToolModel> getStudytoolRessourceByOnlinceClasseId(int onlinceClassId);
     
     
     

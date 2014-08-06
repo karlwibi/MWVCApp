@@ -125,4 +125,46 @@ public class RoomParticipantDAOImpl implements RoomParticipantDAO, Serializable 
                 
     }
 
+    @Override
+    public ArrayList<RoomParticipantModel> findallEnrollClasses(int studentId) {
+        int i = 1;
+        ResultSet rs=null;
+        Connection con = ConnectionDB.getConnInst();
+        RoomParticipantModel rpm = null;
+        ArrayList<RoomParticipantModel> roomParticipantModels=new ArrayList();
+        try {
+
+            PreparedStatement p = con.prepareStatement("SELECT * FROM roomparticipant WHERE studentid=?");
+
+            p.setInt(i++, studentId);
+           
+            
+            rs=p.executeQuery();
+            
+            while(rs.next()){
+                int j=1;
+                rpm = new RoomParticipantModel();
+                rpm.setOnlineClassId(rs.getInt(j++));
+                rpm.setStudentId(rs.getInt(j++));
+                
+                roomParticipantModels.add(rpm);
+            }
+
+            
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+    
+        return roomParticipantModels;
+    }
+
 }

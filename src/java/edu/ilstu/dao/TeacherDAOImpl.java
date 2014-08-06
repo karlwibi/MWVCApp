@@ -91,7 +91,7 @@ public class TeacherDAOImpl implements TeacherDAO, Serializable {
     
 
     @Override
-    public UserModel findTeacherById(int userId) {
+    public TeacherModel findTeacherById(int userId) {
         
         int j = 1;
         ResultSet rs = null;

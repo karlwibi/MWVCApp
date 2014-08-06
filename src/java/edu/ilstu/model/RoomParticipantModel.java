@@ -79,4 +79,12 @@ public class RoomParticipantModel implements Serializable{
         
         return list;
     }
+    
+    public ArrayList<RoomParticipantModel> gelEnrolClassesForStudent(){
+         
+        ArrayList<RoomParticipantModel> list=rpdao.findallEnrollClasses(this.studentId);
+        
+        return list;
+        
+    }
 }

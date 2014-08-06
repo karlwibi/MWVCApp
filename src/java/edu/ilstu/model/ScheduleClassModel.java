@@ -175,4 +175,20 @@ public class ScheduleClassModel implements Serializable {
         
         return list;
     }
+    
+    public ArrayList<ScheduleClassModel> getScheduleByTeacherId(){
+        
+        ArrayList<ScheduleClassModel> list= scdao.findScheduleByTeacherId(this.teacherId);
+        
+        return list;
+    }
+    
+    public ArrayList<ScheduleClassModel> getScheduleByOnlineClassID(){
+        
+        ArrayList<ScheduleClassModel> list= scdao.findScheduleByOnlineClassId(this.onlineClassId);
+        
+        return list;
+    }
 }
+
+

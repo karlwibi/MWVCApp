@@ -126,13 +126,20 @@ public class OnlineClassModel implements Serializable {
         return list;
     }
     
+    /**
+     * Find an online class by id
+     * @return an object of type OnlineClassModel
+     */
     public OnlineClassModel getAClass(){
         
         OnlineClassModel ocm = ocdao.getfindOnlineClassById(this.onlineClassId);
         
         return ocm;
     }
-    
+    /**
+     * find class by roomId
+     * @return an object of type OnlineClassModel
+     */
     public OnlineClassModel getClassByRoomId(){
         
         OnlineClassModel ocm = ocdao.findByRoomId(roomid);

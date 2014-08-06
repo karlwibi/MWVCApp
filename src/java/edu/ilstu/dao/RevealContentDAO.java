@@ -6,7 +6,8 @@
 
 package edu.ilstu.dao;
 
-import edu.ilstu.model.RessourceModel;
+
+import edu.ilstu.model.RevealContentModel;
 import java.util.ArrayList;
 
 /**
@@ -15,14 +16,14 @@ import java.util.ArrayList;
  */
 public interface RevealContentDAO {
     
-    public int createRevealRessource(RessourceModel ressource);
+    public int createRevealRessource(RevealContentModel ressource);
     
-    public void updateRevealRessource(RessourceModel ressource);
+    public void updateRevealRessource(RevealContentModel ressource);
     
-    public void deleteRevealRessource(RessourceModel ressource);
+    public void deleteRevealRessource(RevealContentModel ressource);
     
-    public RessourceModel getRessourceById(int ressourceId);
+    public RevealContentModel getRessourceById(int ressourceId);
     
-    public ArrayList<RessourceModel> getRessourceByOnlinceClasseId(int onlinceClassId);
+    public ArrayList<RevealContentModel> getRevealRessourceByOnlinceClasseId(int onlinceClassId);
     
 }

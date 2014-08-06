@@ -18,19 +18,21 @@ public class PreziContentModel extends RessourceModel implements Serializable {
     
     private String preziId;
     
+      public PreziContentModel(){}
+    
     public PreziContentModel(int ressourceId){
         super(ressourceId);
     }
     
     
-    public PreziContentModel(int teacherId, Date dateCreated, int onlineClassId, char hasPresentation, char hasStudyTool, String presiId){
-        super(teacherId,dateCreated,onlineClassId,hasPresentation,hasStudyTool);
+    public PreziContentModel(int teacherId, Date dateCreated, int onlineClassId, char hasPrezi,char hasReveal, char hasStudyTool, String presiId){
+        super(teacherId,dateCreated,onlineClassId, hasPrezi,hasReveal,hasStudyTool);
         this.preziId=presiId;
     }
     
-    public PreziContentModel(int ressourceId,int teacherId, Date dateCreated, int onlineClassId, char hasPresentation, char hasStudyTool, String preziId){
+    public PreziContentModel(int ressourceId,int teacherId, Date dateCreated, int onlineClassId, char hasPrezi,char hasReveal, char hasStudyTool, String preziId){
         
-        super(ressourceId,teacherId,dateCreated, onlineClassId, hasPresentation, hasStudyTool);
+        super(ressourceId,teacherId,dateCreated, onlineClassId,  hasPrezi, hasReveal, hasStudyTool);
         this.preziId=preziId;
     }
 

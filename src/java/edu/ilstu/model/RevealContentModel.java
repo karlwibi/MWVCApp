@@ -24,14 +24,14 @@ public class RevealContentModel extends RessourceModel implements Serializable {
         super(ressourceId);
     }
     
-    public RevealContentModel(int teacherId, Date dateCreated, int onlineClassId, char hasPresentation, char hasStudyTool){
-        super(teacherId,dateCreated,onlineClassId,hasPresentation,hasStudyTool);
+    public RevealContentModel(int teacherId, Date dateCreated, int onlineClassId, char hasPrezi,char hasReveal, char hasStudyTool){
+        super(teacherId,dateCreated,onlineClassId,hasPrezi,hasReveal,hasStudyTool);
        
     }
     
     
-    public RevealContentModel(int ressourceId,int teacherId, Date dateCreated, int onlineClassId, char hasPresentation, char hasStudyTool, String articleLink,int revealId){
-            super(ressourceId,teacherId,dateCreated, onlineClassId, hasPresentation, hasStudyTool);
+    public RevealContentModel(int ressourceId,int teacherId, Date dateCreated, int onlineClassId, char hasPrezi,char hasReveal, char hasStudyTool, String articleLink,int revealId){
+            super(ressourceId,teacherId,dateCreated, onlineClassId,hasPrezi,hasReveal, hasStudyTool);
         this.revealId=revealId;
         
     }

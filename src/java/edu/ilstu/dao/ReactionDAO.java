@@ -19,7 +19,9 @@ public interface ReactionDAO {
    
    public void updateReaction (ReactionModel reaction);
    
-   public ArrayList<ReactionModel> getReactionbyUserid(int userId);
+   public ReactionModel getReactionById(int reactionId);
+         
+   public ArrayList<ReactionModel> getReactionByUserId(int userId);
    
    public ArrayList<ReactionModel> getReactionByDiscussionId(int discussionId);
    

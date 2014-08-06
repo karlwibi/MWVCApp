@@ -105,7 +105,7 @@ public class OnlineClassDAOImpl implements OnlineClassDAO, Serializable {
     @Override
     public ArrayList<OnlineClassModel> getOnliceClasses() {
 
-        ArrayList<OnlineClassModel> onlineClassModels = new ArrayList<OnlineClassModel>();
+        ArrayList<OnlineClassModel> onlineClassModels = new ArrayList<>();
         OnlineClassModel onlineClassModel = new OnlineClassModel();
         ResultSet rs = null;
         Connection con = ConnectionDB.getConnInst();
@@ -221,7 +221,7 @@ public class OnlineClassDAOImpl implements OnlineClassDAO, Serializable {
     public OnlineClassModel findByRoomId(int roomId) {
         int i = 1;
 
-        OnlineClassModel onlineClassModel = new OnlineClassModel();
+        OnlineClassModel onlineClassModel = null;
         ResultSet rs = null;
         Connection con = ConnectionDB.getConnInst();
 
@@ -235,6 +235,8 @@ public class OnlineClassDAOImpl implements OnlineClassDAO, Serializable {
 
             while (rs.next()) {
                 int j = 1;
+                onlineClassModel = new OnlineClassModel();
+                
                 onlineClassModel.setOnlineClassId(rs.getInt(j++));
                 onlineClassModel.setTitle(rs.getString(j++));
                 onlineClassModel.setDescription(rs.getString(j++));

@@ -34,5 +34,6 @@ public interface RoomParticipantDAO {
     public ArrayList<RoomParticipantModel> findallStudentforRoom(int onlineclassid);
 
     
+    public ArrayList<RoomParticipantModel> findallEnrollClasses(int studentId);
     
 }

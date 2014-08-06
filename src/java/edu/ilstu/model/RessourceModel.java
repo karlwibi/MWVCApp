@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.ilstu.model;
 
 import java.io.Serializable;
@@ -13,39 +12,40 @@ import java.sql.Date;
  *
  * @author kawibi
  */
-public abstract class RessourceModel implements Serializable{
-    
+public abstract class RessourceModel implements Serializable {
+
     private int ressourceId;
     private int teacherId;
     private Date dateCreated;
     private int onlineClassId;
-    private char hasPresentation;
+    private char hasPrezi;
+    private char hasReveal;
     private char hasStudyTool;
-    
-    
-    
-    public RessourceModel(){}
-    
-    public RessourceModel(int ressourceId){
-    
-        this.ressourceId=ressourceId;
-    
+
+    public RessourceModel() {
     }
-    
-    public RessourceModel(int teacherId, Date dateCreated, int onlineClassId, char hasPresentation, char hasStudyTool){
-        this.teacherId=teacherId;
-        this.dateCreated=dateCreated;
-        this.onlineClassId=onlineClassId;
-        this.hasPresentation=hasPresentation;
-        this.hasStudyTool=hasStudyTool;
-        
+
+    public RessourceModel(int ressourceId) {
+
+        this.ressourceId = ressourceId;
+
     }
-    
-    public RessourceModel(int ressourceId,int teacherId, Date dateCreated, int onlineClassId, char hasPresentation, char hasStudyTool ){
-        
-        this(teacherId,dateCreated,onlineClassId,hasPresentation, hasStudyTool);
-        this.ressourceId=ressourceId;
-        
+
+    public RessourceModel(int teacherId, Date dateCreated, int onlineClassId, char hasPrezi,char hasReveal, char hasStudyTool) {
+        this.teacherId = teacherId;
+        this.dateCreated = dateCreated;
+        this.onlineClassId = onlineClassId;
+        this.hasPrezi = hasPrezi;
+        this.hasReveal=hasReveal;
+        this.hasStudyTool = hasStudyTool;
+
+    }
+
+    public RessourceModel(int ressourceId, int teacherId, Date dateCreated, int onlineClassId, char hasPrezi,char hasReveal, char hasStudyTool) {
+
+        this(teacherId, dateCreated, onlineClassId, hasPrezi,hasReveal, hasStudyTool);
+        this.ressourceId = ressourceId;
+
     }
 
     /**
@@ -107,15 +107,15 @@ public abstract class RessourceModel implements Serializable{
     /**
      * @return the hasPresentation
      */
-    public char getHasPresentation() {
-        return hasPresentation;
+    public char getHasPrezi() {
+        return hasPrezi;
     }
 
     /**
-     * @param hasPresentation the hasPresentation to set
+     * @param hasPrezi the hasPresentation to set
      */
-    public void setHasPresentation(char hasPresentation) {
-        this.hasPresentation = hasPresentation;
+    public void setHasPrezi(char hasPrezi) {
+        this.hasPrezi = hasPrezi;
     }
 
     /**
@@ -131,8 +131,21 @@ public abstract class RessourceModel implements Serializable{
     public void setHasStudyTool(char hasStudyTool) {
         this.hasStudyTool = hasStudyTool;
     }
-    
-    
+
+    /**
+     * @return the hasReveal
+     */
+    public char getHasReveal() {
+        return hasReveal;
+    }
+
+    /**
+     * @param hasReveal the hasReveal to set
+     */
+    public void setHasReveal(char hasReveal) {
+        this.hasReveal = hasReveal;
+    }
+
     
     
     
