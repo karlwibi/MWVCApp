@@ -6,7 +6,10 @@
 
 package edu.ilstu.model;
 
+import edu.ilstu.dao.ReactionDAO;
+import edu.ilstu.dao.ReactionDAOImpl;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  *
@@ -94,6 +97,49 @@ public class ReactionModel implements Serializable{
     }
     
     
+    public int newReaction(){
+        
+        ReactionDAO rdao = new ReactionDAOImpl();
+        
+        return rdao.newReaction(this);
+        
+    }
     
     
+    public void updateReaction(){
+        
+        ReactionDAO rdao = new ReactionDAOImpl();
+        
+        rdao.updateReaction(this);
+        
+    }
+    
+    public void deleteReaction(){
+        
+        ReactionDAO rdao = new ReactionDAOImpl();
+        
+        rdao.deleteReaction(this);
+        
+    }
+    
+    public ReactionModel findReactionById(){
+        
+        ReactionDAO rdao = new ReactionDAOImpl();
+        
+        return rdao.getReactionById(this.getReactionId());
+    }
+    
+    public ArrayList<ReactionModel> findReactionByDiscussionId(){
+        
+        ReactionDAO rdao = new ReactionDAOImpl();
+        
+        return rdao.getReactionByDiscussionId(this.getDiscussionId());
+    }
+    
+    public ArrayList<ReactionModel> findReactionByUserId(){
+        
+        ReactionDAO rdao = new ReactionDAOImpl();
+        
+        return rdao.getReactionByUserId(this.postby);
+    }
 }

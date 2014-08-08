@@ -6,8 +6,11 @@
 
 package edu.ilstu.model;
 
+import edu.ilstu.dao.ChatDAO;
+import edu.ilstu.dao.ChatDAOImpl;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  *
@@ -17,25 +20,24 @@ public class ChatModel implements Serializable {
     
     private int chatid;
     private int onlineClassId;
-    private int userId;
     private Date chatdate;
-   
-    public ChatModel(){}
     
-    public ChatModel(int chatid){
-        this.chatid=chatid;
+    public ChatModel() {
     }
     
-    public ChatModel(int onlineClassId, int userId, Date chatDate){
-        this.onlineClassId=onlineClassId;
-        this.userId=userId;
-        this.chatdate=chatDate;
+    public ChatModel(int chatid) {
+        this.chatid = chatid;
     }
     
-    public ChatModel(int chatid, int onlineClassId, int userId, Date chatDate){
+    public ChatModel(int onlineClassId, Date chatDate) {
+        this.onlineClassId = onlineClassId;
+        this.chatdate = chatDate;
+    }
+    
+    public ChatModel(int chatid, int onlineClassId, Date chatDate) {
         
-        this(onlineClassId,userId, chatDate);
-        this.chatid=chatid;
+        this(onlineClassId, chatDate);
+        this.chatid = chatid;
     }
 
     /**
@@ -67,20 +69,6 @@ public class ChatModel implements Serializable {
     }
 
     /**
-     * @return the userId
-     */
-    public int getUserId() {
-        return userId;
-    }
-
-    /**
-     * @param userId the userId to set
-     */
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    /**
      * @return the chatdate
      */
     public Date getChatdate() {
@@ -94,6 +82,46 @@ public class ChatModel implements Serializable {
         this.chatdate = chatdate;
     }
     
+    public int createChat() {
+        
+        ChatDAO cdao = new ChatDAOImpl();
+        
+        return cdao.createChat(this);
+    }
     
+    public void updateChat() {
+        
+        ChatDAO cdao = new ChatDAOImpl();
+        
+        cdao.updateChat(this);
+    }
+    
+    public void deleteChat() {
+        
+        ChatDAO cdao = new ChatDAOImpl();
+        
+        cdao.deleteChat(this);
+    }
+    
+    public ChatModel getChatByID() {
+        
+        ChatDAO cdao = new ChatDAOImpl();
+        
+        return cdao.getChatById(this.getChatid());
+    }
+    
+    public ChatModel getChatByDate() {
+        
+        ChatDAO cdao = new ChatDAOImpl();
+        
+        return cdao.getChatByDate(this.getChatdate());
+    }
+    
+    public ArrayList<ChatModel> getRoomChatsInstance() {
+        
+        ChatDAO cdao = new ChatDAOImpl();
+        
+        return cdao.getRoomChatsInstance(this.getOnlineClassId());
+    }
     
 }

@@ -6,7 +6,10 @@
 
 package edu.ilstu.model;
 
+import edu.ilstu.dao.ContentDAO;
+import edu.ilstu.dao.ContentDAOImpl;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  *
@@ -96,5 +99,44 @@ public class ContentModel implements Serializable {
     }
     
     
+    public int createContent(){
+        
+        ContentDAO cdao=new ContentDAOImpl();
+        
+        return cdao.createContent(this);
+    }
+    
+    
+    public void updateContent(){
+        
+        ContentDAO cdao=new ContentDAOImpl();
+        
+        cdao.updateContent(this);
+        
+    }
+    
+    public void deleteContent(){
+        
+        ContentDAO cdao=new ContentDAOImpl();
+        
+        cdao.deleteContent(this);
+        
+    }
+    
+    
+    public ArrayList<ContentModel> getAllContents(){
+        
+        ContentDAO cdao=new ContentDAOImpl();
+        
+        return cdao.getAllContents();
+    }
+    
+    
+    public ArrayList<ContentModel> findContentByRevealID(){
+        
+        ContentDAO cdao=new ContentDAOImpl();
+        
+        return cdao.getContentsByRevealId(this.getRevealId());
+    }
     
 }

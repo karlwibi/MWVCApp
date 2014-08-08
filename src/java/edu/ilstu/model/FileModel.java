@@ -6,7 +6,10 @@
 
 package edu.ilstu.model;
 
+import edu.ilstu.dao.FileDAO;
+import edu.ilstu.dao.FileDAOImpl;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,27 +17,27 @@ import java.io.Serializable;
  */
 public class FileModel implements Serializable {
     
-
-private int fileId;
-private String fileName;
-private int Size;
-private int postedBy;
-private String location;
-
-public FileModel(){}
-
-public FileModel(String fileName, int postedBy, String location){
-    this.fileName=fileName;
-    this.postedBy=postedBy;
-    this.location=location;
-}
-
-public FileModel(String fileName, int postedBy, String location, int size, int fileId){
-    this(fileName,postedBy,location);
-    this.Size=size;
-    this.fileId=fileId;
+    private int fileId;
+    private String fileName;
+    private int Size;
+    private int postedBy;
+    private String location;
     
-}
+    public FileModel() {
+    }
+    
+    public FileModel(String fileName, int postedBy, String location) {
+        this.fileName = fileName;
+        this.postedBy = postedBy;
+        this.location = location;
+    }
+    
+    public FileModel(String fileName, int postedBy, String location, int size, int fileId) {
+        this(fileName, postedBy, location);
+        this.Size = size;
+        this.fileId = fileId;
+        
+    }
 
     /**
      * @return the fileId
@@ -105,9 +108,47 @@ public FileModel(String fileName, int postedBy, String location, int size, int f
     public void setLocation(String location) {
         this.location = location;
     }
-
-
-
+    
+    public int createFile() {
+        
+        FileDAO fdao = new FileDAOImpl();
+        
+        return fdao.createFile(this);
+    }
+    
+    public void updateFile() {
+        
+        FileDAO fdao = new FileDAOImpl();
+        
+        fdao.updateFile(this);
+    }
+    
+    public void deleteFile() {
+        
+        FileDAO fdao = new FileDAOImpl();
+        
+        fdao.deleteFile(this);
+    }
+    
+    public ArrayList<FileModel> getFileByUserId() {
+        
+        FileDAO fdao = new FileDAOImpl();
+        
+        return fdao.getFileByuseid(this.getPostedBy());
+        
+    }
+    
+    public FileModel getFileByFileId() {
+        
+        FileDAO fdao = new FileDAOImpl();
+        
+        return fdao.getFilebyFileId(this.getFileId());
+    }
+    
+    public FileModel getFileByName() {
+        
+        FileDAO fdao = new FileDAOImpl();
+        
+        return fdao.getFilebyName(this.getFileName());
+    }
 }
-
-

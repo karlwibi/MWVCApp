@@ -7,6 +7,7 @@
 package edu.ilstu.dao;
 
 import edu.ilstu.model.ChatModel;
+import java.sql.Date;
 import java.util.ArrayList;
 
 /**
@@ -22,6 +23,8 @@ public interface ChatDAO {
     public void deleteChat (ChatModel chat);
     
     public ChatModel getChatById (int chatId);
+     
+    public ChatModel getChatByDate (Date date);
     
     public ArrayList<ChatModel> getRoomChatsInstance(int onlineClassId);
     

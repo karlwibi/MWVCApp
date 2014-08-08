@@ -6,8 +6,11 @@
 
 package edu.ilstu.model;
 
+import edu.ilstu.dao.RevealContentDAO;
+import edu.ilstu.dao.RevealContentDAOImpl;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  *
@@ -51,6 +54,44 @@ public class RevealContentModel extends RessourceModel implements Serializable {
     }
     
     
-
+public int createRevealRessource(){
     
+    RevealContentDAO rcdao=new RevealContentDAOImpl();
+    
+    return rcdao.createRevealRessource(this);
+}
+   
+
+public void updateRevealRessource(){
+    
+    RevealContentDAO rcdao=new RevealContentDAOImpl();
+    
+    rcdao.updateRevealRessource(this);
+}
+
+
+public void deleteRevealRessource(){
+    
+    RevealContentDAO rcdao=new RevealContentDAOImpl();
+    
+    rcdao.deleteRevealRessource(this);
+    
+}
+
+public RevealContentModel findRevealRessourceById(){
+    
+    RevealContentDAO rcdao=new RevealContentDAOImpl();
+    
+    return rcdao.getRessourceById(this.getRessourceId());
+}
+
+
+public ArrayList<RevealContentModel> findReealRessourceByOnlineClassId(){
+    
+    RevealContentDAO rcdao=new RevealContentDAOImpl();
+    
+    return rcdao.getRevealRessourceByOnlinceClasseId(this.getOnlineClassId());
+}
+
+
 }

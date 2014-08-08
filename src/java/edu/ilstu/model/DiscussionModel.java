@@ -6,9 +6,12 @@
 
 package edu.ilstu.model;
 
+import edu.ilstu.dao.DiscussionDAO;
+import edu.ilstu.dao.DiscussionDAOImpl;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 
 /**
  *
@@ -179,8 +182,73 @@ public class DiscussionModel implements Serializable {
     }
     
     
+  public int createDiscussion(){
+      
+      DiscussionDAO ddao=new DiscussionDAOImpl();
+      
+       return ddao.createDiscussion(this);
+  }  
     
-    
+  public void deleteDiscussion(){
+      
+      DiscussionDAO ddao=new DiscussionDAOImpl();
+      
+      ddao.deleteDiscussion(this);
+      
+  }
+  
+  public void updateDiscussion(){
+      
+      DiscussionDAO ddao=new DiscussionDAOImpl();
+      
+      ddao.updateDiscussion(this);
+  }
+  
+  public ArrayList<DiscussionModel> findDiscussionByOwner(){
+      
+      DiscussionDAO ddao=new DiscussionDAOImpl();
+      
+      return ddao.findDiscussionByOwner(this.getCreateBy());
+  }
+  
+  public ArrayList<DiscussionModel> findDiscussionByOnlineClass(){
+      
+      DiscussionDAO ddao=new DiscussionDAOImpl();
+      
+      return ddao.findDiscussionbyOnlineClass(this.getOnlineClassId());
+      
+      
+  }
+  
+  public ArrayList<DiscussionModel> findDiscussionByDescriptionKeyword(String keyword){
+      
+      DiscussionDAO ddao=new DiscussionDAOImpl();
+      
+      return ddao.findDiscussionsByDescriptionKeyWord(keyword);
+  }
+  
+  public DiscussionModel findDiscussionByTitle(){
+      
+      DiscussionDAO ddao=new DiscussionDAOImpl();
+      
+      return ddao.findDiscussionsByTitle(this.getTitle());
+  }
+  
+  public DiscussionModel findDiscussionById(){
+      
+      DiscussionDAO ddao=new DiscussionDAOImpl();
+      
+      return ddao.findDiscussionsbyId(this.getDiscussionId());
+  }
+  
+  
+  public ArrayList<DiscussionModel> getAllDiscussions(){
+      
+      DiscussionDAO ddao=new DiscussionDAOImpl();
+      
+      return ddao.getDiscussions();
+  }
+  
     
     
     

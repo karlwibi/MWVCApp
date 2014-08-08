@@ -6,8 +6,11 @@
 
 package edu.ilstu.model;
 
+import edu.ilstu.dao.PreziContentDAO;
+import edu.ilstu.dao.PreziContentDAOImpl;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  *
@@ -50,6 +53,44 @@ public class PreziContentModel extends RessourceModel implements Serializable {
         this.preziId = preziId;
     }
     
+    public int createPreziRessource(){
+        
+        PreziContentDAO pcdao= new PreziContentDAOImpl();
+        
+        return pcdao.createPreziRessource(this);
+    }
+    
+    public void updatePreziRessource(){
+        
+        PreziContentDAO pcdao= new PreziContentDAOImpl();
+        
+        pcdao.updatePreziRessource(this);
+        
+    }
+    
+    public void deletePreziRessource(){
+        
+        PreziContentDAO pcdao= new PreziContentDAOImpl();
+        
+        pcdao.deletePreziRessource(this);
+    }
+    
+    public ArrayList<PreziContentModel> findPreziRessourceByOnlineClassId(){
+        
+        PreziContentDAO pcdao= new PreziContentDAOImpl();
+        
+        return pcdao.getPreziRessourcebyOnlineClassId(this.getOnlineClassId());
+        
+    }
+    
+    public PreziContentModel findPreziRessourceById(){
+        
+        
+        PreziContentDAO pcdao= new PreziContentDAOImpl();
+        
+        return pcdao.getPreziRessourcesByRessourceId(this.getRessourceId());
+        
+    }
     
     
 }

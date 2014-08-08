@@ -93,12 +93,108 @@ public class StudyToolDAOimpl extends RessourceDAOImpl implements StudyToolDAO {
 
     @Override
     public StudyToolModel getRessourceById(int ressourceId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int j = 1;
+        ResultSet rs = null;
+        StudyToolModel studyToolModel = null;
+
+        Connection con = ConnectionDB.getConnInst();
+
+        try {
+
+            PreparedStatement p = con.prepareStatement("Select r.ressourceid as ressourceid,teacherid,datecreated,onlineclassid,has_prezi,has_reveal, has_studytool,articlelink,videoslink "
+                    + " FROM ressource r"
+                    + " INNER JOIN studytool s "
+                    + " WHERE r.ressourceid=s.ressourceid AND s.ressourceid=?");
+
+            p.setInt(j++, ressourceId);
+
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+                int i = 1;
+                studyToolModel = new StudyToolModel();
+                studyToolModel.setRessourceId(rs.getInt(i++));
+                studyToolModel.setTeacherId(rs.getInt(i++));
+                studyToolModel.setDateCreated(rs.getDate(i++));
+                studyToolModel.setOnlineClassId(rs.getInt(i++));
+                studyToolModel.setHasPrezi(rs.getString(i++).charAt(0));
+                studyToolModel.setHasReveal(rs.getString(i++).charAt(0));
+                studyToolModel.setHasStudyTool(rs.getString(i++).charAt(0));
+                studyToolModel.setArticleLink(rs.getString(i++));
+                studyToolModel.setVideolink(rs.getString(i++));
+
+            }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }
+
+        return studyToolModel;
     }
 
     @Override
     public ArrayList<StudyToolModel> getStudytoolRessourceByOnlinceClasseId(int onlinceClassId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         int j = 1;
+        ResultSet rs = null;
+        StudyToolModel studyToolModel = null;
+        ArrayList<StudyToolModel> list=new ArrayList<>();
+
+        Connection con = ConnectionDB.getConnInst();
+
+        try {
+
+            PreparedStatement p = con.prepareStatement("Select r.ressourceid as ressourceid,teacherid,datecreated,onlineclassid,has_prezi,has_reveal, has_studytool,articlelink,videoslink "
+                    + " FROM ressource r"
+                    + " INNER JOIN studytool s "
+                    + " WHERE r.ressourceid=s.ressourceid AND r.onlineclassid=?");
+
+            p.setInt(j++, onlinceClassId);
+
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+                int i = 1;
+                studyToolModel = new StudyToolModel();
+                studyToolModel.setRessourceId(rs.getInt(i++));
+                studyToolModel.setTeacherId(rs.getInt(i++));
+                studyToolModel.setDateCreated(rs.getDate(i++));
+                studyToolModel.setOnlineClassId(rs.getInt(i++));
+                studyToolModel.setHasPrezi(rs.getString(i++).charAt(0));
+                studyToolModel.setHasReveal(rs.getString(i++).charAt(0));
+                studyToolModel.setHasStudyTool(rs.getString(i++).charAt(0));
+                studyToolModel.setArticleLink(rs.getString(i++));
+                studyToolModel.setVideolink(rs.getString(i++));
+
+                list.add(studyToolModel);
+            }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }
+
+        return list;
     }
 
 }
