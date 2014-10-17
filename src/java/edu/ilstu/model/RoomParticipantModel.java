@@ -10,6 +10,7 @@ import edu.ilstu.dao.RoomParticipantDAO;
 import edu.ilstu.dao.RoomParticipantDAOImpl;
 import java.io.Serializable;
 import java.util.ArrayList;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -86,5 +87,14 @@ public class RoomParticipantModel implements Serializable{
         
         return list;
         
+    }
+    
+     public String roomToJSONString() {
+
+        JSONObject obj = new JSONObject();
+        obj.put("onlineClassId", this.onlineClassId);
+        obj.put("StudentID", this.studentId);
+        
+        return obj.toJSONString();
     }
 }

@@ -40,16 +40,9 @@ public interface ScheduleClassDAO {
      * @param onlineClassId
      * @return 
      */
-    public ArrayList<ScheduleClassModel> findScheduleByOnlineClassId(int onlineClassId);
+    public ScheduleClassModel findScheduleByOnlineClassId(int onlineClassId);
     
-    /**
-     * 
-     * @param teacherid
-     * @param onlineClassId
-     * @return 
-     */
-    public ArrayList<ScheduleClassModel> findScheduleClassByTIdAndOCId(int teacherid, int onlineClassId);
-    
+  
     
    /**
     * 

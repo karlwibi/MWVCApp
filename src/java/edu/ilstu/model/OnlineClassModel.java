@@ -10,6 +10,7 @@ import edu.ilstu.dao.OnlineClassDAOImpl;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -22,6 +23,7 @@ public class OnlineClassModel implements Serializable {
     private String description;
     private int roomid;
     private OnlineClassDAO ocdao;
+    private int teacherId;
     
     public OnlineClassModel() {
         Random rn = new Random();
@@ -103,36 +105,43 @@ public class OnlineClassModel implements Serializable {
     
     public int saveClass(){
         
-        return ocdao.createOnlineClass(this);
+        return getOcdao().createOnlineClass(this);
     }
     
     
     public void updateClass(){
         
-        ocdao.updateOnlineClass(this);
+        getOcdao().updateOnlineClass(this);
         
     }
     
     public void deleteClass(){
         
-        ocdao.deleteOnlineClass(this);
+        getOcdao().deleteOnlineClass(this);
     }
     
     
     public ArrayList<OnlineClassModel> getClasses(){
         
-        ArrayList<OnlineClassModel> list= ocdao.getOnliceClasses();
+        ArrayList<OnlineClassModel> list= getOcdao().getOnliceClasses();
         
         return list;
     }
     
+    
+    public ArrayList<OnlineClassModel> getClassesByTeacherID(){
+        
+        ArrayList<OnlineClassModel> list= getOcdao().getOnliceClassesByTeacherId(this.getTeacherId());
+        
+        return list;
+    }
     /**
      * Find an online class by id
      * @return an object of type OnlineClassModel
      */
     public OnlineClassModel getAClass(){
         
-        OnlineClassModel ocm = ocdao.getfindOnlineClassById(this.onlineClassId);
+        OnlineClassModel ocm = getOcdao().getfindOnlineClassById(this.onlineClassId);
         
         return ocm;
     }
@@ -142,9 +151,60 @@ public class OnlineClassModel implements Serializable {
      */
     public OnlineClassModel getClassByRoomId(){
         
-        OnlineClassModel ocm = ocdao.findByRoomId(roomid);
+        OnlineClassModel ocm = getOcdao().findByRoomId(roomid);
         
         return ocm;
     }
     
+    
+    
+    
+    
+    
+    
+    
+     public String onlineClassToJSONString() {
+
+        JSONObject obj = new JSONObject();
+        obj.put("description", this.description);
+        obj.put("onlineClassId", this.onlineClassId);
+        obj.put("roomid", this.roomid);
+        obj.put("title", this.title);
+        obj.put("teacherId", this.getTeacherId());
+
+        return obj.toJSONString();
+    }
+
+    /**
+     * @return the ocdao
+     */
+    public OnlineClassDAO getOcdao() {
+        return ocdao;
+    }
+
+    /**
+     * @param ocdao the ocdao to set
+     */
+    public void setOcdao(OnlineClassDAO ocdao) {
+        this.ocdao = ocdao;
+    }
+
+    /**
+     * @return the teacherId
+     */
+    public int getTeacherId() {
+        return teacherId;
+    }
+
+    /**
+     * @param teacherId the teacherId to set
+     */
+    public void setTeacherId(int teacherId) {
+        this.teacherId = teacherId;
+    }
+
+
+
 }
+
+

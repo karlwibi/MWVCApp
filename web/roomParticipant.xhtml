@@ -18,72 +18,175 @@
         </ui:define>
         <ui:define name="content"> 
 
-            <h:form>
-                
-                <i class="fa fa-tasks fa-2x"></i>&nbsp;
-                    <p:outputLabel  style="font-size: 24px" value="Insert student for Room :"/>
-                <p:outputLabel  style="font-size: 24px"   value="#{roomParticipant.roomid}"/><br/><br/>
-                <p:outputLabel  style="font-size: 24px"   value="#{roomParticipant.ocm.title}"/><br/><br/>
-                <p:outputLabel  style="font-size: 24px"   value="#{roomParticipant.ocm.description}"/><br/><br/>
-                <p:outputLabel  style="font-size: 24px"   value="List of Students"/><br/><br/>
 
-                
-                    
-                <div class="row">
-                    <div class="col-lg-4 text-center">
-                        
-                        <h:selectManyListbox id="availableList" style="width: 300px;height: 150px" value="#{roomParticipant.selectedStudents}">
-                            <f:selectItems value="#{roomParticipant.studentList}" var="s" itemLabel="#{s.email}" itemValue="#{s.userid}"/> 
-                        </h:selectManyListbox>
+
+            <h:form id="firstForm"> 
+
+
+                <p:outputLabel class="text-uppercase text-info "    value="Insert student for Room :"/>
+                <p:outputLabel  class="text-info "     value="#{roomParticipant.roomid}"/><br/>
+                <p:outputLabel class="text-info "     value="Class title: #{roomParticipant.ocm.title}"/><br/>
+                <p:outputLabel class="text-info "    value="Class Description: #{roomParticipant.ocm.description}"/><br/><br/>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Add student Manually</h3>
                     </div>
-                    
-                    <div class="col-lg-4 text-center">
-                        <div class="row">
-                            <p:commandButton value="&gt;">
-                                <f:ajax  listener="#{roomParticipant.addStudentToClass()}" execute="availableList" render="selectedList availableList"  />
-                                
-                            </p:commandButton>
-                                
-                                
-                        
-                        </div>
-                        <div class="row">
-                            
-                            <p:commandButton value="&gt;&gt;">
-                                
-                                <f:ajax  listener="#{roomParticipant.addAll()}"  render="selectedList availableList"  />
-                                
-                            </p:commandButton>
-                        
-                        </div>
-                        <div class="row">
-                            <p:commandButton value="&lt;">
-                                
-                                <f:ajax  listener="#{roomParticipant.removeStudentFromClass}" execute="selectedList" render="selectedList availableList"  />
-                            </p:commandButton>
-                        
-                        </div>
-                        <div class="row">
-                            <p:commandButton value="&lt;&lt;">
-                                <f:ajax  listener="#{roomParticipant.removeAll()}"  render="selectedList availableList"  />
-                            </p:commandButton>
-                        </div>
-                        
-                    </div>
-                    <div class="col-lg-4 text-center">
-                        <h:selectManyListbox id="selectedList" style="width: 300px; height: 150px" value="#{roomParticipant.selectedStudents2}">
-                            <f:selectItems value="#{roomParticipant.studentList2}" var="s" itemLabel="#{s.email}" itemValue="#{s.userid}"/> 
-                            
-                        </h:selectManyListbox>
+                    <div class="panel-body">
+
+                        <ui:repeat var="s" value="#{roomParticipant.studentListManual}" >
+                            <p:panelGrid columns="5">
+
+                                <p:inputText placeholder="Student First name" value="#{s.fname}"/>
+                                <p:inputText placeholder="Student lastname name" value="#{s.lname}"/>
+                                <p:inputText placeholder="Student email" value="#{s.email}"/>
+                                <p:commandButton icon="fa fa-plus-circle" >
+                                    <!--                                <i class="fa fa-plus"></i>-->
+                                    <f:ajax listener="#{roomParticipant.extend}"
+                                            execute="firstForm" 
+                                            render="firstForm" />
+                                </p:commandButton>
+                                <p:commandButton icon="fa fa-minus-circle" >
+                                    <!--<i class="fa fa-minus-circle"></i>-->
+                                    <f:ajax listener="#{roomParticipant.unExtend()}"
+                                            execute="firstForm" 
+                                            render="firstForm" />
+                                </p:commandButton>
+                            </p:panelGrid>
+
+                        </ui:repeat>
+                        <br/>
+                        <p:commandButton value="submit" action="#{roomParticipant.submitM()}"/>
                     </div>
                 </div>
-                
-                <p:commandButton value="Save" action="#{roomParticipant.save()}"/>
-                
-                
+            </h:form>
+
+            <h:form enctype="multipart/form-data">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">import Student Information from an Excel Sheet</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        <p:growl id="messages" showDetail="true" />
+
+                        <p:fileUpload value="#{roomParticipant.file}" mode="simple" />
+
+                        <p:commandButton value="Submit" ajax="false" action="#{roomParticipant.submitE()}"  />
+
+                    </div>
+                </div>
+            </h:form>
+            <h:form>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Add student from existing list</h3>
+                    </div>
+                    <div class="panel-body">
+                        
+                        
+                        <div class="row text-center">
+                            <div class="col-lg-4">
+                                 <h1><small>Non-enrolled Student</small></h1>
+                                <h:selectManyListbox id="availableList" style="width: 300px;height: 150px" value="#{roomParticipant.selectedStudents}">
+                                    <f:selectItems value="#{roomParticipant.studentList}" var="s" itemLabel="#{s.fname}" itemValue="#{s.userid}"/> 
+                                </h:selectManyListbox>
+                            </div>
+                            <div class="col-lg-4 ">
+                                <div class="row">
+                                    <br/><br/>
+                                    <p:commandButton value="&gt;">
+                                        <f:ajax  listener="#{roomParticipant.addStudentToClass()}" execute="availableList" render="selectedList availableList"  />
+                                    </p:commandButton>
+                                </div>
+                                <div class="row">
+                                    <br/>
+                                      <p:commandButton value="&gt;&gt;">
+                                        <f:ajax  listener="#{roomParticipant.addAll()}"  render="selectedList availableList"  />
+                                    </p:commandButton>
+                                </div>
+                                <div class="row">
+                                    <br/>
+                                    <p:commandButton value="&lt;">
+                                        <f:ajax  listener="#{roomParticipant.removeStudentFromClass}" execute="selectedList" render="selectedList availableList"  />
+                                    
+                                     </p:commandButton>
+                                </div>
+                                <div class="row">
+                                    <br/>
+                                      <p:commandButton value="&lt;&lt;">
+                                        <f:ajax  listener="#{roomParticipant.removeAll()}"  render="selectedList availableList"  />
+                                    </p:commandButton>
+                                </div>
+                            </div>
+                             <div class="col-lg-4">
+                                 <h1><small>Enrolled Student</small></h1>
+                                <h:selectManyListbox id="selectedList" style="width: 300px; height: 150px" value="#{roomParticipant.selectedStudents2}">
+                                    <f:selectItems value="#{roomParticipant.studentList2}" var="s" itemLabel="#{s.fname}" itemValue="#{s.userid}"/> 
+                                </h:selectManyListbox>
+                             </div>
+                            
+                        </div>
+                        
+                        
+                     
+                        
+                        
+<!--                        <div class="row">
+                            <div class="col-lg-4 text-center">
+                                <h1><small>Non-enrolled Student</small></h1>
+                                <h:selectManyListbox id="availableList" style="width: 300px;height: 150px" value="#{roomParticipant.selectedStudents}">
+                                    <f:selectItems value="{roomParticipant.studentList}" var="s" itemLabel="#{s.fname}" itemValue="#{s.userid}"/> 
+                                </h:selectManyListbox>
+                            </div>
+
+                            <div class="col-lg-4 text-center">
+                                <div class="row">
+                                    <p:commandButton value="&gt;">
+                                        <f:ajax  listener="{roomParticipant.addStudentToClass()}" execute="availableList" render="selectedList availableList"  />
+                                    </p:commandButton>
+
+                                </div>
+                                <div class="row">
+                                    <p:commandButton value="&gt;&gt;">
+                                        <f:ajax  listener="{roomParticipant.addAll()}"  render="selectedList availableList"  />
+                                    </p:commandButton>
+
+                                </div>
+                                <div class="row">
+                                    <p:commandButton value="&lt;">
+                                        <f:ajax  listener="{roomParticipant.removeStudentFromClass}" execute="selectedList" render="selectedList availableList"  />
+                                    </p:commandButton>
+                                </div>
+                                <div class="row">
+                                    <p:commandButton value="&lt;&lt;">
+                                        <f:ajax  listener="{roomParticipant.removeAll()}"  render="selectedList availableList"  />
+                                    </p:commandButton>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-4 text-center">
+                                <h1><small>Enrolled Student</small></h1>
+                                <h:selectManyListbox id="selectedList" style="width: 300px; height: 150px" value="#{roomParticipant.selectedStudents2}">
+                                    <f:selectItems value="{roomParticipant.studentList2}" var="s" itemLabel="#{s.fname}" itemValue="#{s.userid}"/> 
+                                </h:selectManyListbox>
+                            </div>
+                        </div>-->
+
+                        <p:commandButton value="Save" action="#{roomParticipant.save()}"/>
+                    </div>
+                </div>
+            </h:form>
 
 
-            </h:form>            
+
+
+
+
+
+
+
+
         </ui:define> 
     </ui:composition>
 </html>

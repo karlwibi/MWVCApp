@@ -9,6 +9,7 @@ import edu.ilstu.dao.TeacherDAO;
 import edu.ilstu.dao.TeacherDAOImpl;
 import java.io.Serializable;
 import java.util.ArrayList;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -30,14 +31,14 @@ public class TeacherModel extends UserModel implements Serializable{
         
     }
     
-    public TeacherModel(String fname, String lname, String username, String password, String securityq, String securitya, String email, String street, String city, String state, int zipCode, String country, int phone, char is_a, String department) {
-        super(fname, lname, username, password, securityq, securitya, email, street, city, state, zipCode, country, phone, is_a);
+    public TeacherModel(String fname, String lname, String securityq, String securitya, String email, String street, String city, String state, int zipCode, String country, int phone, char is_a, String department) {
+        super(fname, lname, securityq, securitya, email, street, city, state, zipCode, country, phone, is_a);
         this.department = department;
         tdao=new TeacherDAOImpl();
     }
 
       public TeacherModel(int userId, String fname, String lname, String username, String password, String securityq, String securitya, String email, String street, String city, String state, int zipCode, String country, int phone, char is_a, String department) {
-        super(userId, fname, lname, username, password, securityq, securitya, email, street, city, state, zipCode, country, phone, is_a);
+        super(userId, fname, lname, securityq, securitya, email, street, city, state, zipCode, country, phone, is_a);
          this.department = department;
          tdao=new TeacherDAOImpl();
 
@@ -58,20 +59,38 @@ public class TeacherModel extends UserModel implements Serializable{
     }
 
     
-    public ArrayList<UserModel> getAllTeachers(){
+    public ArrayList<TeacherModel> getAllTeachers(){
     
           
-        ArrayList<UserModel> teacherList= tdao.getTeachers();
+        ArrayList<TeacherModel> teacherList= tdao.getTeachers();
         
         return teacherList;
     }
     
-    public UserModel getTeacherById(int id){
+    public TeacherModel getTeacherById(int id){
         
-        UserModel tm=tdao.findTeacherById(id);
+        TeacherModel tm=tdao.findTeacherById(id);
         
         return tm;
     }
     
-    
+    public String teacherToJSONString() {
+
+        JSONObject obj = new JSONObject();
+        obj.put("userid", super.getUserid());
+        obj.put("fname", super.getFname());
+        obj.put("lname", super.getLname());
+        obj.put("securityq", super.getSecurityq());
+        obj.put("securitya", super.getSecuritya());
+        obj.put("email", super.getEmail());
+        obj.put("phone", super.getPhone());
+        obj.put("street", super.getStreet());
+        obj.put("city", super.getCity());
+        obj.put("state", super.getState());
+        obj.put("zipcode", super.getZipCode());
+        obj.put("country", super.getUserid());
+        obj.put("type", String.valueOf(super.getIs_a()));
+
+        return obj.toJSONString();
+    }
 }

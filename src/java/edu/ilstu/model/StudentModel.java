@@ -9,6 +9,7 @@ import edu.ilstu.dao.StudentDAO;
 import edu.ilstu.dao.StudentDAOImpl;
 import java.io.Serializable;
 import java.util.ArrayList;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -29,14 +30,14 @@ public class StudentModel extends UserModel implements Serializable{
         dAO=new StudentDAOImpl();
     }
 
-    public StudentModel(String fname, String lname, String username, String password, String securityq, String securitya, String email, String street, String city, String state, int zipCode, String country, int phone, char is_a, String major) {
-        super(fname, lname, username, password, securityq, securitya, email, street, city, state, zipCode, country, phone, is_a);
+    public StudentModel(String fname, String lname, String securityq, String securitya, String email, String street, String city, String state, int zipCode, String country, int phone, char is_a, String major) {
+        super(fname, lname, securityq, securitya, email, street, city, state, zipCode, country, phone, is_a);
         this.major = major;
         dAO=new StudentDAOImpl();
     }
 
-    public StudentModel(int userId, String fname, String lname, String username, String password, String securityq, String securitya, String email, String street, String city, String state, int zipCode, String country, int phone, char is_a, String major) {
-        super(userId, fname, lname, username, password, securityq, securitya, email, street, city, state, zipCode, country, phone, is_a);
+    public StudentModel(int userId, String fname, String lname, String securityq, String securitya, String email, String street, String city, String state, int zipCode, String country, int phone, char is_a, String major) {
+        super(userId, fname, lname, securityq, securitya, email, street, city, state, zipCode, country, phone, is_a);
         this.major = major;
         dAO=new StudentDAOImpl();
 
@@ -73,4 +74,23 @@ public class StudentModel extends UserModel implements Serializable{
         return studenList;
     }
     
+    public String studentToJSONString() {
+
+        JSONObject obj = new JSONObject();
+        obj.put("userid", super.getUserid());
+        obj.put("fname", super.getFname());
+        obj.put("lname", super.getLname());
+        obj.put("securityq", super.getSecurityq());
+        obj.put("securitya", super.getSecuritya());
+        obj.put("email", super.getEmail());
+        obj.put("phone", super.getPhone());
+        obj.put("street", super.getStreet());
+        obj.put("city", super.getCity());
+        obj.put("state", super.getState());
+        obj.put("zipcode", super.getZipCode());
+        obj.put("country", super.getUserid());
+        obj.put("type",String.valueOf(super.getIs_a()));
+
+        return obj.toJSONString();
+    }
 }

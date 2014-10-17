@@ -23,12 +23,17 @@ public abstract class RessourceModel implements Serializable {
     private char hasStudyTool;
 
     public RessourceModel() {
+        this.hasPrezi='N';
+        this.hasReveal='N';
+        this.hasStudyTool='N';
     }
 
     public RessourceModel(int ressourceId) {
 
+        this();
         this.ressourceId = ressourceId;
 
+        
     }
 
     public RessourceModel(int teacherId, Date dateCreated, int onlineClassId, char hasPrezi,char hasReveal, char hasStudyTool) {

@@ -58,7 +58,10 @@ public int createRevealRessource(){
     
     RevealContentDAO rcdao=new RevealContentDAOImpl();
     
-    return rcdao.createRevealRessource(this);
+    this.setHasReveal('Y');
+    this.setRessourceId(rcdao.createRevealRessource(this));
+    
+    return this.getRessourceId();
 }
    
 

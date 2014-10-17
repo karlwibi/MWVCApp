@@ -2,10 +2,19 @@
 <Context antiJARLocking="true" path="/MWVCApp">
 
  
-  <Resource name="jdbc/webrtc" auth="Container" type="javax.sql.DataSource"
+    
+    <ResourceLink global="jdbc/webrtc"
+              name="jdbc/webrtc"
+              type="javax.sql.DataSource"/>
+    
+<!--  <Resource name="jdbc/webrtc" auth="Container" type="javax.sql.DataSource"
                maxActive="50" maxIdle="30" maxWait="10000"
                username="webrtc" password="webrtc" 
                driverClassName="com.mysql.jdbc.Driver"
-               url="jdbc:mysql://192.168.60.130:3306/webrtcDB"/>
+               
+              url="jdbc:mysql://54.187.74.210:3306/webrtcDB"/>-->
  
 </Context>
+
+<!--url="jdbc:mysql://192.168.60.130:3306/webrtcDB"/>-->
+ <!--url="jdbc:mysql://54.187.74.210:3306/webrtcDB"/>-->

@@ -11,6 +11,7 @@ import edu.ilstu.dao.PreziContentDAOImpl;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -57,7 +58,11 @@ public class PreziContentModel extends RessourceModel implements Serializable {
         
         PreziContentDAO pcdao= new PreziContentDAOImpl();
         
-        return pcdao.createPreziRessource(this);
+        this.setHasPrezi('Y');
+        
+        this.setRessourceId(pcdao.createPreziRessource(this));
+        
+        return this.getRessourceId();
     }
     
     public void updatePreziRessource(){
@@ -92,5 +97,16 @@ public class PreziContentModel extends RessourceModel implements Serializable {
         
     }
     
+     public String PreziToJSONString() {
+
+        JSONObject obj = new JSONObject();
+        obj.put("dateCreated", super.getDateCreated());
+        obj.put("onlineClassId", super.getOnlineClassId());
+        obj.put("userid", super.getRessourceId());
+        obj.put("userid", super.getTeacherId());
+        obj.put("fname", this.getPreziId());
+        
+        return obj.toJSONString();
+    }
     
 }

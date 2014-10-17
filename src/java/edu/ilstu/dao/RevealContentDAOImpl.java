@@ -72,7 +72,7 @@ public class RevealContentDAOImpl extends RessourceDAOImpl implements RevealCont
 
             PreparedStatement p = con.prepareStatement("Select r.ressourceid as ressourceid,teacherid,datecreated,onlineclassid,has_prezi,has_reveal, has_studytool,revealid "
                     + " FROM ressource r"
-                    + " INNER JOIN revealContent re "
+                    + " INNER JOIN revealcontent re "
                     + " WHERE r.ressourceid=re.ressourceid AND re.ressourceid=?");
 
             p.setInt(j++, ressourceId);
@@ -124,7 +124,7 @@ public class RevealContentDAOImpl extends RessourceDAOImpl implements RevealCont
 
             PreparedStatement p = con.prepareStatement("Select r.ressourceid as ressourceid,teacherid,datecreated,onlineclassid,has_prezi,has_reveal, has_studytool,revealid "
                     + " FROM ressource r"
-                    + " INNER JOIN revealContent re "
+                    + " INNER JOIN revealcontent re "
                     + " WHERE r.ressourceid=re.ressourceid AND r.onlineclassid=?");
 
             p.setInt(j++, onlinceClassId);

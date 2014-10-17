@@ -19,9 +19,9 @@ public interface TeacherDAO {
     
     public void updateTeacher(TeacherModel aTeacher);
     
-    public UserModel findTeacherById(int userId);
+    public TeacherModel findTeacherById(int userId);
     
-    public ArrayList<UserModel> getTeachers();
+    public ArrayList<TeacherModel> getTeachers();
     
     public void deleteTeacher(TeacherModel aTeacher);
     

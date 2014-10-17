@@ -29,10 +29,10 @@ public class ScheduleClassDAOImpl implements ScheduleClassDAO, Serializable {
         try {
 
             PreparedStatement p = con.prepareStatement("INSERT INTO scheduleclass"
-                    + "(teacherid,onlineclassid,startdate,enddate,starttime, endtime)"
-                    + "values(?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                    + "(onlineclassid,startdate,enddate,starttime, endtime)"
+                    + "values(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 
-            p.setInt(i++, scheduleClass.getTeacherId());
+           
             p.setInt(i++, scheduleClass.getOnlineClassId());
             p.setDate(i++, scheduleClass.getStartDate());
             p.setDate(i++, scheduleClass.getEndDate());
@@ -81,7 +81,7 @@ public class ScheduleClassDAOImpl implements ScheduleClassDAO, Serializable {
             while (rs.next()) {
                 int j = 1;
                 scm.setScheduleClassId(rs.getInt(j++));
-                scm.setTeacherId(rs.getInt(j++));
+               
                 scm.setOnlineClassId(rs.getInt(j++));
                 scm.setStartDate(rs.getDate(j++));
                 scm.setEndDate(rs.getDate(j++));
@@ -108,7 +108,7 @@ public class ScheduleClassDAOImpl implements ScheduleClassDAO, Serializable {
     }
 
     @Override
-    public ArrayList<ScheduleClassModel> findScheduleByOnlineClassId(int onlineClassId) {
+    public ScheduleClassModel findScheduleByOnlineClassId(int onlineClassId) {
         int i = 1;
         int identity = 0;
         ResultSet rs = null;
@@ -118,7 +118,7 @@ public class ScheduleClassDAOImpl implements ScheduleClassDAO, Serializable {
 
         try {
 
-            PreparedStatement p = con.prepareStatement("SELECT * FROM scheduleclass WHERE teacherid=?");
+            PreparedStatement p = con.prepareStatement("SELECT * FROM scheduleclass WHERE onlineclassid=?");
 
             p.setInt(i++, onlineClassId);
 
@@ -127,14 +127,14 @@ public class ScheduleClassDAOImpl implements ScheduleClassDAO, Serializable {
             while (rs.next()) {
                 int j = 1;
                 scm.setScheduleClassId(rs.getInt(j++));
-                scm.setTeacherId(rs.getInt(j++));
+                
                 scm.setOnlineClassId(rs.getInt(j++));
                 scm.setStartDate(rs.getDate(j++));
                 scm.setEndDate(rs.getDate(j++));
                 scm.setStartTime(rs.getTime(j++));
                 scm.setEndTime(rs.getTime(j++));
 
-                scheduleClassModels.add(scm);
+                
             }
 
         } catch (SQLException e) {
@@ -150,54 +150,10 @@ public class ScheduleClassDAOImpl implements ScheduleClassDAO, Serializable {
             }
         }
 
-        return scheduleClassModels;
+        return scm;
     }
 
-    @Override
-    public ArrayList<ScheduleClassModel> findScheduleClassByTIdAndOCId(int teacherid, int onlineClassId) {
-        int i = 1;
-        int identity = 0;
-        ResultSet rs = null;
-        Connection con = ConnectionDB.getConnInst();
-        ScheduleClassModel scm = new ScheduleClassModel();
-        ArrayList<ScheduleClassModel> scheduleClassModels = new ArrayList<ScheduleClassModel>();
-
-        try {
-
-            PreparedStatement p = con.prepareStatement("SELECT * FROM scheduleclass WHERE teacherid=? and onlineclassid=?");
-
-            p.setInt(i++, teacherid);
-            p.setInt(i++, onlineClassId);
-
-            rs = p.executeQuery();
-
-            while (rs.next()) {
-                int j = 1;
-                scm.setTeacherId(rs.getInt(j++));
-                scm.setOnlineClassId(rs.getInt(j++));
-                scm.setStartDate(rs.getDate(j++));
-                scm.setEndDate(rs.getDate(j++));
-                scm.setStartTime(rs.getTime(j++));
-                scm.setEndTime(rs.getTime(j++));
-
-                scheduleClassModels.add(scm);
-            }
-
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        } finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-
-            } catch (SQLException e) {
-                System.err.println(e.getMessage());
-            }
-        }
-
-        return scheduleClassModels;
-    }
+   
 
     @Override
     public void updateSchedule(ScheduleClassModel scheduleClass) {
@@ -285,7 +241,7 @@ public class ScheduleClassDAOImpl implements ScheduleClassDAO, Serializable {
             while (rs.next()) {
                 int j = 1;
                 scm.setScheduleClassId(rs.getInt(j++));
-                scm.setTeacherId(rs.getInt(j++));
+               
                 scm.setOnlineClassId(rs.getInt(j++));
                 scm.setStartDate(rs.getDate(j++));
                 scm.setEndDate(rs.getDate(j++));
@@ -327,7 +283,7 @@ public class ScheduleClassDAOImpl implements ScheduleClassDAO, Serializable {
 
             while (rs.next()) {
                 int j = 1;
-                scm.setTeacherId(rs.getInt(j++));
+               
                 scm.setOnlineClassId(rs.getInt(j++));
                 scm.setStartDate(rs.getDate(j++));
                 scm.setEndDate(rs.getDate(j++));

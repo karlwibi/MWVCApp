@@ -4,51 +4,138 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
+    
+    <context-param>
+        <param-name>primefaces.UPLOADER</param-name>
+        <param-value>auto</param-value>
+    </context-param>
+    
+    
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+ 
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
-    <session-config>
+    
+    
+        <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    
     <welcome-file-list>
-        <welcome-file>faces/index.xhtml</welcome-file>
+        <welcome-file>faces/login.xhtml</welcome-file>
     </welcome-file-list>
-     <resource-ref>
-	<description>MySQL Datasource connection</description>
-	<res-ref-name>jdbc/webrtc</res-ref-name>
-	<res-type>javax.sql.DataSource</res-type>
-	<res-auth>Container</res-auth>
-  </resource-ref>
+    
+    <resource-ref>
+        <description>MySQL Datasource connection</description>
+        <res-ref-name>jdbc/webrtc</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
   
-  <!-- web fonts mind mapping-->
-  <mime-mapping>
-      <extension>eot</extension>
-      <mime-type>application/vnd.ms-fontobject</mime-type>    
-  </mime-mapping>  
-  <mime-mapping>
-      <extension>otf</extension>
-      <mime-type>font/opentype</mime-type>    
-  </mime-mapping>  
-  <mime-mapping>
-      <extension>ttf</extension>
-      <mime-type>application/x-font-ttf</mime-type>    
-  </mime-mapping>  
-  <mime-mapping>
-      <extension>woff</extension>
-      <mime-type>application/x-font-woff</mime-type>    
-  </mime-mapping> 
-  <mime-mapping>
-      <extension>svg</extension>
-      <mime-type>image/svg+xml</mime-type>    
-  </mime-mapping>   
+    <!-- web fonts mind mapping-->
+    <mime-mapping>
+        <extension>eot</extension>
+        <mime-type>application/vnd.ms-fontobject</mime-type>    
+    </mime-mapping>  
+    <mime-mapping>
+        <extension>otf</extension>
+        <mime-type>font/opentype</mime-type>    
+    </mime-mapping>  
+    <mime-mapping>
+        <extension>ttf</extension>
+        <mime-type>application/x-font-ttf</mime-type>    
+    </mime-mapping>  
+    <mime-mapping>
+        <extension>woff</extension>
+        <mime-type>application/x-font-woff</mime-type>    
+    </mime-mapping> 
+    <mime-mapping>
+        <extension>svg</extension>
+        <mime-type>image/svg+xml</mime-type>    
+    </mime-mapping>   
   
           
+    <!--Realm Security config-->
+    <security-constraint>
+        <!--        <display-name>Constraint1</display-name>-->
+        <web-resource-collection>
+            <web-resource-name>secured</web-resource-name>
+            <!--            <description/>-->
+            <url-pattern>/faces/restricted/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <!--            <description/>-->
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Unprotected Pages</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+    </security-constraint>
+
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <!--        <realm-name>file</realm-name>-->
+        <form-login-config>
+            <form-login-page>/faces/loginAdmin.xhtml</form-login-page>
+            <form-error-page>/faces/loginAdmin_failure.xhtml</form-error-page>
+        </form-login-config>
+    </login-config>
+
+    <security-role>
+        <description/>
+        <role-name>admin</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>teacher</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>student</role-name>
+    </security-role>
+          
+          
+          
+    <!-- Filter to get the user name and work with it -->
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>edu.ilstu.filters.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/faces/restricted/*</url-pattern>
+    </filter-mapping>
+    <!--filter for getting external image -->
+    <filter>
+        <filter-name>fileFilter</filter-name>
+        <filter-class>edu.ilstu.filters.DynamicImage</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>fileFilter</filter-name>
+        <url-pattern>/faces/images/dynamic/*</url-pattern>
+    </filter-mapping>
+    
+     
+    <error-page>
+        <error-code>403</error-code>
+        <location>/faces/user.xhtml</location>
+    </error-page>
+    
+    <context-param>   
+        <param-name>primefaces.THEME</param-name>
+        <param-value>bootstrap</param-value> 
+    </context-param>
+    
 </web-app>

@@ -81,7 +81,7 @@ public class StudentDAOImpl implements StudentDAO, Serializable {
 
         try {
 
-            PreparedStatement p = con.prepareStatement("SELECT u.userid as userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a ,major"
+            PreparedStatement p = con.prepareStatement("SELECT u.userid as userid,fname,lname,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a ,major"
                     + " FROM user u"
                     + " INNER JOIN student s"
                     + " WHERE u.userid=s.userid");
@@ -94,8 +94,7 @@ public class StudentDAOImpl implements StudentDAO, Serializable {
                 userModel.setUserid(rs.getInt(i++));
                 userModel.setFname(rs.getString(i++));
                 userModel.setLname(rs.getString(i++));
-                userModel.setUsername(rs.getString(i++));
-                userModel.setPassword(rs.getString(i++));
+               
                 userModel.setSecurityq(rs.getString(i++));
                 userModel.setSecuritya(rs.getString(i++));
                 userModel.setEmail(rs.getString(i++));
@@ -142,7 +141,7 @@ public class StudentDAOImpl implements StudentDAO, Serializable {
 
         try {
 
-            PreparedStatement p = con.prepareStatement("Select u.userid as userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a, major  "
+            PreparedStatement p = con.prepareStatement("Select u.userid as userid,fname,lname,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a, major  "
                     + " FROM user u"
                     + " INNER JOIN student s "
                     + " WHERE u.userid=s.userid AND u.userid=?");
@@ -153,12 +152,10 @@ public class StudentDAOImpl implements StudentDAO, Serializable {
             while (rs.next()) {
 
                  int i = 1;
-                 userModel = new StudentModel();
+                userModel = new StudentModel();
                 userModel.setUserid(rs.getInt(i++));
                 userModel.setFname(rs.getString(i++));
                 userModel.setLname(rs.getString(i++));
-                userModel.setUsername(rs.getString(i++));
-                userModel.setPassword(rs.getString(i++));
                 userModel.setSecurityq(rs.getString(i++));
                 userModel.setSecuritya(rs.getString(i++));
                 userModel.setEmail(rs.getString(i++));

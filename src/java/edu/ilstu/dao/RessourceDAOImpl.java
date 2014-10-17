@@ -27,10 +27,10 @@ public abstract class RessourceDAOImpl implements RessourceDAO {
         Connection con = ConnectionDB.getConnInst();
         try {
 
-            PreparedStatement p = con.prepareStatement("INSERT INTO ressource (teacherid,onlineclassid,has_prezi, has_reveal, has_studytool"
-                    + "VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement p = con.prepareStatement("INSERT INTO ressource (datecreated,onlineclassid,has_prezi, has_reveal, has_studytool)"
+                    + "VALUES(CURDATE(),?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 
-            p.setInt(i++, ressourceModel.getTeacherId());
+//            p.setInt(i++, ressourceModel.getTeacherId());
             p.setInt(i++, ressourceModel.getOnlineClassId());
             p.setString(i++, Character.toString(ressourceModel.getHasPrezi()));
             p.setString(i++, Character.toString(ressourceModel.getHasReveal()));

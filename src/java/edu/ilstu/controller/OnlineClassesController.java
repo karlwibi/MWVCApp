@@ -19,6 +19,8 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 
 /**
  *
@@ -26,7 +28,7 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @RequestScoped
-public class OnlineCalssesController {
+public class OnlineClassesController {
 
     private RoomParticipantModel roomParticipant;
     private ScheduleClassModel scheduleClassModel;
@@ -45,7 +47,7 @@ public class OnlineCalssesController {
     /**
      * Creates a new instance of OnlineCalssesController
      */
-    public OnlineCalssesController() {
+    public OnlineClassesController() {
         roomParticipant = new RoomParticipantModel();
         onlineClassModel = new OnlineClassModel();
         studentModel = new StudentModel();
@@ -75,12 +77,13 @@ public class OnlineCalssesController {
 
     private void loadteacherClasses() {
 
-        getScheduleClassModel().setTeacherId(userId);
-        setTeacherSchedule(getScheduleClassModel().getScheduleByTeacherId());//get all schedule for a specific teacher
-        for (Iterator<ScheduleClassModel> i = getTeacherSchedule().iterator(); i.hasNext();) {
-            setScheduleClassModel(i.next());
-            onlineClassModel.setOnlineClassId(getScheduleClassModel().getOnlineClassId());
-            getTeacherClassList().add(onlineClassModel.getAClass());
+        //get the online classe id 
+      
+        onlineClassModel.setTeacherId(userId);
+      //get all schedule for a specific teacher
+        for (Iterator<OnlineClassModel> i = (onlineClassModel.getClassesByTeacherID()).iterator(); i.hasNext();) {
+           
+              getTeacherClassList().add(i.next());
 
         }
 
@@ -88,6 +91,7 @@ public class OnlineCalssesController {
 
     public void checkUserType() {
 
+        
         if (teacherModel.getTeacherById(userId).getUserid() != 0) {
             System.out.println("teacher");
             teacher = true;
@@ -103,6 +107,16 @@ public class OnlineCalssesController {
 
     }
 
+    
+    
+     public void onRowEdit(RowEditEvent event) {
+        
+    }
+     
+    public void onRowCancel(RowEditEvent event) {
+       
+    }
+    
     /**
      * @return the roomParticipant
      */
@@ -274,7 +288,7 @@ public class OnlineCalssesController {
     public void openWebrtcWindow(int roomId) throws IOException {
 
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        externalContext.redirect("http://localhost:9001/index3.html?roomId="+roomId);
+        externalContext.redirect("http://54.187.74.210:9010/virtualClassTV.html?roomId="+roomId+"&userId="+userId);
     }
 
 }

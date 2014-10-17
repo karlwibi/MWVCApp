@@ -3,25 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.ilstu.model;
 
 import edu.ilstu.dao.UserDAO;
 import edu.ilstu.dao.UserDAOImpl;
 import java.io.Serializable;
 import java.util.ArrayList;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  *
  * @author kawibi
  */
-public abstract class UserModel implements Serializable{
-    
+public abstract class UserModel implements Serializable {
+
     private int userid;
     private String fname;
     private String lname;
-    private String username;
-    private String password;
     private String securityq;
     private String securitya;
     private String email;
@@ -33,39 +32,37 @@ public abstract class UserModel implements Serializable{
     private String country;
     private char is_a;
     private UserDAO udao;
-    
-    public UserModel(){
-    
-        udao=new UserDAOImpl();
-    }
-    
-    public UserModel(int userid){
-        this.userid=userid;
-    }
-    
-    public UserModel(String fname, String lname, String username, String password, String securityq, String securitya, String email, String street, String city, String state, int zipCode, String country, int phone, char is_a){
-        this.fname=fname;
-        this.lname=lname;
-        this.username=username;
-        this.password=password;
-        this.securityq=securityq;
-        this.securitya=securitya;
-        this.email=email;
-        this.phone=phone;
-        this.street=street;
-        this.city=city;
-        this.State=state;
-        this.zipCode=zipCode;
-        this.country=country;
-        this.is_a=is_a;
-   }
 
-    public UserModel(int userId, String fname, String lname, String username, String password, String securityq, String securitya, String email, String street, String city, String state, int zipCode, String country, int phone, char is_a){
-        
-        this(fname, lname, username, password, securityq, securitya, email, street, city, state, zipCode, country, phone, is_a);
-        this.userid=userId;
-    }  
-    
+    public UserModel() {
+
+        udao = new UserDAOImpl();
+    }
+
+    public UserModel(int userid) {
+        this.userid = userid;
+    }
+
+    public UserModel(String fname, String lname, String securityq, String securitya, String email, String street, String city, String state, int zipCode, String country, int phone, char is_a) {
+        this.fname = fname;
+        this.lname = lname;
+        this.securityq = securityq;
+        this.securitya = securitya;
+        this.email = email;
+        this.phone = phone;
+        this.street = street;
+        this.city = city;
+        this.State = state;
+        this.zipCode = zipCode;
+        this.country = country;
+        this.is_a = is_a;
+    }
+
+    public UserModel(int userId, String fname, String lname, String securityq, String securitya, String email, String street, String city, String state, int zipCode, String country, int phone, char is_a) {
+
+        this(fname, lname, securityq, securitya, email, street, city, state, zipCode, country, phone, is_a);
+        this.userid = userId;
+    }
+
     /**
      * @return the userid
      */
@@ -108,33 +105,9 @@ public abstract class UserModel implements Serializable{
         this.lname = lname;
     }
 
-    /**
-     * @return the username
-     */
-    public String getUsername() {
-        return username;
-    }
+  
 
-    /**
-     * @param username the username to set
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    /**
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
-
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    
 
     /**
      * @return the securityq
@@ -191,8 +164,6 @@ public abstract class UserModel implements Serializable{
     public void setPhone(int phone) {
         this.phone = phone;
     }
-
-   
 
     /**
      * @return the is_a
@@ -277,33 +248,50 @@ public abstract class UserModel implements Serializable{
     public void setCountry(String country) {
         this.country = country;
     }
-    
-        
-    public int saveUser(){
-                      
-       return udao.createNewUser(this);
-        
+
+    public int saveUser() {
+
+        return udao.createNewUser(this);
+
     }
-    
-    public void updateUser(){
-                
+
+    public void updateUser() {
+
         udao.updateUser(this);
-        
+
     }
-    
-    public void deleteUser(){
-                
+
+    public void deleteUser() {
+
         udao.deleteUser(this);
-        
+
     }
-    
-    
-    public ArrayList<UserModel> getAllUsers(){
-        
-        ArrayList<UserModel> userList= udao.getAllUsers();       
-                
+
+    public ArrayList<UserModel> getAllUsers() {
+
+        ArrayList<UserModel> userList = udao.getAllUsers();
+
         return userList;
-        
-        
+
+    }
+
+    public String userToJSONString() {
+
+        JSONObject obj = new JSONObject();
+        obj.put("userid", this.userid);
+        obj.put("fname", this.fname);
+        obj.put("lname", this.lname);
+        obj.put("securityq", this.securityq);
+        obj.put("securitya", this.securitya);
+        obj.put("email", this.email);
+        obj.put("phone", this.phone);
+        obj.put("street", this.street);
+        obj.put("city", this.city);
+        obj.put("state", this.State);
+        obj.put("zipcode", this.zipCode);
+        obj.put("country", this.userid);
+        obj.put("type", String.valueOf(this.is_a));
+
+        return obj.toJSONString();
     }
 }

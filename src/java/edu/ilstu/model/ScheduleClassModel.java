@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.ilstu.model;
 
 import edu.ilstu.dao.ScheduleClassDAO;
@@ -18,55 +17,41 @@ import java.util.ArrayList;
  * @author kawibi
  */
 public class ScheduleClassModel implements Serializable {
-    
+
     private int scheduleClassId;
-    private int teacherId;
     private int onlineClassId;
     private Date startDate;
     private Date endDate;
     private Time startTime;
     private Time endTime;
-    private ScheduleClassDAO scdao;
-    
-    public ScheduleClassModel(){
-    
-        scdao=new ScheduleClassDAOImpl();
-    }
-    
-    public ScheduleClassModel(int teacherId, int onlineClassId){
-         
-     this.teacherId=teacherId;
-     this.onlineClassId=onlineClassId;
-    }
-    
-    public ScheduleClassModel(int teacherId, int onlineClassId, Date startDate, Date endDate){
-         this(teacherId,onlineClassId);
-         this.startDate=startDate;
-         this.endDate=endDate;
-        
-    }
-    public ScheduleClassModel(int scheduleClassId,int teacherId, int onlineClassId, Date startDate, Date endDate, Time startTime, Time endTime){
-         this(teacherId,onlineClassId,startDate,endDate);
-         this.startTime=startTime;
-         this.endTime=endTime;
-         this.scheduleClassId=scheduleClassId;
-        
+    private java.util.Date start_Date;
+    private java.util.Date end_Date;
+    private java.util.Date start_Time;
+    private java.util.Date end_Time;
+    //private ScheduleClassDAO scdao;
+
+    public ScheduleClassModel() {
+
     }
 
-     
-    
-    /**
-     * @return the teacherId
-     */
-    public int getTeacherId() {
-        return teacherId;
+    public ScheduleClassModel(int onlineClassId) {
+
+        this.onlineClassId = onlineClassId;
     }
 
-    /**
-     * @param teacherId the teacherId to set
-     */
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
+    public ScheduleClassModel(int onlineClassId, Date startDate, Date endDate) {
+
+        this.startDate = startDate;
+        this.endDate = endDate;
+
+    }
+
+    public ScheduleClassModel(int scheduleClassId, int onlineClassId, Date startDate, Date endDate, Time startTime, Time endTime) {
+        this(onlineClassId, startDate, endDate);
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.scheduleClassId = scheduleClassId;
+
     }
 
     /**
@@ -90,6 +75,7 @@ public class ScheduleClassModel implements Serializable {
         return startDate;
     }
 
+   
     /**
      * @param startDate the startDate to set
      */
@@ -104,6 +90,8 @@ public class ScheduleClassModel implements Serializable {
         return endDate;
     }
 
+    
+    
     /**
      * @param endDate the endDate to set
      */
@@ -118,6 +106,9 @@ public class ScheduleClassModel implements Serializable {
         return startTime;
     }
 
+   
+    
+    
     /**
      * @param startTime the startTime to set
      */
@@ -132,6 +123,9 @@ public class ScheduleClassModel implements Serializable {
         return endTime;
     }
 
+    
+   
+    
     /**
      * @param endTime the endTime to set
      */
@@ -152,43 +146,109 @@ public class ScheduleClassModel implements Serializable {
     public void setScheduleClassId(int scheduleClassId) {
         this.scheduleClassId = scheduleClassId;
     }
-        
-    
-    public void saveSchedule(){
-        
+
+    public void saveSchedule() {
+        ScheduleClassDAO scdao = new ScheduleClassDAOImpl();
         scdao.createSchedule(this);
-        
+
     }
-    
-    public void updateSchedule(){
+
+    public void updateSchedule() {
+        ScheduleClassDAO scdao = new ScheduleClassDAOImpl();
         scdao.updateSchedule(this);
     }
-    
-    public void deleteSchedule(){
-        
+
+    public void deleteSchedule() {
+        ScheduleClassDAO scdao = new ScheduleClassDAOImpl();
         scdao.deleteSchedule(this);
     }
-    
-    public ArrayList<ScheduleClassModel> getAllSchedules(){
-        
-        ArrayList<ScheduleClassModel> list= scdao.getAllSchedules();
-        
+
+    public ArrayList<ScheduleClassModel> getAllSchedules() {
+        ScheduleClassDAO scdao = new ScheduleClassDAOImpl();
+
+        ArrayList<ScheduleClassModel> list = scdao.getAllSchedules();
+
         return list;
     }
-    
-    public ArrayList<ScheduleClassModel> getScheduleByTeacherId(){
-        
-        ArrayList<ScheduleClassModel> list= scdao.findScheduleByTeacherId(this.teacherId);
-        
-        return list;
+
+    /**
+     * Find Schedule class by online class iD
+     *
+     * @return ScheduleClassModel
+     */
+    public ScheduleClassModel getScheduleByOnlineClassID() {
+
+        ScheduleClassDAO scdao = new ScheduleClassDAOImpl();
+        ScheduleClassModel scm = scdao.findScheduleByOnlineClassId(this.getOnlineClassId());
+
+        return scm;
+    }
+
+    /**
+     * @return the start_Date
+     */
+    public java.util.Date getStart_Date() {
+        return startDate;
+    }
+
+    /**
+     * @param start_Date the start_Date to set
+     */
+    public void setStart_Date(java.util.Date start_Date) {
+        this.start_Date = start_Date;
+        if( this.start_Date!=null)
+        setStartDate(new java.sql.Date(this.start_Date.getTime()));
+    }
+
+    /**
+     * @return the end_Date
+     */
+    public java.util.Date getEnd_Date() {
+        return endDate;
+    }
+
+    /**
+     * @param end_Date the end_Date to set
+     */
+    public void setEnd_Date(java.util.Date end_Date) {
+        this.end_Date = end_Date;
+        if( this.end_Date!=null)
+        setEndDate(new java.sql.Date( this.end_Date.getTime()));
+    }
+
+    /**
+     * @return the start_Time
+     */
+    public java.util.Date getStart_Time() {
+        return startTime;
+    }
+
+    /**
+     * @param start_Time the start_Time to set
+     */
+    public void setStart_Time(java.util.Date start_Time) {
+        this.start_Time = start_Time;
+        if (this.startTime!=null)
+       setStartTime(new java.sql.Time(new java.sql.Date( this.start_Time.getTime()).getTime()));
+    }
+
+    /**
+     * @return the end_Time
+     */
+    public java.util.Date getEnd_Time() {
+        return endTime;
+    }
+
+    /**
+     * @param end_Time the end_Time to set
+     */
+    public void setEnd_Time(java.util.Date end_Time) {
+        this.end_Time = end_Time;
+          if (this.end_Time!=null)
+        setEndTime(new java.sql.Time(new java.sql.Date(this.end_Time.getTime()).getTime()));
     }
     
-    public ArrayList<ScheduleClassModel> getScheduleByOnlineClassID(){
-        
-        ArrayList<ScheduleClassModel> list= scdao.findScheduleByOnlineClassId(this.onlineClassId);
-        
-        return list;
-    }
+    
+    
+    
 }
-
-

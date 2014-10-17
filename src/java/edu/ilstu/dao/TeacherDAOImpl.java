@@ -95,27 +95,26 @@ public class TeacherDAOImpl implements TeacherDAO, Serializable {
         
         int j = 1;
         ResultSet rs = null;
-        TeacherModel userModel = new TeacherModel();
+        TeacherModel userModel = null;
         
         Connection con = ConnectionDB.getConnInst();
 
         try {
 
-            PreparedStatement p = con.prepareStatement("Select t.userid as userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a, department  "
+            PreparedStatement p = con.prepareStatement("Select t.userid as userid,fname,lname,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a, department  "
                     + " FROM user u"
                     + " INNER JOIN teacher t "
                     + " WHERE u.userid=t.userid AND t.userid=?");
             
             p.setInt(j++, userId);
             rs = p.executeQuery();
-
+            
             while (rs.next()) {
                int i = 1;  
+               userModel = new TeacherModel();
                 userModel.setUserid(rs.getInt(i++));
                 userModel.setFname(rs.getString(i++));
                 userModel.setLname(rs.getString(i++));
-                userModel.setUsername(rs.getString(i++));
-                userModel.setPassword(rs.getString(i++));
                 userModel.setSecurityq(rs.getString(i++));
                 userModel.setSecuritya(rs.getString(i++));
                 userModel.setEmail(rs.getString(i++));
@@ -149,16 +148,16 @@ public class TeacherDAOImpl implements TeacherDAO, Serializable {
     }
 
     @Override
-    public ArrayList<UserModel> getTeachers() {
+    public ArrayList<TeacherModel> getTeachers() {
       
         ResultSet rs = null;
-        TeacherModel userModel = new TeacherModel();
-        ArrayList<UserModel> teacherList = new ArrayList<UserModel>();
+        TeacherModel userModel = null;
+        ArrayList<TeacherModel> teacherList = new ArrayList<>();
         Connection con = ConnectionDB.getConnInst();
 
         try {
 
-            PreparedStatement p = con.prepareStatement("Select t.userid as userid,fname,lname,username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a, department  "
+            PreparedStatement p = con.prepareStatement("Select t.userid as userid,fname,lname,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a, department  "
                     + " FROM user u"
                     + " INNER JOIN teacher t "
                     + " WHERE u.userid=t.userid");
@@ -167,11 +166,10 @@ public class TeacherDAOImpl implements TeacherDAO, Serializable {
 
             while (rs.next()) {
                 int i = 1;
+                userModel = new TeacherModel();
                  userModel.setUserid(rs.getInt(i++));
                 userModel.setFname(rs.getString(i++));
                 userModel.setLname(rs.getString(i++));
-                userModel.setUsername(rs.getString(i++));
-                userModel.setPassword(rs.getString(i++));
                 userModel.setSecurityq(rs.getString(i++));
                 userModel.setSecuritya(rs.getString(i++));
                 userModel.setEmail(rs.getString(i++));

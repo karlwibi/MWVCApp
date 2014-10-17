@@ -35,6 +35,7 @@ public class OnlineClassController {
     private java.util.Date endDate;
     private java.util.Date startTime;
     private java.util.Date endTime;
+    private int teacherId;
     //private DateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy");
     
     
@@ -76,14 +77,15 @@ public class OnlineClassController {
 
    
     
-    public void addClass(){
+    public String addClass(){
         int identity=0;
                 
         //inserting data into the onliclass table
+        ocm.setTeacherId(teacherId);
         identity=ocm.saveClass();
         
         scm.setOnlineClassId(identity);
-        scm.setTeacherId(1);
+        
         scm.setStartDate(new java.sql.Date(startDate.getTime()));
 
         scm.setEndDate(new java.sql.Date(endDate.getTime()));
@@ -94,7 +96,7 @@ public class OnlineClassController {
         //inserting data into the scheduleclass table
         scm.saveSchedule();
        
-        
+      return  "roomParticipant.xhtml?faces-redirect=true&roomid="+ocm.getRoomid();
     }
 
     /**
@@ -151,6 +153,20 @@ public class OnlineClassController {
      */
     public void setEndTime(java.util.Date endTime) {
         this.endTime = endTime;
+    }
+
+    /**
+     * @return the teacherId
+     */
+    public int getTeacherId() {
+        return teacherId;
+    }
+
+    /**
+     * @param teacherId the teacherId to set
+     */
+    public void setTeacherId(int teacherId) {
+        this.teacherId = teacherId;
     }
     
     

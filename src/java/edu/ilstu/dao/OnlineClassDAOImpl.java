@@ -29,12 +29,13 @@ public class OnlineClassDAOImpl implements OnlineClassDAO, Serializable {
         Connection con = ConnectionDB.getConnInst();
         try {
 
-            PreparedStatement p = con.prepareStatement("INSERT INTO onlineclass (title,description,roomid)"
-                    + "VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement p = con.prepareStatement("INSERT INTO onlineclass (title,description,roomid, teacherid)"
+                    + "VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 
             p.setString(i++, onlineClass.getTitle());
             p.setString(i++, onlineClass.getDescription());
             p.setInt(i++, onlineClass.getRoomid());
+            p.setInt(i++, onlineClass.getTeacherId());
 
             p.executeUpdate();
 
@@ -82,6 +83,7 @@ public class OnlineClassDAOImpl implements OnlineClassDAO, Serializable {
                 onlineClassModel.setTitle(rs.getString(j++));
                 onlineClassModel.setDescription(rs.getString(j++));
                 onlineClassModel.setRoomid(rs.getInt(j++));
+                onlineClassModel.setTeacherId(rs.getInt(j++));
             }
 
             rs.close();
@@ -122,6 +124,7 @@ public class OnlineClassDAOImpl implements OnlineClassDAO, Serializable {
                 onlineClassModel.setTitle(rs.getString(j++));
                 onlineClassModel.setDescription(rs.getString(j++));
                 onlineClassModel.setRoomid(rs.getInt(j++));
+                onlineClassModel.setTeacherId(rs.getInt(j++));
 
                 onlineClassModels.add(onlineClassModel);
             }
@@ -152,9 +155,8 @@ public class OnlineClassDAOImpl implements OnlineClassDAO, Serializable {
     public void updateOnlineClass(OnlineClassModel onlineClass) {
         int i = 1;
 
-        
         Connection con = ConnectionDB.getConnInst();
-        
+
         try {
 
             PreparedStatement p = con.prepareStatement("UPDATE onlineclass"
@@ -166,8 +168,6 @@ public class OnlineClassDAOImpl implements OnlineClassDAO, Serializable {
             p.setString(i++, onlineClass.getDescription());
             p.setInt(i++, onlineClass.getRoomid());
 
-           
-            
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         } finally {
@@ -181,7 +181,6 @@ public class OnlineClassDAOImpl implements OnlineClassDAO, Serializable {
             }
         }
 
-        
     }
 
     /**
@@ -236,11 +235,12 @@ public class OnlineClassDAOImpl implements OnlineClassDAO, Serializable {
             while (rs.next()) {
                 int j = 1;
                 onlineClassModel = new OnlineClassModel();
-                
+
                 onlineClassModel.setOnlineClassId(rs.getInt(j++));
                 onlineClassModel.setTitle(rs.getString(j++));
                 onlineClassModel.setDescription(rs.getString(j++));
                 onlineClassModel.setRoomid(rs.getInt(j++));
+                onlineClassModel.setTeacherId(rs.getInt(j++));
             }
 
             rs.close();
@@ -259,6 +259,53 @@ public class OnlineClassDAOImpl implements OnlineClassDAO, Serializable {
         }
 
         return onlineClassModel;
+    }
+
+    @Override
+    public ArrayList<OnlineClassModel> getOnliceClassesByTeacherId(int teacherID) {
+        int i = 1;
+        ArrayList<OnlineClassModel> list = new ArrayList<>();
+        OnlineClassModel onlineClassModel = null;
+        ResultSet rs = null;
+        Connection con = ConnectionDB.getConnInst();
+
+        try {
+
+            PreparedStatement p = con.prepareStatement("SELECT * FROM onlineclass WHERE teacherid=?");
+
+            p.setInt(i++, teacherID);
+
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+                int j = 1;
+                onlineClassModel = new OnlineClassModel();
+
+                onlineClassModel.setOnlineClassId(rs.getInt(j++));
+                onlineClassModel.setTitle(rs.getString(j++));
+                onlineClassModel.setDescription(rs.getString(j++));
+                onlineClassModel.setRoomid(rs.getInt(j++));
+                onlineClassModel.setTeacherId(rs.getInt(j++));
+
+                list.add(onlineClassModel);
+            }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+
+        return list;
     }
 
 }

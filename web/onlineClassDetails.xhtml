@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <title>online Class Details</title>
+        <link rel="stylesheet" type="text/css" href="#{resource['css:bootstrap.css']}" />
+        <h:outputStylesheet library="awesome" name="css/font-awesome.css"/>
+        <f:metadata>
+            <f:viewParam name="onlineClassID" value="#{onlineClassDetailsController.onlineClassID}"/>
+            <f:viewAction action="#{onlineClassDetailsController.init()}" onPostback="false"  />
+        </f:metadata>
+
+        <script>
+
+            function showGrpMemberSearchPageCalenderLeave(scheduleId) {
+                window.open('./onlineClassSession.xhtml?scheduleId=' + scheduleId, 'onlineClassSession', 'resizable=no,directories=no,location=no,toolbar=no,scrollbars=yes,height=800,width=800,top=145,left=235');
+                return true;
+            }
+            function popUpClosed() {
+                window.location.reload();
+            }
+            
+            
+            function sessionDetailPage(detailType,sessionId){
+                 window.open('./sessionDisplayInfo.xhtml?sessionId=' + sessionId+'&amp;detailType='+detailType, 'onlineClassSession', 'resizable=no,directories=no,location=no,toolbar=no,scrollbars=yes,height=800,width=800,top=145,left=235');
+                return true;
+            }
+        </script>
+
+    </h:head>
+    <h:body>
+
+
+
+
+
+
+        <div  class="container-fluid">
+
+
+            <div class="ui-grid ui-grid-responsive">
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-12">
+
+                        <p:panel id="basic" header="Online class detail"  style="margin-bottom:20px">
+                            <h:form>
+
+                                <p:panelGrid id="panel_info" columns="2" style="margin-bottom:20px">
+
+                                    <p:outputLabel value="Title" for="OC_Title"/>
+                                    <p:inputText value="#{onlineClassDetailsController.onlineClassModel.title}" id="OC_Title"/>
+                                    <p:outputLabel value="description" for="OC_description"/>
+                                    <p:inputText value="#{onlineClassDetailsController.onlineClassModel.description}" id="OC_description"/>
+
+                                </p:panelGrid>
+                                <p:fieldset id="f_schedule" legend="Schedule" style="margin-bottom:20px">
+                                    <h:panelGrid columns="2" cellpadding="5">
+
+                                        <p:outputLabel value="Start Date" for="OC_StartDate"/>
+                                        <p:calendar id="OC_StartDate" class="input-sm" value="#{onlineClassDetailsController.scheduleClassModel.start_Date}"/>
+
+                                        <p:outputLabel value="description" for="OC_EndDate"/>
+                                        <p:calendar id="OC_EndDate" class="input-sm" value="#{onlineClassDetailsController.scheduleClassModel.end_Date}"/>
+
+                                        <p:outputLabel value="Session debut hour:" for="OC_StartSessionHour"/>
+                                        <pe:timePicker  id="OC_StartSessionHour" class="input-sm" value="#{onlineClassDetailsController.scheduleClassModel.start_Time}" mode="spinner" />
+
+                                        <p:outputLabel value="session end hour:" for="OC_EndSessionhur"/>
+                                        <pe:timePicker  id="OC_EndSessionhur" class="input-sm" value="#{onlineClassDetailsController.scheduleClassModel.end_Time}" mode="spinner" />
+                                    </h:panelGrid>
+                                </p:fieldset>
+                                <p:fieldset id="f_enroll" legend="Enrolled Student" style="margin-bottom:20px">
+                                    <ui:repeat var="st" value="#{onlineClassDetailsController.listEnrollStudent}">
+                                        <p:panelGrid columns="3" >
+                                            <p:inputText value="#{st.fname}"/>
+                                            <p:inputText value="#{st.lname}"/>
+                                            <p:commandButton  value="Remove"/>
+
+                                        </p:panelGrid>
+                                    </ui:repeat>
+                                </p:fieldset>
+
+                                <p:fieldset  id="f_session" legend="Class Sessions">
+
+                                    <!-- this will contains the schedule id for a particular room-->
+                                    <h:inputHidden value="#{onlineClassDetailsController.scheduleID}"/>
+
+                                    <!--/ <p:commandButton value="Add class Session" type="button" onclick="PF('dlg2').show();" />-->
+                                    <p:commandButton value="Add class Session" type="button" onclick="showGrpMemberSearchPageCalenderLeave(#{onlineClassDetailsController.scheduleID})" />
+
+                                    <p:dataTable var="csl" value="#{onlineClassDetailsController.sessionList}">
+                                        <p:column headerText="Session Date">
+                                            <h:outputText value="#{csl.dateSession}" />
+                                        </p:column>
+
+                                        <p:column headerText="Presentation Link">
+                                            <i class="fa fa-file">
+                                                <h:link value="Click to preview class Presentation"  onclick="sessionDetailPage('Presentation','#{csl.sessionId}');">
+                                               
+                                            </h:link>   
+                                           
+                                           </i>
+                                        </p:column>
+
+                                        <p:column headerText="Study Ressource link">
+                                             <h:link value="Click to preview Resource Links" onclick="sessionDetailPage('Resource','#{csl.sessionId}');">
+                                                   </h:link> 
+                                        </p:column>
+
+                                       
+                                    </p:dataTable>
+
+
+                                  
+
+                                </p:fieldset>
+
+                            </h:form>
+                        </p:panel>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </h:body>
+</html>
+

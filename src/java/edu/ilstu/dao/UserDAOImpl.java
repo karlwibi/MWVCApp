@@ -32,12 +32,10 @@ public class UserDAOImpl implements UserDAO, Serializable {
         //inserting valuer into the user table in the webrtc database
         try {
             int i = 1;
-            PreparedStatement p = con.prepareStatement("INSERT INTO user (fname,lname, username,password,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a)"
-                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement p = con.prepareStatement("INSERT INTO user (fname,lname, securityq,securitya,email,phone,street,city,state,zipcode,country,is_a)"
+                    + "VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             p.setString(i++, aUser.getFname());
             p.setString(i++, aUser.getLname());
-            p.setString(i++, aUser.getUsername());
-            p.setString(i++, aUser.getPassword());
             p.setString(i++, aUser.getSecuritya());
             p.setString(i++, aUser.getSecurityq());
 
@@ -98,14 +96,12 @@ public class UserDAOImpl implements UserDAO, Serializable {
         try{
             int i=1;
             PreparedStatement p=con.prepareStatement("UPDATE user "
-                    + "set fname=?,lname=?, username=?,password=?,securityq=?,"
+                    + "set fname=?,lname=?, securityq=?,"
                     + "securitya=?,email=?,phone=?,street=?,city=?,state=?,zipcode=?,"
                     + "country=?,is_a=?"
                     + "WHERE userid=?");
             p.setString(i++, aUser.getFname());
             p.setString(i++, aUser.getLname());
-            p.setString(i++, aUser.getUsername());
-            p.setString(i++, aUser.getPassword());
             p.setString(i++, aUser.getSecuritya());
             p.setString(i++, aUser.getSecurityq());
 

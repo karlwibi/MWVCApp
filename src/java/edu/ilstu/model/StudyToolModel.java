@@ -10,6 +10,7 @@ import edu.ilstu.dao.StudyToolDAOimpl;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -71,8 +72,10 @@ public class StudyToolModel extends RessourceModel implements Serializable {
     public int createStudyTool() {
 
         StudyToolDAO stdao = new StudyToolDAOimpl();
+        this.setHasStudyTool('Y');
+        this.setRessourceId(stdao.createStudyRessource(this));
 
-        return stdao.createStudyRessource(this);
+        return this.getRessourceId();
 
     }
 
@@ -97,6 +100,19 @@ public class StudyToolModel extends RessourceModel implements Serializable {
 
         return stdao.getStudytoolRessourceByOnlinceClasseId(this.getOnlineClassId());
         
+    }
+   
+    public String studyToolToJSONString() {
+
+        JSONObject obj = new JSONObject();
+        obj.put("dateCreated", super.getDateCreated());
+        obj.put("onlineClassId", super.getOnlineClassId());
+        obj.put("userid", super.getRessourceId());
+        obj.put("userid", super.getTeacherId());
+        obj.put("fname", this.articleLink);
+        obj.put("fname", this.videolink);
+        
+        return obj.toJSONString();
     }
     
 }
