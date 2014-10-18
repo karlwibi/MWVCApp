@@ -38,9 +38,11 @@ public class DynamicImage implements Filter {
 
    // Get image file.
             String file = httpreq.getParameter("file");
+            String sessionID=httpreq.getParameter("sessionID");
+            String onlineClassID=httpreq.getParameter("onlineClassID");
             System.out.println("in the image filter\n the file name:"+file);
             byte[] bytes;
-            File file2= new File ("c:\\home\\ubuntu\\var\\onlineClass_3\\session_7\\slides\\",file);
+            File file2= new File ("c:\\home\\ubuntu\\var\\onlineClass_"+onlineClassID+"\\session_"+sessionID+"\\slides\\",file);
             // Get image contents.
             try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(file2))) {
                 // Get image contents.

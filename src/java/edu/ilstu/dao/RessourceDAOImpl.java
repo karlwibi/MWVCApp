@@ -86,4 +86,53 @@ public abstract class RessourceDAOImpl implements RessourceDAO {
 
     }
 
+    
+    public static String checkResourceType(int resourceID){
+        
+        String returnValue=null;
+        
+        
+        int j = 1;
+        ResultSet rs = null;
+        
+
+        Connection con = ConnectionDB.getConnInst();
+
+        try {
+
+            PreparedStatement p = con.prepareStatement("Select r.ressourceid as ressourceid,teacherid,datecreated,onlineclassid,has_prezi,has_reveal, has_studytool"
+                    + " FROM ressource r"
+                    + " WHERE r.ressourceid=?");
+
+            p.setInt(j++, resourceID);
+
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+                
+                if (rs.getString("has_prezi").equals("Y")){
+                    returnValue="Prezi";
+                }else if(rs.getString("has_reveal").equals("Y")){
+                    returnValue="Slide";
+                }
+            }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    System.err.println(e.getMessage());
+                }
+            }
+        }
+
+               
+        return returnValue;
+    }
 }

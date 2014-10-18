@@ -185,6 +185,19 @@ public class ScheduleClassModel implements Serializable {
     }
 
     /**
+     * find Schedule class by ID
+     * @return 
+     */
+    public ScheduleClassModel getASchedule(){
+        
+        ScheduleClassDAO scdao = new ScheduleClassDAOImpl();
+        
+        ScheduleClassModel scm = scdao.findScheduleByScheduleId(this.scheduleClassId);
+        
+        return scm;
+    }
+    
+    /**
      * @return the start_Date
      */
     public java.util.Date getStart_Date() {

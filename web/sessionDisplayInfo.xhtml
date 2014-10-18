@@ -7,18 +7,44 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
     <h:head>
-         <title>Session Information detail</title>
+        <title>Session Information detail</title>
         <link rel="stylesheet" type="text/css" href="#{resource['css:bootstrap.css']}" />
         <h:outputStylesheet library="awesome" name="css/font-awesome.css"/>
         <f:metadata>
-            <f:viewParam name="onlineClassID" value="#{onlineClassDetailsController.onlineClassID}"/>
-            <f:viewAction action="#{onlineClassDetailsController.init()}" onPostback="false"  />
+            <f:viewParam name="sessionId" value="#{sessionDisplayController.sessionId}"/>
+            <f:viewParam name="detailType" value="#{sessionDisplayController.resourceType}"/>
+            <f:viewAction action="#{sessionDisplayController.init()}" onPostback="false"  />
         </f:metadata>
-        
-        
+
+
     </h:head>
     <h:body>
-        Hello from Facelets
+        <h:form>
+
+
+            <div class="ui-grid ui-grid-responsive">
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-12">
+                        <p:commandButton type="button" onclick="PF('switcher').previous();"
+    icon="ui-icon-circle-triangle-w" id="prev"/>
+<p:commandButton type="button" onclick="PF('switcher').next();"
+    icon="ui-icon-circle-triangle-e" id="next"/>
+ 
+<p:imageSwitch effect="scrollLeft" speed="150" widgetVar="switcher" id="manuelSwitcher"
+    slideshowAuto="false">
+    <ui:repeat value="#{sessionDisplayController.slideList}" var="slide" id="manuelSwitcherImages">
+       <p:graphicImage height="auto" style="max-width:100%;display: block;" value="/faces/images/dynamic/?file=#{slide}&amp;onlineClassID=#{sessionDisplayController.onlineClassModel.onlineClassId}&amp;sessionID=#{sessionDisplayController.sessionId}" />                              
+    </ui:repeat>
+</p:imageSwitch>
+                        
+                    </div>
+
+                </div>
+            </div>
+
+
+        </h:form>
+
     </h:body>
 </html>
 

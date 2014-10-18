@@ -309,4 +309,50 @@ public class ScheduleClassDAOImpl implements ScheduleClassDAO, Serializable {
         return scheduleClassModels;
     }
 
+    @Override
+    public ScheduleClassModel findScheduleByScheduleId(int scheduleId) {
+        int i = 1;
+        int identity = 0;
+        ResultSet rs = null;
+        Connection con = ConnectionDB.getConnInst();
+        ScheduleClassModel scm = new ScheduleClassModel();
+        ArrayList<ScheduleClassModel> scheduleClassModels = new ArrayList<ScheduleClassModel>();
+
+        try {
+
+            PreparedStatement p = con.prepareStatement("SELECT * FROM scheduleclass WHERE scheduleclassid=?");
+
+            p.setInt(i++, scheduleId);
+
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+                int j = 1;
+                scm.setScheduleClassId(rs.getInt(j++));
+                
+                scm.setOnlineClassId(rs.getInt(j++));
+                scm.setStartDate(rs.getDate(j++));
+                scm.setEndDate(rs.getDate(j++));
+                scm.setStartTime(rs.getTime(j++));
+                scm.setEndTime(rs.getTime(j++));
+
+                
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+
+        return scm;
+    }
+
 }

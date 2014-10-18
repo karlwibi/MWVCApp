@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.ilstu.dao;
 
 import edu.ilstu.model.ScheduleClassModel;
@@ -14,48 +13,48 @@ import java.util.ArrayList;
  * @author kawibi
  */
 public interface ScheduleClassDAO {
-    
+
     /**
-     * 
-     * @param scheduleClass 
+     *
+     * @param scheduleClass
+     * @return
      */
     public int createSchedule(ScheduleClassModel scheduleClass);
-    
-    
+
     /**
-     * 
+     *
      * @param scheduleClassId
-     * @return 
+     * @return
      */
     public ScheduleClassModel getScheduleClassById(int scheduleClassId);
+
     /**
-     * 
+     *
      * @param teacherId
-     * @return 
+     * @return
      */
     public ArrayList<ScheduleClassModel> findScheduleByTeacherId(int teacherId);
-    
+
     /**
-     * 
+     *
      * @param onlineClassId
-     * @return 
+     * @return
      */
     public ScheduleClassModel findScheduleByOnlineClassId(int onlineClassId);
-    
-  
-    
-   /**
-    * 
-    * @param scheduleClass 
-    */
-    public void updateSchedule(ScheduleClassModel scheduleClass);
-    
+
+    public ScheduleClassModel findScheduleByScheduleId(int scheduleId);
+
     /**
-     * 
-     * @param scheduleClass 
+     *
+     * @param scheduleClass
+     */
+    public void updateSchedule(ScheduleClassModel scheduleClass);
+
+    /**
+     *
+     * @param scheduleClass
      */
     public void deleteSchedule(ScheduleClassModel scheduleClass);
-    
-     
+
     public ArrayList<ScheduleClassModel> getAllSchedules();
 }
