@@ -25,24 +25,60 @@
             <div class="ui-grid ui-grid-responsive">
                 <div class="ui-grid-row">
                     <div class="ui-grid-col-12">
-                        <p:commandButton type="button" onclick="PF('switcher').previous();"
-    icon="ui-icon-circle-triangle-w" id="prev"/>
-<p:commandButton type="button" onclick="PF('switcher').next();"
-    icon="ui-icon-circle-triangle-e" id="next"/>
- 
-<p:imageSwitch effect="scrollLeft" speed="150" widgetVar="switcher" id="manuelSwitcher"
-    slideshowAuto="false">
-    <ui:repeat value="#{sessionDisplayController.slideList}" var="slide" id="manuelSwitcherImages">
-       <p:graphicImage height="auto" style="max-width:100%;display: block;" value="/faces/images/dynamic/?file=#{slide}&amp;onlineClassID=#{sessionDisplayController.onlineClassModel.onlineClassId}&amp;sessionID=#{sessionDisplayController.sessionId}" />                              
-    </ui:repeat>
-</p:imageSwitch>
-                        
+
+                        <p:panel rendered="#{sessionDisplayController.isPresentation}" id="basic" header="PowerPoint Slide Image"  style="margin-bottom:20px">
+                            <p:commandButton type="button" onclick="PF('switcher').previous();"
+                                             icon="ui-icon-circle-triangle-w" id="prev"/>
+                            <p:commandButton type="button" onclick="PF('switcher').next();"
+                                             icon="ui-icon-circle-triangle-e" id="next"/>
+
+                            <p:imageSwitch effect="scrollLeft" speed="150" widgetVar="switcher" id="manuelSwitcher"
+                                           slideshowAuto="false">
+                                <ui:repeat value="#{sessionDisplayController.slideList}" var="slide" id="manuelSwitcherImages">
+                                    <p:graphicImage height="auto" style="max-width:100%;display: block;" value="/faces/images/dynamic/?file=#{slide}&amp;onlineClassID=#{sessionDisplayController.onlineClassModel.onlineClassId}&amp;sessionID=#{sessionDisplayController.sessionId}" />                              
+                                </ui:repeat>
+                            </p:imageSwitch>
+
+                        </p:panel>
+
                     </div>
 
+                </div>
+
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-12">
+                        <p:panel rendered="#{sessionDisplayController.isPreziPresentation}" id="basic2"  header="Prezi Presentation"  style="margin-bottom:20px">
+                            <div id="prezi-player"></div>
+                        </p:panel>
+                    </div>
+                </div>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-12">
+
+                        <p:panel rendered="#{sessionDisplayController.isStudyResource}"  id="basic3" header="Study Resource"  style="margin-bottom:20px">
+
+                            <p:dataList value="#{sessionDisplayController.studyResourceList}" var="str" type="ordered">
+
+                                <h:outputLink value="#{str.articleLink}">
+                                    <h:outputText value="#{str.articleLink}" />
+                                </h:outputLink>
+                                    
+                               
+                            </p:dataList>
+
+                        </p:panel>
+                    </div>
                 </div>
             </div>
 
 
+
+            <script type="text/javascript" src="//prezi.github.io/prezi-player/lib/PreziPlayer/prezi_player.js"></script>
+            <script>
+                                var player = new PreziPlayer('prezi-player', {
+                                    'preziId': '#{sessionDisplayController.preziContentModel.preziId}', 'controls': true
+                                });
+            </script>
         </h:form>
 
     </h:body>

@@ -6,6 +6,7 @@
 package edu.ilstu.controller;
 
 import edu.ilstu.dao.RessourceDAOImpl;
+import edu.ilstu.filters.AlphanumComparator;
 import edu.ilstu.model.ClassSessionModel;
 import edu.ilstu.model.ContentModel;
 import edu.ilstu.model.OnlineClassModel;
@@ -34,6 +35,7 @@ public class sessionDisplayController {
     private String resourceType;
     private int sessionId;
     private boolean isPresentation;
+    private boolean isPreziPresentation;
     private boolean isStudyResource;
     private ClassSessionModel sessionModel;
     private OnlineClassModel onlineClassModel;
@@ -59,6 +61,9 @@ public class sessionDisplayController {
     public void init() {
         if (!resourceType.isEmpty() && sessionId != 0) {
 
+            isPresentation=false;
+            isPresentation=false;
+            isStudyResource=false;
             sessionModel = new ClassSessionModel();
             onlineClassModel = new OnlineClassModel();
             preziContentModel = new PreziContentModel();
@@ -91,16 +96,18 @@ public class sessionDisplayController {
         //getting the information for the presentation
         if (resourceType.equals("Presentation")) {
 
-            isPresentation = true;
+            
 
             if (!RessourceDAOImpl.checkResourceType(sessionModel.getPresentationId()).isEmpty()) {
 
                 if (RessourceDAOImpl.checkResourceType(sessionModel.getPresentationId()).equals("Prezi")) {
 
+                    isPreziPresentation=true;
                     preziContentModel.setRessourceId(sessionModel.getPresentationId());
                     preziContentModel = preziContentModel.findPreziRessourceById();
 
                 } else {
+                    isPresentation = true;
 
                     revealContentModel.setRessourceId(sessionModel.getPresentationId());
                     revealContentModel = revealContentModel.findRevealRessourceById();
@@ -139,7 +146,7 @@ public class sessionDisplayController {
             System.out.println("Slide Filename: " + fileName);
             slideList.add(fileName);
         }
-        Collections.sort(slideList);
+        Collections.sort(slideList,  new AlphanumComparator());
     }
 
     public String getSlideName(String path) {
@@ -387,6 +394,20 @@ public class sessionDisplayController {
      */
     public void setSessionResourceList(List<SessionResourceModel> sessionResourceList) {
         this.sessionResourceList = sessionResourceList;
+    }
+
+    /**
+     * @return the isPreziPresentation
+     */
+    public boolean isIsPreziPresentation() {
+        return isPreziPresentation;
+    }
+
+    /**
+     * @param isPreziPresentation the isPreziPresentation to set
+     */
+    public void setIsPreziPresentation(boolean isPreziPresentation) {
+        this.isPreziPresentation = isPreziPresentation;
     }
 
 }

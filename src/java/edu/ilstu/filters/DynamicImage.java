@@ -26,23 +26,24 @@ public class DynamicImage implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        
+
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-         try {
-             
-             HttpServletRequest httpreq = (HttpServletRequest) request;
-        HttpServletResponse httpres = (HttpServletResponse) response;
+        try {
 
-   // Get image file.
+            HttpServletRequest httpreq = (HttpServletRequest) request;
+            HttpServletResponse httpres = (HttpServletResponse) response;
+
+       
+            // Get image file.
             String file = httpreq.getParameter("file");
-            String sessionID=httpreq.getParameter("sessionID");
-            String onlineClassID=httpreq.getParameter("onlineClassID");
-            System.out.println("in the image filter\n the file name:"+file);
+            String sessionID = httpreq.getParameter("sessionID");
+            String onlineClassID = httpreq.getParameter("onlineClassID");
+            System.out.println("in the image filter\n the file name:" + file);
             byte[] bytes;
-            File file2= new File ("c:\\home\\ubuntu\\var\\onlineClass_"+onlineClassID+"\\session_"+sessionID+"\\slides\\",file);
+            File file2 = new File("c:\\home\\ubuntu\\var\\onlineClass_" + onlineClassID + "\\session_" + sessionID + "\\slides\\", file);
             // Get image contents.
             try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(file2))) {
                 // Get image contents.
@@ -54,7 +55,6 @@ public class DynamicImage implements Filter {
             httpres.getOutputStream().write(bytes);
 
             
-             chain.doFilter(request, response);
         } catch (IOException e) {
 
             e.printStackTrace();
@@ -64,7 +64,7 @@ public class DynamicImage implements Filter {
 
     @Override
     public void destroy() {
-        
+
     }
-    
+
 }
