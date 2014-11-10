@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+
+        <ui:insert name="headerInfo" />
+
+        <link rel="stylesheet" type="text/css" href="#{resource['css:bootstrap.css']}" />
+        <!--<link rel="stylesheet" type="text/css" href="{resource['css:font-awesome.css']}" />-->
+        <h:outputStylesheet library="awesome" name="css/font-awesome.css"/>
+        
+        <link rel="stylesheet" type="text/css" href="#{resource['css:style.css']}" />
+    </h:head>
+    <h:body>
+        <div id="container">
+            <header>
+                <p>Karl Bissereth<br/>
+                    Web Application Projects</p>
+
+            </header>
+            <div id="maincontent">
+                
+                
+                <ui:insert name="menu"/>
+                
+                <section id="section1">
+                    <article>
+                        
+                        <ui:insert name="content"/>
+
+                    </article>
+                </section>
+
+            </div>
+            <footer> <p> Karl Wilhelm Bissereth | Copyright 2014</p> </footer>
+        </div>
+
+        <!--javaScript and Jquery files-->
+        <script src="#{resource['js:bootstrap.js']}"></script>
+         <script src="#{resource['js:alertify.js']}"></script>
+         
+         <ui:insert name="scriptPart" />
+     
+ 
+    </h:body>
+</html>
+

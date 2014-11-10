@@ -7,6 +7,7 @@ package edu.ilstu.model;
 
 import edu.ilstu.dao.SessionResourceDAO;
 import edu.ilstu.dao.SessionResourceDAOImpl;
+import java.io.Serializable;
 import java.util.ArrayList;
 import org.json.simple.JSONObject;
 
@@ -14,7 +15,7 @@ import org.json.simple.JSONObject;
  *
  * @author kawibi
  */
-public class SessionResourceModel {
+public class SessionResourceModel implements Serializable {
     
     private int sessionId;
     private int resourceId;

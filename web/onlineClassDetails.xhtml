@@ -6,13 +6,18 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
-    <h:head>
-        <title>online Class Details</title>
+    
+    <ui:composition template="/templates/templateNoNav.xhtml">
+        <ui:define name="headerInfo"> 
+
+            
+            <title>Module WebRTC Video Conferencing - online Class Details</title>
+             
         <link rel="stylesheet" type="text/css" href="#{resource['css:bootstrap.css']}" />
         <h:outputStylesheet library="awesome" name="css/font-awesome.css"/>
         <f:metadata>
             <f:viewParam name="onlineClassID" value="#{onlineClassDetailsController.onlineClassID}"/>
-            <f:viewAction action="#{onlineClassDetailsController.init()}" onPostback="false"  />
+            <f:viewAction action="#{onlineClassDetailsController._init()}" onPostback="false"  />
         </f:metadata>
 
         <script>
@@ -32,56 +37,50 @@
             }
         </script>
 
-    </h:head>
-    <h:body>
+        </ui:define>
 
+        <ui:define name="content"> 
 
-
-
-
-
-        <div  class="container-fluid">
-
-
-            <div class="ui-grid ui-grid-responsive">
+       
+ <div class="ui-grid ui-grid-responsive">
                 <div class="ui-grid-row">
                     <div class="ui-grid-col-12">
 
                         <p:panel id="basic" header="Online class detail"  style="margin-bottom:20px">
                             <h:form>
 
-                                <p:panelGrid id="panel_info" columns="2" style="margin-bottom:20px">
+                                <h:panelGrid id="panel_info" columns="2" border="0" width="100%" style="margin-bottom:20px">
 
                                     <p:outputLabel value="Title" for="OC_Title"/>
-                                    <p:inputText value="#{onlineClassDetailsController.onlineClassModel.title}" id="OC_Title"/>
+                                    <p:inputText class="form-control" value="#{onlineClassDetailsController.onlineClassModel.title}" id="OC_Title"/>
                                     <p:outputLabel value="description" for="OC_description"/>
-                                    <p:inputText value="#{onlineClassDetailsController.onlineClassModel.description}" id="OC_description"/>
+                                    <p:inputTextarea class="form-control" value="#{onlineClassDetailsController.onlineClassModel.description}" id="OC_description"/>
 
-                                </p:panelGrid>
+                                </h:panelGrid>
                                 <p:fieldset id="f_schedule" legend="Schedule" style="margin-bottom:20px">
-                                    <h:panelGrid columns="2" cellpadding="5">
+                                    <h:panelGrid columns="2" border="0" width="100%" >
 
                                         <p:outputLabel value="Start Date" for="OC_StartDate"/>
-                                        <p:calendar id="OC_StartDate" class="input-sm" value="#{onlineClassDetailsController.scheduleClassModel.start_Date}"/>
+                                        <p:calendar id="OC_StartDate" style="width: 300px" value="#{onlineClassDetailsController.scheduleClassModel.start_Date}"/>
 
                                         <p:outputLabel value="description" for="OC_EndDate"/>
-                                        <p:calendar id="OC_EndDate" class="input-sm" value="#{onlineClassDetailsController.scheduleClassModel.end_Date}"/>
+                                        <p:calendar id="OC_EndDate" style="width: 300px"  value="#{onlineClassDetailsController.scheduleClassModel.end_Date}"/>
 
                                         <p:outputLabel value="Session debut hour:" for="OC_StartSessionHour"/>
-                                        <pe:timePicker  id="OC_StartSessionHour" class="input-sm" value="#{onlineClassDetailsController.scheduleClassModel.start_Time}" mode="spinner" />
+                                        <pe:timePicker  id="OC_StartSessionHour" class="form-control" value="#{onlineClassDetailsController.scheduleClassModel.start_Time}" mode="spinner" />
 
                                         <p:outputLabel value="session end hour:" for="OC_EndSessionhur"/>
-                                        <pe:timePicker  id="OC_EndSessionhur" class="input-sm" value="#{onlineClassDetailsController.scheduleClassModel.end_Time}" mode="spinner" />
+                                        <pe:timePicker  id="OC_EndSessionhur" class="form-control" value="#{onlineClassDetailsController.scheduleClassModel.end_Time}" mode="spinner" />
                                     </h:panelGrid>
                                 </p:fieldset>
                                 <p:fieldset id="f_enroll" legend="Enrolled Student" style="margin-bottom:20px">
                                     <ui:repeat var="st" value="#{onlineClassDetailsController.listEnrollStudent}">
-                                        <p:panelGrid columns="3" >
+                                        <h:panelGrid columns="3"  width="100%" border="0">
                                             <p:inputText value="#{st.fname}"/>
                                             <p:inputText value="#{st.lname}"/>
                                             <p:commandButton  value="Remove"/>
 
-                                        </p:panelGrid>
+                                        </h:panelGrid>
                                     </ui:repeat>
                                 </p:fieldset>
 
@@ -93,7 +92,7 @@
                                     <!--/ <p:commandButton value="Add class Session" type="button" onclick="PF('dlg2').show();" />-->
                                     <p:commandButton value="Add class Session" type="button" onclick="showGrpMemberSearchPageCalenderLeave(#{onlineClassDetailsController.scheduleID})" />
 
-                                    <p:dataTable var="csl" value="#{onlineClassDetailsController.sessionList}">
+                                    <p:dataTable  var="csl" value="#{onlineClassDetailsController.sessionList}">
                                         <p:column headerText="Session Date">
                                             <h:outputText value="#{csl.dateSession}" />
                                         </p:column>
@@ -128,9 +127,12 @@
             </div>
 
 
-        </div>
+
+        </ui:define> 
+    </ui:composition>
 
 
-    </h:body>
+
 </html>
+
 

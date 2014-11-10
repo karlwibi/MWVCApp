@@ -5,6 +5,7 @@
  */
 package edu.ilstu.filters;
 
+import edu.ilstu.helper.Property;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,7 +44,7 @@ public class DynamicImage implements Filter {
             String onlineClassID = httpreq.getParameter("onlineClassID");
             System.out.println("in the image filter\n the file name:" + file);
             byte[] bytes;
-            File file2 = new File("c:\\home\\ubuntu\\var\\onlineClass_" + onlineClassID + "\\session_" + sessionID + "\\slides\\", file);
+            File file2 = new File(Property.getSavePath()+ onlineClassID + "/session_" + sessionID + "/slides/", file);
             // Get image contents.
             try (BufferedInputStream in = new BufferedInputStream(new FileInputStream(file2))) {
                 // Get image contents.

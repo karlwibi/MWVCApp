@@ -5,6 +5,7 @@
  */
 package edu.ilstu.controller;
 
+import edu.ilstu.helper.Property;
 import edu.ilstu.model.ClassSessionModel;
 import edu.ilstu.model.ContentModel;
 import edu.ilstu.model.OnlineClassModel;
@@ -21,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +49,7 @@ import org.apache.commons.io.IOUtils;
  */
 @ManagedBean
 @SessionScoped
-public class onlineClassDetailsController {
+public class onlineClassDetailsController implements Serializable{
 
     private int onlineClassID;
     private int scheduleID;
@@ -83,7 +85,7 @@ public class onlineClassDetailsController {
 
     }
 
-    public void init() {
+    public void _init() {
 
         presentationFlag = "prezi";
         preziValid = false;
@@ -161,7 +163,7 @@ public class onlineClassDetailsController {
 
             ///handleling the file upload
             //creating folders
-            File onlineClassDir = new File("/home/ubuntu/var/onlineClass_" + onlineClassID);
+            File onlineClassDir = new File(Property.getSavePath() + onlineClassID);
             File sessionDir = new File(onlineClassDir, "session_" + sessionId);
             File slideDir = new File(sessionDir, "slides");
 
@@ -209,6 +211,8 @@ public class onlineClassDetailsController {
                         IOUtils.closeQuietly(input);
                     }
                     //inserting into the database
+                    System.out.println("File without full Path: "+file.getAbsolutePath());
+                   System.out.println("File full Path: "+file.getAbsolutePath());
                     contentModel.setContentText(file.getAbsolutePath());
                    
                     contentModel.createContent();

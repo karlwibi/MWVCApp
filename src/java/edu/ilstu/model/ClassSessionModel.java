@@ -8,6 +8,7 @@ package edu.ilstu.model;
 
 import edu.ilstu.dao.ClassSessionDAO;
 import edu.ilstu.dao.ClassSessionDAOImpl;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.ArrayList;
 import org.json.simple.JSONObject;
@@ -16,7 +17,7 @@ import org.json.simple.JSONObject;
  *
  * @author kawibi
  */
-public class ClassSessionModel {
+public class ClassSessionModel implements Serializable{
     
     private int sessionId;
     private Date sessionDate;

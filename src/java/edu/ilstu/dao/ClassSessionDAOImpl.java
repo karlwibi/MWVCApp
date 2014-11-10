@@ -8,6 +8,7 @@ package edu.ilstu.dao;
 
 import edu.ilstu.model.ClassSessionModel;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -268,7 +269,52 @@ public class ClassSessionDAOImpl implements ClassSessionDAO {
         return list;
     }
     
-    
-    
+    @Override
+ public ArrayList<ClassSessionModel> findClassSessionByDate(Date date) {
+                
+        int i=1;
+        ArrayList<ClassSessionModel> list =new ArrayList<>();
+        ClassSessionModel classSessionModel = null;
+        ResultSet rs = null;
+        Connection con = ConnectionDB.getConnInst();
+
+        try {
+
+            PreparedStatement p = con.prepareStatement("SELECT * FROM classsession WHERE sessiondate=?");
+
+            p.setDate(i++,date );
+            
+            rs = p.executeQuery();
+
+            while (rs.next()) {
+                int j = 1;
+                classSessionModel = new ClassSessionModel();
+                classSessionModel.setSessionId(rs.getInt(j++));
+                classSessionModel.setScheduleClassId(rs.getInt(j++));
+                classSessionModel.setPresentationId(rs.getInt(j++));
+                classSessionModel.setSessionDate(rs.getDate(j++));
+                
+                list.add(classSessionModel);
+
+            }
+
+            rs.close();
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+
+        return list;
+
+    }    
     
 }

@@ -2,93 +2,132 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
+    <ui:composition template="/templates/templateNoNav.xhtml">
+        <ui:define name="headerInfo"> 
 
 
-        <h:form id="form1">
-            <p:growl id="msgs" showDetail="true"/>
+            <title>Module WebRTC Video Conferencing - Administration Page</title>
+        </ui:define>
 
-            <p:dataTable id="userRole1" var="userRole" value="#{adminController.list}" editable="true" style="margin-bottom:20px">
-                <f:facet name="header">
-                    Row Editing
-                </f:facet>
+        <ui:define name="menu"> 
 
-                <p:ajax event="rowEdit" listener="#{adminController.onRowEdit}" update=":form1:msgs,:form1:userRole1" />
-                <p:ajax event="rowEditCancel" listener="#{adminController.onRowCancel}" update=":form1:msgs" />
-
-                <p:column headerText="username">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{userRole.username}" /></f:facet>
-                        <f:facet name="input"><p:inputText id="modelInput" value="#{userRole.username}" readonly="true" style="width:100%"/></f:facet>
-                    </p:cellEditor>
-                </p:column>
-
-                <p:column headerText="role">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="#{userRole.rolename}" /></f:facet>
-                        <f:facet name="input">
-                            <h:selectOneMenu value="#{userRole.rolename}" style="width:100%">
-                                <f:selectItems value="#{adminController.roles}" var="role" itemLabel="#{role}" itemValue="#{role}" />
-                            </h:selectOneMenu>
-                        </f:facet>
-                    </p:cellEditor>
-                </p:column>
+            <h:form>
 
 
-                <p:column style="width:32px">
-                    <p:rowEditor />
-                   </p:column>
+                <nav>
+                    <ul>
+                        <li><a href="#"><h:commandButton value="logout" action="#{loginController.signOut()}"/></a></li>
+
+                    </ul>
+                </nav>
+            </h:form>
+
+        </ui:define>
+
+        <ui:define name="content"> 
+
+            <h:form id="form1">
+                <p:growl id="msgs" showDetail="true"/>
+
+                <p:dataTable id="userRole1" var="userRole" value="#{adminController.list}" editable="true" style="margin-bottom:20px">
+                    <f:facet name="header">
+                        System users
+                    </f:facet>
+
+                    <p:ajax event="rowEdit" listener="#{adminController.onRowEdit}" update=":form1:msgs,:form1:userRole1" />
+                    <p:ajax event="rowEditCancel" listener="#{adminController.onRowCancel}" update=":form1:msgs" />
+
+                    <p:column headerText="username">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{userRole.username}" /></f:facet>
+                            <f:facet name="input"><p:inputText id="modelInput" value="#{userRole.username}" readonly="true" style="width:100%"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="role">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{userRole.rolename}" /></f:facet>
+                            <f:facet name="input">
+                                <h:selectOneMenu value="#{userRole.rolename}" style="width:100%">
+                                    <f:selectItems value="#{adminController.roles}" var="role" itemLabel="#{role}" itemValue="#{role}" />
+                                </h:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+
+                    <p:column style="width:32px">
+                        <p:rowEditor />
+                    </p:column>
+
+                </p:dataTable>
+
+
+            </h:form>
+
+
+
+            
+            <h:form  role="form" id="form">
+
                 
-            </p:dataTable>
+                
+                
+                <p:fieldset legend="Create Administrator for the Application" style="margin-bottom:20px">
+       
+                <h:outputLabel for="firstname" value="firstname"/>
+                <h:inputText class="form-control" id="firstname" pt:type="text" pt:placeholder="Enter first name" value="#{adminController.firstname}" />
+                <br/><br/>
+                <h:outputLabel for="lastname" value="lastname"/>
+                <h:inputText class="form-control" id="lastname" pt:type="text" pt:placeholder="Enter Last Name" value="#{adminController.lastname}"/>
+                <br/><br/>
+                <h:outputLabel for="username" value="username"/>
+                <h:inputText class="form-control" id="username" pt:type="text" pt:placeholder="Enter your username" value="#{adminController.username}"/>
+                <br/><br/>
+                <h:outputLabel for="password" value="password"/>
+                <h:inputSecret class="form-control" id="password" pt:type="password" pt:placeholder="Enter password" value="#{adminController.password}"/>
+                <br/><br/>
+                <h:outputLabel for="confirPassword" value="confirm password"/>
+                <h:inputSecret class="form-control" id="confirmPassword" pt:type="password" pt:placeholder="Re-Enter password"/>
+                <br/><br/>
+                <h:outputLabel for="email" value="email" />
+                <h:inputText class="form-control" id="email" pt:type="email" pt:placeholder="Enter email"  />
+                <br/><br/>
+
+                <h:selectOneRadio value="#{adminController.role}">
+                    <f:selectItem itemValue="admin" itemLabel="Admin" />
+                    <f:selectItem itemValue="teacher" itemLabel="Teacher" />
+                </h:selectOneRadio>
+
+                <h:commandButton value="CreateUser" action="#{adminController.createUser()}"/>
+                <h:commandButton value="Reset" action="#{adminController.reset()}">
+                    <f:ajax execute="@this" render="form:firstname form:lastname form:username form:password form:confirmPassword"/>
+                </h:commandButton>
+        
+    </p:fieldset>
+
+                
+
+            </h:form>
 
 
-        </h:form>
 
 
 
-        <h:form id="form">
-            <h:commandButton value="logout" action="#{loginController.signOut()}"/>
+        </ui:define> 
+    </ui:composition>
 
-            <h1> <h:outputLabel value="Create Administrator for the Application" /></h1>
-            <br/><br/>
-            <h:outputLabel for="firstname" value="firstname"/>
-            <h:inputText id="firstname" pt:type="text" pt:placeholder="Enter first name" value="#{adminController.firstname}" />
-            <br/><br/>
-            <h:outputLabel for="lastname" value="lastname"/>
-            <h:inputText id="lastname" pt:type="text" pt:placeholder="Enter Last Name" value="#{adminController.lastname}"/>
-            <br/><br/>
-            <h:outputLabel for="username" value="username"/>
-            <h:inputText id="username" pt:type="text" pt:placeholder="Enter your username" value="#{adminController.username}"/>
-            <br/><br/>
-            <h:outputLabel for="password" value="password"/>
-            <h:inputSecret id="password" pt:type="password" pt:placeholder="Enter password" value="#{adminController.password}"/>
-            <br/><br/>
-            <h:outputLabel for="confirPassword" value="confirm password"/>
-            <h:inputSecret id="confirmPassword" pt:type="password" pt:placeholder="Re-Enter password"/>
-            <br/><br/>
-            <h:outputLabel for="email" value="email" />
-            <h:inputText  id="email" pt:type="email" pt:placeholder="Enter email"  />
-            <br/><br/>
 
-            <h:selectOneRadio value="#{adminController.role}">
-                <f:selectItem itemValue="admin" itemLabel="Admin" />
-                <f:selectItem itemValue="teacher" itemLabel="Teacher" />
-            </h:selectOneRadio>
 
-            <h:commandButton value="CreateUser" action="#{adminController.createUser()}"/>
-            <h:commandButton value="Reset" action="#{adminController.reset()}">
-                <f:ajax execute="@this" render="form:firstname form:lastname form:username form:password form:confirmPassword"/>
-            </h:commandButton>
-
-        </h:form>
-
-    </h:body>
 </html>
+
+
+
+
+
 

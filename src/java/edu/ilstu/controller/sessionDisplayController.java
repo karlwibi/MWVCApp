@@ -7,6 +7,7 @@ package edu.ilstu.controller;
 
 import edu.ilstu.dao.RessourceDAOImpl;
 import edu.ilstu.filters.AlphanumComparator;
+import edu.ilstu.mail.Email;
 import edu.ilstu.model.ClassSessionModel;
 import edu.ilstu.model.ContentModel;
 import edu.ilstu.model.OnlineClassModel;
@@ -55,7 +56,8 @@ public class sessionDisplayController {
      * Creates a new instance of sessionDisplayController
      */
     public sessionDisplayController() {
-
+        
+        
     }
 
     public void init() {
@@ -93,6 +95,13 @@ public class sessionDisplayController {
         onlineClassModel.setOnlineClassId(sceduleClassModel.getOnlineClassId());
         onlineClassModel = onlineClassModel.getAClass();
 
+        //testing email
+        
+//        Email email=new Email();
+//        email.setOnlineClassId(sceduleClassModel.getOnlineClassId());
+//        email.onlineClassCreateMessage();
+
+        
         //getting the information for the presentation
         if (resourceType.equals("Presentation")) {
 

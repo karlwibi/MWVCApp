@@ -1,21 +1,50 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        <h2>Hello, please log in:</h2>
-        <form name="loginForm" method="POST" action="j_security_check">
-            <p><strong>Please type your user name: </strong>
-                <input type="text" name="j_username" size="25"/></p>
-            <p><strong>Please type your password: </strong>
-                <input type="password" size="15" name="j_password"/></p>
-            <p>
-                <input type="submit" value="Submit"/>
-                <input type="reset" value="Reset"/></p>
-        </form>       
-    </h:body>
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:composition template="/templates/templateNoNav.xhtml">
+        <ui:define name="headerInfo"> 
+
+            <title>Admin Login</title>
+        </ui:define>
+
+        <ui:define name="content"> 
+
+            
+
+
+            <form style="margin:0; width: 100%" name="loginForm" class="form-signin" role="form" method="POST" action="j_security_check">
+
+                    <h2 class="form-signin-heading">admin login</h2>
+
+                    <input class="form-control" type="text" required="true"  value="UserName"     name="j_username" onBlur="if (this.value == '')
+                                this.value = 'UserName'" onFocus="if (this.value == 'UserName')
+                                            this.value = ''"/>
+
+                    <input  class="form-control" type="password" required="true" value="Password"  name="j_password" onBlur="if (this.value == '')
+                                this.value = 'Password'" onFocus="if (this.value == 'Password')
+                                            this.value = ''"/>
+
+                    <input class="btn btn-lg btn-primary btn-block" type="submit" value="Login"/>
+
+                </form>        
+
+
+
+
+           
+
+
+        </ui:define> 
+    </ui:composition>
+
+
+
 </html>
+
+
 

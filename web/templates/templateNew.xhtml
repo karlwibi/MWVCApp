@@ -1,0 +1,132 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+
+        <ui:insert name="headerInfo" />
+
+        <link rel="stylesheet" type="text/css" href="#{resource['css:bootstrap.css']}" />
+        <!--<link rel="stylesheet" type="text/css" href="{resource['css:font-awesome.css']}" />-->
+        <h:outputStylesheet library="awesome" name="css/font-awesome.css"/>
+        <link rel="stylesheet" type="text/css" href="#{resource['css:style.css']}" />
+    </h:head>
+    <h:body>
+        <div id="container">
+            <header>
+                <p>Karl Bissereth<br/>
+                    Web Application Projects</p>
+
+            </header>
+            <div id="maincontent">
+                <nav>
+                    <ul>
+                        <li><a href="./index.html">Home</a></li>
+                        <li><a href="./links.html.html">Links page</a></li>
+                        <li><a href="./videofavorites.html.html">Video page</a></li>
+                    </ul>
+                </nav>
+                <section id="section1">
+                    <article>
+                        
+                        <ui:insert name="content"/>
+
+                    </article>
+                </section>
+
+            </div>
+            <footer> <p> Karl Wilhelm Bissereth | Copyright 2014</p><section id="footerImage">
+                    <img src="./resources/img/footerReggieGrey.png" width="40" height="46" /> </section> </footer>
+        </div>
+
+        <!--javaScript and Jquery files-->
+        <script src="#{resource['js:bootstrap.js']}"></script>
+        <script src="#{resource['js:alertify.js']}"></script>
+        <script type="text/javascript">
+            
+         
+            var counter=0;
+            var numberOfFiles=0;
+            
+            function startProcess(){
+                
+                if(counter==0){
+                    numberOfFiles=PF('fileVar').files.length;
+                    
+                    
+                }
+                
+            }
+            
+            function finalProcess(){
+                    counter++;
+               console.log("number of files "+numberOfFiles);
+                console.log("counter: "+counter);
+                console.log(PF('fileVar').files.length);
+                if(counter == numberOfFiles){
+                    PF('dlg2').hide();
+                    alertify.setting('notifier','position', 'top-right');
+                      alertify.success('The files were uploaded successfully !'); 
+                      checkFirstVisit();
+                      location.reload();
+                }
+            };
+            
+    var isRefresh=false;
+    
+    var delete_cookie = function(name) {
+    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+};
+    function checkFirstVisit() {
+        if(document.cookie.indexOf('firstVisit')==-1) {
+            // cookie doesn't exist, create it now
+            document.cookie = 'firstVisit=1';
+
+            }
+            else {
+    // not first visit, so alert
+                isRefresh=true;
+                alert('You refreshed!');
+            }
+       }
+           
+                    
+              window.onresize = function ()
+            {
+
+                window.resizeTo(800, 800);
+                window.moveTo(145, 235);
+            };
+            window.onclick = function ()
+            {
+                window.resizeTo(800, 800);
+                window.moveTo(145, 235);
+            };
+
+            window.onunload = function () {
+                if ((window.opener)&amp;&amp;(!window.opener.closed)) {
+                    if(isRefresh){
+                        isRefresh=false;
+                    }else{
+                        delete_cookie('firstVisit');
+                        window.opener.popUpClosed();
+                    }
+            
+                    
+                }
+            };
+        </script>
+ 
+    </h:body>
+</html>
+

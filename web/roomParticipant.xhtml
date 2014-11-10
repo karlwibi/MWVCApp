@@ -5,7 +5,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="/templates/template.xhtml">
+    <ui:composition template="/templates/templateNoNav.xhtml">
         <ui:define name="headerInfo"> 
             <f:metadata>
                 <f:viewParam name="roomid" value="#{roomParticipant.roomid}"/>
@@ -13,7 +13,7 @@
             </f:metadata>
             <title>Module WebRTC Video Conferencing</title>
 
-
+            <h:outputStylesheet library="awesome" name="css/font-awesome.css"/>
         </ui:define>
         <ui:define name="content"> 
 
@@ -32,25 +32,25 @@
                         <h3 class="panel-title">Add student Manually</h3>
                     </div>
                     <div class="panel-body">
-
+                        <p:commandButton  value="+">
+                            <!--                                <i class="fa fa-plus"></i>-->
+                            <f:ajax listener="#{roomParticipant.extend}"
+                                    execute="firstForm" 
+                                    render="firstForm" />
+                        </p:commandButton>
+                        <p:commandButton   value="-">
+                            <!--<i class="fa fa-minus-circle"></i>-->
+                            <f:ajax listener="#{roomParticipant.unExtend()}"
+                                    execute="firstForm" 
+                                    render="firstForm" />
+                        </p:commandButton>
                         <ui:repeat var="s" value="#{roomParticipant.studentListManual}" >
-                            <p:panelGrid columns="5">
+                            <p:panelGrid columns="3">
 
                                 <p:inputText placeholder="Student First name" value="#{s.fname}"/>
                                 <p:inputText placeholder="Student lastname name" value="#{s.lname}"/>
                                 <p:inputText placeholder="Student email" value="#{s.email}"/>
-                                <p:commandButton icon="fa fa-plus-circle" >
-                                    <!--                                <i class="fa fa-plus"></i>-->
-                                    <f:ajax listener="#{roomParticipant.extend}"
-                                            execute="firstForm" 
-                                            render="firstForm" />
-                                </p:commandButton>
-                                <p:commandButton icon="fa fa-minus-circle" >
-                                    <!--<i class="fa fa-minus-circle"></i>-->
-                                    <f:ajax listener="#{roomParticipant.unExtend()}"
-                                            execute="firstForm" 
-                                            render="firstForm" />
-                                </p:commandButton>
+
                             </p:panelGrid>
 
                         </ui:repeat>
@@ -82,95 +82,42 @@
                         <h3 class="panel-title">Add student from existing list</h3>
                     </div>
                     <div class="panel-body">
-                        
-                        
-                        <div class="row text-center">
-                            <div class="col-lg-4">
-                                 <h1><small>Non-enrolled Student</small></h1>
+
+
+                        <h:panelGrid columns="3"  border="0" >
+                            <h:panelGroup>
+                                <h3><small>Non-enrolled Student</small></h3>
                                 <h:selectManyListbox id="availableList" style="width: 300px;height: 150px" value="#{roomParticipant.selectedStudents}">
                                     <f:selectItems value="#{roomParticipant.studentList}" var="s" itemLabel="#{s.fname}" itemValue="#{s.userid}"/> 
                                 </h:selectManyListbox>
-                            </div>
-                            <div class="col-lg-4 ">
-                                <div class="row">
-                                    <br/><br/>
+                            </h:panelGroup>
+                            <h:panelGroup>
+
+                                <h:panelGrid columns="1" border="0" class="text-center">
                                     <p:commandButton value="&gt;">
                                         <f:ajax  listener="#{roomParticipant.addStudentToClass()}" execute="availableList" render="selectedList availableList"  />
                                     </p:commandButton>
-                                </div>
-                                <div class="row">
-                                    <br/>
-                                      <p:commandButton value="&gt;&gt;">
+                                    <p:commandButton value="&gt;&gt;">
                                         <f:ajax  listener="#{roomParticipant.addAll()}"  render="selectedList availableList"  />
                                     </p:commandButton>
-                                </div>
-                                <div class="row">
-                                    <br/>
+
                                     <p:commandButton value="&lt;">
                                         <f:ajax  listener="#{roomParticipant.removeStudentFromClass}" execute="selectedList" render="selectedList availableList"  />
-                                    
-                                     </p:commandButton>
-                                </div>
-                                <div class="row">
-                                    <br/>
-                                      <p:commandButton value="&lt;&lt;">
-                                        <f:ajax  listener="#{roomParticipant.removeAll()}"  render="selectedList availableList"  />
+
                                     </p:commandButton>
-                                </div>
-                            </div>
-                             <div class="col-lg-4">
-                                 <h1><small>Enrolled Student</small></h1>
+                                    <p:commandButton value="&lt;&lt;">
+                                        <f:ajax  listener="#{roomParticipant.removeAll()}"  render="selectedList availableList"  />
+                                    </p:commandButton>    
+                                </h:panelGrid>
+                            </h:panelGroup>
+                            <h:panelGroup>
+                                <h3><small>Enrolled Student</small></h3>
                                 <h:selectManyListbox id="selectedList" style="width: 300px; height: 150px" value="#{roomParticipant.selectedStudents2}">
                                     <f:selectItems value="#{roomParticipant.studentList2}" var="s" itemLabel="#{s.fname}" itemValue="#{s.userid}"/> 
                                 </h:selectManyListbox>
-                             </div>
-                            
-                        </div>
-                        
-                        
-                     
-                        
-                        
-<!--                        <div class="row">
-                            <div class="col-lg-4 text-center">
-                                <h1><small>Non-enrolled Student</small></h1>
-                                <h:selectManyListbox id="availableList" style="width: 300px;height: 150px" value="#{roomParticipant.selectedStudents}">
-                                    <f:selectItems value="{roomParticipant.studentList}" var="s" itemLabel="#{s.fname}" itemValue="#{s.userid}"/> 
-                                </h:selectManyListbox>
-                            </div>
+                            </h:panelGroup>
+                        </h:panelGrid>
 
-                            <div class="col-lg-4 text-center">
-                                <div class="row">
-                                    <p:commandButton value="&gt;">
-                                        <f:ajax  listener="{roomParticipant.addStudentToClass()}" execute="availableList" render="selectedList availableList"  />
-                                    </p:commandButton>
-
-                                </div>
-                                <div class="row">
-                                    <p:commandButton value="&gt;&gt;">
-                                        <f:ajax  listener="{roomParticipant.addAll()}"  render="selectedList availableList"  />
-                                    </p:commandButton>
-
-                                </div>
-                                <div class="row">
-                                    <p:commandButton value="&lt;">
-                                        <f:ajax  listener="{roomParticipant.removeStudentFromClass}" execute="selectedList" render="selectedList availableList"  />
-                                    </p:commandButton>
-                                </div>
-                                <div class="row">
-                                    <p:commandButton value="&lt;&lt;">
-                                        <f:ajax  listener="{roomParticipant.removeAll()}"  render="selectedList availableList"  />
-                                    </p:commandButton>
-                                </div>
-
-                            </div>
-                            <div class="col-lg-4 text-center">
-                                <h1><small>Enrolled Student</small></h1>
-                                <h:selectManyListbox id="selectedList" style="width: 300px; height: 150px" value="#{roomParticipant.selectedStudents2}">
-                                    <f:selectItems value="{roomParticipant.studentList2}" var="s" itemLabel="#{s.fname}" itemValue="#{s.userid}"/> 
-                                </h:selectManyListbox>
-                            </div>
-                        </div>-->
 
                         <p:commandButton value="Save" action="#{roomParticipant.save()}"/>
                     </div>

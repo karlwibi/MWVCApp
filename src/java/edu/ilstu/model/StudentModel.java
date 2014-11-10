@@ -18,28 +18,29 @@ import org.json.simple.JSONObject;
 public class StudentModel extends UserModel implements Serializable{
 
     private String major;
-    private StudentDAO dAO;
+    
 
     public StudentModel() {
         super();
-        dAO=new StudentDAOImpl();
+        
     }
 
     public StudentModel(int userid) {
         super(userid);
-        dAO=new StudentDAOImpl();
+        
+        
     }
 
     public StudentModel(String fname, String lname, String securityq, String securitya, String email, String street, String city, String state, int zipCode, String country, int phone, char is_a, String major) {
         super(fname, lname, securityq, securitya, email, street, city, state, zipCode, country, phone, is_a);
         this.major = major;
-        dAO=new StudentDAOImpl();
+        
     }
 
     public StudentModel(int userId, String fname, String lname, String securityq, String securitya, String email, String street, String city, String state, int zipCode, String country, int phone, char is_a, String major) {
         super(userId, fname, lname, securityq, securitya, email, street, city, state, zipCode, country, phone, is_a);
         this.major = major;
-        dAO=new StudentDAOImpl();
+        
 
     }
 
@@ -60,7 +61,7 @@ public class StudentModel extends UserModel implements Serializable{
 
     
     public StudentModel getStudentById(int id){
-        
+        StudentDAO dAO =new StudentDAOImpl();
         StudentModel um = dAO.findStudentById(id);
         
         return um;
@@ -68,7 +69,7 @@ public class StudentModel extends UserModel implements Serializable{
     
     
     public ArrayList<StudentModel> getAllStudents(){
-        
+        StudentDAO dAO =new StudentDAOImpl();
         ArrayList<StudentModel> studenList =dAO.getStudents();
         
         return studenList;

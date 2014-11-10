@@ -6,8 +6,12 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
-    <h:head>
-        <title>Session Information detail</title>
+    <ui:composition template="/templates/templateNoNav.xhtml">
+        <ui:define name="headerInfo"> 
+
+            
+            <title>Module WebRTC Video Conferencing - Session Information detail</title>
+           
         <link rel="stylesheet" type="text/css" href="#{resource['css:bootstrap.css']}" />
         <h:outputStylesheet library="awesome" name="css/font-awesome.css"/>
         <f:metadata>
@@ -15,11 +19,13 @@
             <f:viewParam name="detailType" value="#{sessionDisplayController.resourceType}"/>
             <f:viewAction action="#{sessionDisplayController.init()}" onPostback="false"  />
         </f:metadata>
+        </ui:define>
 
+        <ui:define name="content"> 
 
-    </h:head>
-    <h:body>
-        <h:form>
+       
+
+<h:form>
 
 
             <div class="ui-grid ui-grid-responsive">
@@ -35,7 +41,7 @@
                             <p:imageSwitch effect="scrollLeft" speed="150" widgetVar="switcher" id="manuelSwitcher"
                                            slideshowAuto="false">
                                 <ui:repeat value="#{sessionDisplayController.slideList}" var="slide" id="manuelSwitcherImages">
-                                    <p:graphicImage height="auto" style="max-width:100%;display: block;" value="/faces/images/dynamic/?file=#{slide}&amp;onlineClassID=#{sessionDisplayController.onlineClassModel.onlineClassId}&amp;sessionID=#{sessionDisplayController.sessionId}" />                              
+                                    <p:graphicImage height="auto" style="width: 600px;display: block;" value="/faces/images/dynamic/?file=#{slide}&amp;onlineClassID=#{sessionDisplayController.onlineClassModel.onlineClassId}&amp;sessionID=#{sessionDisplayController.sessionId}" />                              
                                 </ui:repeat>
                             </p:imageSwitch>
 
@@ -81,6 +87,16 @@
             </script>
         </h:form>
 
-    </h:body>
+
+
+        </ui:define> 
+    </ui:composition>
+
+
+
 </html>
+
+
+
+
 

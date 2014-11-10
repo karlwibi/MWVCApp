@@ -101,7 +101,7 @@ public class LoginController {
         setUrl(null);
 
         try {
-            context.redirect(context.getRequestContextPath() + "/faces/index.xhtml");
+            context.redirect(context.getRequestContextPath() + "/faces/login.xhtml");
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -6,7 +6,9 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
-    <ui:composition template="/templates/template.xhtml">
+    <ui:composition template="/templates/templateNoNav.xhtml">
+        
+        
         <ui:define name="headerInfo"> 
 
             <f:metadata>
@@ -16,6 +18,21 @@
             <title>Module WebRTC Video Conferencing</title>
         </ui:define>
 
+        <ui:define name="menu">
+            
+            
+            <h:form>
+                
+                <nav>
+                    <ul>
+                        <li> <p:link class="btn btn-default" value="Add class" outcome="onlineClass">
+                        <f:param  name="teacherId" value="#{onlineClassesController.userId}" />  
+                    </p:link></li>
+                        
+                    </ul>
+                </nav>
+            </h:form>
+        </ui:define> 
         <ui:define name="content"> 
 
 
@@ -25,9 +42,7 @@
 
                 <h:form id="form1">
 
-                    <p:link class="btn btn-default" value="Add class" outcome="onlineClass">
-                        <f:param  name="teacherId" value="#{onlineClassesController.userId}" />  
-                    </p:link>
+                   
                     <p:growl id="msgs" showDetail="true"/>
 
                     <p:dataTable id="userRole1" var="onlineClass" value="#{onlineClassesController.teacherClassList}" editable="true" style="margin-bottom:20px">
@@ -56,7 +71,10 @@
                         <p:column headerText="">
 
 
-                            <h:outputLink class="btn btn-default" value="#" > Edit Class Info</h:outputLink>
+                            <h:outputLink class="btn btn-default" value="onlineClassDetails.xhtml" > 
+                                <f:param name="onlineClassID" value="#{onlineClass.onlineClassId}"/>
+                                <h:outputLabel value="Edit Class Info"/>
+                            </h:outputLink>
 
 
 
@@ -66,7 +84,7 @@
                         <p:column headerText="">
 
 
-                            <h:outputLink class="btn btn-default" value="http://54.187.74.210:9010/virtualClassTV.html?roomId=#{onlineClass.roomid}&amp;userId=#{onlineClassesController.userId}" target="_blank" > join the room #{onliClass.roomid} <i class="fa fa-video-camera"></i> </h:outputLink>
+                            <h:outputLink class="btn btn-default" value="http://localhost:9001/virtualClassTV.html?roomId=#{onlineClass.roomid}&amp;userId=#{onlineClassesController.userId}" target="_blank" > join the room #{onliClass.roomid} <i class="fa fa-video-camera"></i> </h:outputLink>
 
 
 

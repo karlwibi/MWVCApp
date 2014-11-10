@@ -3,8 +3,30 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Admin/Documents/NetBeansProjects/MWVCApp/web/sessionDisplayInfo.xhtml</file>
-            <file>file:/C:/Users/Admin/Documents/NetBeansProjects/MWVCApp/src/java/edu/ilstu/controller/sessionDisplayController.java</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/error.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/index.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/src/java/edu/ilstu/controller/OnlineClassController.java</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/onlineClassSession.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/rooms.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/user.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/templates/templateNew.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/templates/templateNoNav.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/src/java/edu/ilstu/controller/onlineClassDetailsController.java</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/sessionDisplayInfo.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/src/java/edu/ilstu/admin/dao/UserLoginRoleDAOImpl.java</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/resources/css/style.css</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/restricted/admin.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/welcomePrimefaces.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/loginAdmin_failure.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/WEB-INF/web.xml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/loginAdmin.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/login.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/roomParticipant.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/onlineClass.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/src/java/edu/ilstu/controller/AdminController.java</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/onlineClassDetails.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/web/onlineClasses.xhtml</file>
+            <file>file:/G:/My%20Documents/NetBeansProjects/MWVCApp/src/java/edu/ilstu/admin/UserLoginRole.java</file>
         </group>
     </open-files>
 </project-private>
