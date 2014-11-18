@@ -159,14 +159,19 @@ public class OnlineClassDAOImpl implements OnlineClassDAO, Serializable {
 
         try {
 
-            PreparedStatement p = con.prepareStatement("UPDATE onlineclass"
-                    + "set title=?,"
-                    + "description=?"
-                    + "roomid=?");
+            PreparedStatement p = con.prepareStatement("UPDATE onlineclass "
+                    + "SET title=?,"
+                    + "description=?,"
+                    + "roomid=? "
+                    + "WHERE onlineclassid=?");
 
             p.setString(i++, onlineClass.getTitle());
             p.setString(i++, onlineClass.getDescription());
             p.setInt(i++, onlineClass.getRoomid());
+            p.setInt(i++, onlineClass.getOnlineClassId());
+
+            System.out.println(p.toString());
+            p.executeUpdate();
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());

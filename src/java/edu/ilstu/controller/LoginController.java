@@ -37,6 +37,7 @@ public class LoginController {
     private static String url = null;
     private static UserModel user = null;
     private static boolean isLogin = false;
+    private String message=null;
 
     /**
      * Creates a new instance of LoginController
@@ -64,17 +65,26 @@ public class LoginController {
 
                 setLogin(new UserLogin());
                 getLogin().setUsername(request.getUserPrincipal().getName());
-                setLogin(getLogin().getLogin());
+                
+                if(getLogin().getLogin()!=null){
+                    setLogin(getLogin().getLogin());
 
-                setUdao(new UserDAOImpl());
+                    setUdao(new UserDAOImpl());
 
-                setUser(getUdao().getUserBy(getLogin().getUserId()));
+                
+                setUser(getUdao().getUserBy(getLogin().getUserId()));    
+                }else{
+                    throw new ServletException("Username or password Not Correct!");
+                }
+                
+                
             }
         } catch (ServletException e) {
 
             facesContext.addMessage(null, new FacesMessage("Login failed."));
             try {
-                context.redirect("error.xhtml");
+                setMessage(e.getMessage());
+                context.redirect("errorLogin.xhtml");
             } catch (IOException ex) {
                 Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -206,4 +216,18 @@ public class LoginController {
         isLogin = aIsLogin;
     }
 
+   /**
+     * @return the message
+     */
+    public String getMessage() {
+        return message;
+    }
+
+    /**
+     * @param aMessage the message to set
+     */
+    public void setMessage(String aMessage) {
+        message = aMessage;
+    }
+    
 }

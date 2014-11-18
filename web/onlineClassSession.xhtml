@@ -26,16 +26,7 @@
         <!-- include a theme -->
         <link rel="stylesheet" type="text/css" href="#{resource['css:themes/default.min.css']}" />
 
-        <script>
-            
-            // self executing function here
-(function() {
-   
-
-})();
-            
-           
-        </script>
+       
         </ui:define>
 
         <ui:define name="content"> 
@@ -105,14 +96,14 @@
 
                                 </p:panelGrid>
                             </ui:repeat>
-                            <p:commandButton icon="fa fa-plus-circle" >
+                            <p:commandButton value="+" style="color: green;font-weight: bold">
                                 <f:ajax listener="#{onlineClassDetailsController.extend}"
                                         execute="formOne"
                                         render="formOne" 
 
                                         />
                             </p:commandButton>
-                            <p:commandButton icon="fa fa-minus-circle">
+                            <p:commandButton value="-" style="color: red;font-weight: bold">
                                 <f:ajax listener="#{onlineClassDetailsController.unExtend()}"
                                         execute="formOne"
                                         render="formOne" 
@@ -121,9 +112,8 @@
                             </p:commandButton>
 
                         </p:fieldset>
-
-                        <p:commandButton value="submit" action="#{onlineClassDetailsController.createSession()}"/>
-                        <p:commandButton  value="cancel"/>
+                        <p:commandButton class="btn btn-default btn-primary" widgetVar="submitSession" value="submit" action="#{onlineClassDetailsController.createSession()}" onclick="PF('submitSession').disable()"/>
+                        <p:commandButton class="btn btn-default"    onclick="closeWindow()" value="close"/>
                     </p:panel>
 
                 </div>
@@ -138,9 +128,7 @@
 
                 <p:growl widgetVar="uploadMessages" id="messages" showDetail="true" life="5000" /> 
 
-              
-
-
+            
             </h:form>
         </p:dialog>   
 
@@ -151,7 +139,7 @@
         
         <ui:define name="scriptPart">
             
-               <script type="text/javascript">
+        <script type="text/javascript">
             
             
             var counter=0;
@@ -159,63 +147,70 @@
             
             function startProcess(){
                 
-                if(counter==0){
-                    numberOfFiles=PF('fileVar').files.length;
-                                       
-                }
+                                    if(counter==0){
+                                    numberOfFiles=PF('fileVar').files.length;
+                                        
+                                    }
                 
-            }
+                     }
             
             function finalProcess(){
-                    counter++;
-               console.log("number of files "+numberOfFiles);
-                console.log("counter: "+counter);
-                console.log(PF('fileVar').files.length);
-                if(counter == numberOfFiles){
-                    PF('dlg2').hide();
-                    alertify.setting('notifier','position', 'top-right');
-                      alertify.success('The files were uploaded successfully !'); 
-                      checkFirstVisit();
-                      location.reload();
-                }
-            };
+                                    counter++;
+                                    console.log("number of files "+numberOfFiles);
+                                    console.log("counter: "+counter);
+                                    console.log(PF('fileVar').files.length);
+                                    if(counter == numberOfFiles){
+                                        PF('dlg2').hide();
+                                        alertify.setting('notifier','position', 'top-right');
+                                        alertify.success('The files were uploaded successfully !'); 
+                                        checkFirstVisit();
+                                        location.reload();
+                                }
+                            };
             
     var isRefresh=false;
     
     var delete_cookie = function(name) {
-    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-};
+                                        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+                                };
+    function closeWindow(){
+                    delete_cookie('firstVisit');
+                     window.opener.location.reload(true);
+                     //window.opener = self;
+                     window.close();
+                    
+            }
+            
     function checkFirstVisit() {
         if(document.cookie.indexOf('firstVisit')==-1) {
             // cookie doesn't exist, create it now
             document.cookie = 'firstVisit=1';
 
-            }
-            else {
-    // not first visit, so alert
+        }else {
+                // not first visit, so alert
                 isRefresh=true;
                 alert('You refreshed!');
-            }
-       }
+                }
+        }
            
-                    
-              window.onresize = function ()
-            {
-
+            
+              
+    window.onresize = function (){
                 window.resizeTo(800, 800);
                 window.moveTo(145, 235);
             };
-            window.onclick = function ()
-            {
-                window.resizeTo(800, 800);
-                window.moveTo(145, 235);
-            };
+            
+//    window.onclick = function (){
+//                window.resizeTo(800, 800);
+//                window.moveTo(145, 235);
+//            };
 
-            window.onunload = function () {
-                if ((window.opener)&amp;&amp;(!window.opener.closed)) {
+    window.onunload = function () {
+                if ((window.opener) &amp;&amp;(!window.opener.closed)) {
                     if(isRefresh){
                         isRefresh=false;
                     }else{
+                         alert('Parent window is refreshed!');
                         delete_cookie('firstVisit');
                         window.opener.popUpClosed();
                     }
@@ -223,7 +218,9 @@
                     
                 }
             };
+            
         </script>
+            
         </ui:define>
         
        

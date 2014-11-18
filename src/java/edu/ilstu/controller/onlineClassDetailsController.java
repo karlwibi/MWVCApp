@@ -36,6 +36,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.apache.commons.io.FileUtils;
 import org.primefaces.event.FileUploadEvent;
@@ -49,7 +50,7 @@ import org.apache.commons.io.IOUtils;
  */
 @ManagedBean
 @SessionScoped
-public class onlineClassDetailsController implements Serializable{
+public class onlineClassDetailsController implements Serializable {
 
     private int onlineClassID;
     private int scheduleID;
@@ -87,9 +88,9 @@ public class onlineClassDetailsController implements Serializable{
 
     public void _init() {
 
-        presentationFlag = "prezi";
+        presentationFlag = "slide";
         preziValid = false;
-        slideValid = false;
+        slideValid = true;
         setUploadDone(false);
 
         //initialize the fileupload list
@@ -143,6 +144,7 @@ public class onlineClassDetailsController implements Serializable{
 
     }
 
+    
     public void createSession() {
         int sessionId = 0;
         int revealId = 0;
@@ -211,10 +213,9 @@ public class onlineClassDetailsController implements Serializable{
                         IOUtils.closeQuietly(input);
                     }
                     //inserting into the database
-                    System.out.println("File without full Path: "+file.getAbsolutePath());
-                   System.out.println("File full Path: "+file.getAbsolutePath());
+                    System.out.println("File without full Path: " + file.getAbsolutePath());
+                    System.out.println("File full Path: " + file.getAbsolutePath());
                     contentModel.setContentText(file.getAbsolutePath());
-                   
                     contentModel.createContent();
 
                 }
@@ -235,12 +236,19 @@ public class onlineClassDetailsController implements Serializable{
         }
     }
 
+    /**
+     * add line to list
+     */
     public void extend() {
         setStudyToolModel(new StudyToolModel());
         listStudyResource.add(studyToolModel);
 
     }
 
+    /**
+     * Remove the extra 
+     * line from list
+     */
     public void unExtend() {
 
         int lastIndex = listStudyResource.size() - 1;
@@ -249,6 +257,11 @@ public class onlineClassDetailsController implements Serializable{
         }
     }
 
+    /**
+     * check if Date is 
+     * in the schedule range
+     * date for the class
+     */
     public void checkIfDateInRange() {
 
         if (!((sessionModel.getDateSession().after(scheduleClassModel.getStart_Date()) && sessionModel.getDateSession().before(scheduleClassModel.getEnd_Date())) || sessionModel.getDateSession().equals(scheduleClassModel.getEnd_Date()) || sessionModel.getDateSession().equals(scheduleClassModel.getStart_Date()))) {
@@ -260,6 +273,7 @@ public class onlineClassDetailsController implements Serializable{
         }
     }
 
+    
     public void presentationListener() {
 
         if (presentationFlag.equals("slide")) {
@@ -274,26 +288,82 @@ public class onlineClassDetailsController implements Serializable{
     public void handleFileUpload(FileUploadEvent event) {
 
         //uploadedFiles.add(event.getFile());
-      
         if (eventCounter == 0) {
             // insert code to execute before first file is started
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "UpLoad Info:", "your Upload is starting!"));
         }
-        
+
         try {
             getTempUploadFiles().put(event.getFile().getFileName(), event.getFile().getInputstream());
-             uploadedFiles.add(event.getFile().getFileName());
+            uploadedFiles.add(event.getFile().getFileName());
         } catch (IOException ex) {
             Logger.getLogger(onlineClassDetailsController.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-          eventCounter++;
+            eventCounter++;
         } // block finally
 
     }
-    
-   
 
+    public void updateClassInfo() {
+
+        this.onlineClassModel.updateClass();
+        if (this.scheduleClassModel.getScheduleClassId() != 0) {
+            this.scheduleClassModel.updateSchedule();
+        } else {
+            ScheduleClassModel scm = new ScheduleClassModel(this.onlineClassModel.getOnlineClassId());
+            scm.setStart_Date(scheduleClassModel.getStartDate());
+            scm.setEnd_Date(scheduleClassModel.getEndDate());
+            scm.setStart_Time(scheduleClassModel.getStartTime());
+            scm.setEnd_Time(scheduleClassModel.getEndTime());
+            scm.saveSchedule();
+        }
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info:", "your class information was updated!"));
+
+    }
+
+    /**
+     * remove the student from the 
+     * class list
+     * @param studenId 
+     */
+    public void removeStudent(int studenId, String studentName){
+     
+        RoomParticipantModel rp = new RoomParticipantModel(this.onlineClassID, studenId);
+        rp.deleteParticipant();
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info:", "Student "+ studentName +" was removed"));
+        
+    }
+    
+    
+    public void removeSession(int sessionId){
+        
+        ClassSessionModel csm= new ClassSessionModel();
+        csm.setSessionId(sessionId);
+        csm.deleteClassSession();
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info:", "session was removed"));
+        
+    }
+    
+    public void deleteClass(){
+        
+        int userId=onlineClassModel.getTeacherId();
+        onlineClassModel.deleteClass();
+        
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        ExternalContext context = facesContext.getExternalContext();
+        try {
+            context.redirect(context.getRequestContextPath() + "/faces/onlineClasses.xhtml?faces-redirect=true&userId="+userId);
+        } catch (IOException ex) {
+            Logger.getLogger(onlineClassDetailsController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
     /**
      * @return the onlineClassModel
      */

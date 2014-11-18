@@ -17,7 +17,8 @@
         <ui:define name="content"> 
 
 
-
+            <div class="row">
+                <div class="col-lg-8">
             <h:form class="form-signin" role="form">
                 <h:outputLabel for="usernameInput" value="username :"/>
 
@@ -32,7 +33,13 @@
                 <br />
                 <h:commandButton class="btn btn-lg btn-primary btn-block" type="submit" value="submit" action="#{loginController.signIn()}" />
             </h:form>
-
+         
+                </div>
+                <div class="col-lg-4">
+           <h:graphicImage library="img" name="webrtc_logo.png" />         
+                </div>
+            </div>
+           
 
         </ui:define> 
     </ui:composition>

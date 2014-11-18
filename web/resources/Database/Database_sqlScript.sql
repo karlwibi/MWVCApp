@@ -203,7 +203,7 @@ presentationid int,
 sessiondate date,
 constraint classsession_sessionid_pk primary key(sessionid),
 constraint classsession_prsentationid_fk foreign key(presentationid)
-	references ressource (ressourceid),
+	references ressource (ressourceid)ON DELETE CASCADE,
 constraint classsession_scheduleid_fk foreign key (scheduleclassid)
 	references scheduleclass(scheduleclassid) ON DELETE CASCADE
 
@@ -216,9 +216,9 @@ resourceid int,
 
 constraint sessionResource_sID_rID_pk primary key(sessionid, resourceid),
 constraint sessionResource_sessionid_fk foreign key(sessionid)
-	references classsession (sessionid),
+	references classsession (sessionid) ON DELETE CASCADE,
 constraint sessionResource_resourceid_fk foreign key(resourceid)
-	references studytool (ressourceid)
+	references studytool (ressourceid) ON DELETE CASCADE 
 
 
 );

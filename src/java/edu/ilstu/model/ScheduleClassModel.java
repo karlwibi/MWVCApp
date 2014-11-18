@@ -46,8 +46,17 @@ public class ScheduleClassModel implements Serializable {
 
     }
 
-    public ScheduleClassModel(int scheduleClassId, int onlineClassId, Date startDate, Date endDate, Time startTime, Time endTime) {
+    
+     public ScheduleClassModel(int onlineClassId, Date startDate, Date endDate, Time startTime, Time endTime) {
         this(onlineClassId, startDate, endDate);
+        this.startTime = startTime;
+        this.endTime = endTime;
+       
+
+    }
+    
+    public ScheduleClassModel(int scheduleClassId, int onlineClassId, Date startDate, Date endDate, Time startTime, Time endTime) {
+        this(onlineClassId, startDate, endDate, startTime, endTime);
         this.startTime = startTime;
         this.endTime = endTime;
         this.scheduleClassId = scheduleClassId;
@@ -198,6 +207,7 @@ public class ScheduleClassModel implements Serializable {
     }
     
     /**
+     * Use java util date
      * @return the start_Date
      */
     public java.util.Date getStart_Date() {
@@ -205,6 +215,7 @@ public class ScheduleClassModel implements Serializable {
     }
 
     /**
+     * Use java util date
      * @param start_Date the start_Date to set
      */
     public void setStart_Date(java.util.Date start_Date) {
@@ -214,6 +225,7 @@ public class ScheduleClassModel implements Serializable {
     }
 
     /**
+     * Use java util date
      * @return the end_Date
      */
     public java.util.Date getEnd_Date() {
@@ -221,6 +233,7 @@ public class ScheduleClassModel implements Serializable {
     }
 
     /**
+     * Use java util date
      * @param end_Date the end_Date to set
      */
     public void setEnd_Date(java.util.Date end_Date) {
@@ -230,6 +243,7 @@ public class ScheduleClassModel implements Serializable {
     }
 
     /**
+     * Use java util date
      * @return the start_Time
      */
     public java.util.Date getStart_Time() {
@@ -237,15 +251,17 @@ public class ScheduleClassModel implements Serializable {
     }
 
     /**
+     * Use java util date
      * @param start_Time the start_Time to set
      */
     public void setStart_Time(java.util.Date start_Time) {
         this.start_Time = start_Time;
-        if (this.startTime!=null)
+        if (this.start_Time!=null)
        setStartTime(new java.sql.Time(new java.sql.Date( this.start_Time.getTime()).getTime()));
     }
 
     /**
+     * Use java util date
      * @return the end_Time
      */
     public java.util.Date getEnd_Time() {
@@ -253,6 +269,7 @@ public class ScheduleClassModel implements Serializable {
     }
 
     /**
+     * Use java util date
      * @param end_Time the end_Time to set
      */
     public void setEnd_Time(java.util.Date end_Time) {

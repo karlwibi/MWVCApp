@@ -163,8 +163,8 @@ public class ScheduleClassDAOImpl implements ScheduleClassDAO, Serializable {
 
         try {
 
-            PreparedStatement p = con.prepareStatement("UPDATE scheduleclass"
-                    + "set startdate=?,"
+            PreparedStatement p = con.prepareStatement("UPDATE scheduleclass "
+                    + "SET startdate=?,"
                     + "enddate=?,"
                     + "starttime=?,"
                     + "endtime=? "
@@ -176,6 +176,7 @@ public class ScheduleClassDAOImpl implements ScheduleClassDAO, Serializable {
             p.setTime(i++, scheduleClass.getEndTime());
             p.setInt(i++, scheduleClass.getScheduleClassId());
 
+            System.out.println(p.toString());
             p.executeUpdate();
 
         } catch (SQLException e) {

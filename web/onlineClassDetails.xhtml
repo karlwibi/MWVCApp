@@ -5,128 +5,173 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:pe="http://primefaces.org/ui/extensions">
-    
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:of="http://omnifaces.org/functions">
+
     <ui:composition template="/templates/templateNoNav.xhtml">
         <ui:define name="headerInfo"> 
 
-            
+
             <title>Module WebRTC Video Conferencing - online Class Details</title>
-             
-        <link rel="stylesheet" type="text/css" href="#{resource['css:bootstrap.css']}" />
-        <h:outputStylesheet library="awesome" name="css/font-awesome.css"/>
-        <f:metadata>
-            <f:viewParam name="onlineClassID" value="#{onlineClassDetailsController.onlineClassID}"/>
-            <f:viewAction action="#{onlineClassDetailsController._init()}" onPostback="false"  />
-        </f:metadata>
 
-        <script>
+            <link rel="stylesheet" type="text/css" href="#{resource['css:bootstrap.css']}" />
+            <h:outputStylesheet library="awesome" name="css/font-awesome.css"/>
+            <f:metadata>
+                <f:viewParam name="onlineClassID" value="#{onlineClassDetailsController.onlineClassID}"/>
+                <f:viewAction action="#{onlineClassDetailsController._init()}" onPostback="false"  />
+            </f:metadata>
 
-            function showGrpMemberSearchPageCalenderLeave(scheduleId) {
-                window.open('./onlineClassSession.xhtml?scheduleId=' + scheduleId, 'onlineClassSession', 'resizable=no,directories=no,location=no,toolbar=no,scrollbars=yes,height=800,width=800,top=145,left=235');
-                return true;
-            }
-            function popUpClosed() {
-                window.location.reload();
-            }
-            
-            
-            function sessionDetailPage(detailType,sessionId){
-                 window.open('./sessionDisplayInfo.xhtml?sessionId=' + sessionId+'&amp;detailType='+detailType, 'onlineClassSession', 'resizable=no,directories=no,location=no,toolbar=no,scrollbars=yes,height=800,width=800,top=145,left=235');
-                return true;
-            }
-        </script>
+            <script>
+                var sessionDetailWindow;
+
+                function showGrpMemberSearchPageCalenderLeave(scheduleId) {
+                    window.open('./onlineClassSession.xhtml?scheduleId=' + scheduleId, 'onlineClassSession', 'resizable=no,directories=no,location=no,toolbar=no,scrollbars=yes,height=800,width=800,top=145,left=235');
+                    return true;
+                }
+
+                function popUpClosed() {
+                    window.location.reload();
+
+                }
+
+
+                function sessionDetailPage(detailType, sessionId) {
+                    sessionDetailWindow = window.open('./sessionDisplayInfo.xhtml?sessionId=' + sessionId + '&amp;detailType=' + detailType, 'onlineClassSession', 'resizable=no,directories=no,location=no,toolbar=no,scrollbars=yes,height=800,width=800,top=145,left=235');
+                    return true;
+                }
+            </script>
 
         </ui:define>
 
         <ui:define name="content"> 
+       <o:form id="form1">
 
-       
- <div class="ui-grid ui-grid-responsive">
+            <div class="ui-grid ui-grid-responsive">
                 <div class="ui-grid-row">
                     <div class="ui-grid-col-12">
 
                         <p:panel id="basic" header="Online class detail"  style="margin-bottom:20px">
-                            <h:form>
+                     
+                                <p:growl id="growl" showDetail="true" sticky="true" />  
 
-                                <h:panelGrid id="panel_info" columns="2" border="0" width="100%" style="margin-bottom:20px">
+                                <p:panel id="classDetail" style="margin-bottom:20px" >
+                                    <h:panelGrid id="panel_info" columns="2" border="0" width="100%" style="margin-bottom:20px">
 
-                                    <p:outputLabel value="Title" for="OC_Title"/>
-                                    <p:inputText class="form-control" value="#{onlineClassDetailsController.onlineClassModel.title}" id="OC_Title"/>
-                                    <p:outputLabel value="description" for="OC_description"/>
-                                    <p:inputTextarea class="form-control" value="#{onlineClassDetailsController.onlineClassModel.description}" id="OC_description"/>
+                                        <p:outputLabel value="Title" for="OC_Title"/>
+                                        <p:inputText class="form-control" value="#{onlineClassDetailsController.onlineClassModel.title}" id="OC_Title"/>
+                                        <p:outputLabel value="description" for="OC_description"/>
+                                        <p:inputTextarea class="form-control" value="#{onlineClassDetailsController.onlineClassModel.description}" id="OC_description"/>
 
-                                </h:panelGrid>
-                                <p:fieldset id="f_schedule" legend="Schedule" style="margin-bottom:20px">
-                                    <h:panelGrid columns="2" border="0" width="100%" >
-
-                                        <p:outputLabel value="Start Date" for="OC_StartDate"/>
-                                        <p:calendar id="OC_StartDate" style="width: 300px" value="#{onlineClassDetailsController.scheduleClassModel.start_Date}"/>
-
-                                        <p:outputLabel value="description" for="OC_EndDate"/>
-                                        <p:calendar id="OC_EndDate" style="width: 300px"  value="#{onlineClassDetailsController.scheduleClassModel.end_Date}"/>
-
-                                        <p:outputLabel value="Session debut hour:" for="OC_StartSessionHour"/>
-                                        <pe:timePicker  id="OC_StartSessionHour" class="form-control" value="#{onlineClassDetailsController.scheduleClassModel.start_Time}" mode="spinner" />
-
-                                        <p:outputLabel value="session end hour:" for="OC_EndSessionhur"/>
-                                        <pe:timePicker  id="OC_EndSessionhur" class="form-control" value="#{onlineClassDetailsController.scheduleClassModel.end_Time}" mode="spinner" />
                                     </h:panelGrid>
-                                </p:fieldset>
-                                <p:fieldset id="f_enroll" legend="Enrolled Student" style="margin-bottom:20px">
-                                    <ui:repeat var="st" value="#{onlineClassDetailsController.listEnrollStudent}">
-                                        <h:panelGrid columns="3"  width="100%" border="0">
-                                            <p:inputText value="#{st.fname}"/>
-                                            <p:inputText value="#{st.lname}"/>
-                                            <p:commandButton  value="Remove"/>
+                                    <p:fieldset id="f_schedule" legend="Schedule"  style="margin-bottom:20px">
+                                        <h:panelGrid columns="2" border="0" width="100%" >
 
+                                            <p:outputLabel value="Start Date" for="OC_StartDate"/>
+                                            <p:calendar id="OC_StartDate" style="width: 300px" value="#{onlineClassDetailsController.scheduleClassModel.start_Date}"/>
+
+                                            <p:outputLabel value="description" for="OC_EndDate"/>
+                                            <p:calendar id="OC_EndDate" style="width: 300px"  value="#{onlineClassDetailsController.scheduleClassModel.end_Date}"/>
+
+                                            <p:outputLabel value="Session debut hour:" for="OC_StartSessionHour"/>
+                                            <pe:timePicker  id="OC_StartSessionHour" class="form-control" value="#{onlineClassDetailsController.scheduleClassModel.start_Time}" mode="spinner" />
+
+                                            <p:outputLabel value="session end hour:" for="OC_EndSessionhur"/>
+                                            <pe:timePicker  id="OC_EndSessionhur" class="form-control" value="#{onlineClassDetailsController.scheduleClassModel.end_Time}" mode="spinner" />
                                         </h:panelGrid>
-                                    </ui:repeat>
+                                    </p:fieldset>
+                                    <p class="text-right">
+                                        <p:commandButton style="color: green;font-weight: bold" value="Update class info" action="#{onlineClassDetailsController.updateClassInfo()}" update="growl"/>  
+                                    </p>
+                                </p:panel>
+
+
+                                <p:fieldset id="f_enroll" legend="Enrolled Student" style="margin-bottom:20px">
+
+                                    <h:dataTable id="student_list" class="table" var="st" value="#{onlineClassDetailsController.listEnrollStudent}" border="0">
+
+                                        <h:column>
+                                            <p:inputText disabled="true" value="#{st.fname}"/>
+                                        </h:column>
+
+                                        <h:column>
+                                            <p:inputText disabled="true" value="#{st.lname}"/>
+                                        </h:column>
+
+                                        <h:column>
+                                            <p:commandButton style="color: red;font-weight: bold" value="Remove"   action="#{onlineClassDetailsController.removeStudent(st.userid, st.fname)}" update=":form1:growl :form1:student_list"/>
+                                        </h:column>
+                                    </h:dataTable>
+
                                 </p:fieldset>
 
-                                <p:fieldset  id="f_session" legend="Class Sessions">
+                                <h:panelGroup  id="f_session">
+                                    <p:fieldset  legend="Class Sessions">
 
-                                    <!-- this will contains the schedule id for a particular room-->
-                                    <h:inputHidden value="#{onlineClassDetailsController.scheduleID}"/>
+                                        <!-- this will contains the schedule id for a particular room-->
+                                        <h:inputHidden value="#{onlineClassDetailsController.scheduleID}"/>
 
-                                    <!--/ <p:commandButton value="Add class Session" type="button" onclick="PF('dlg2').show();" />-->
-                                    <p:commandButton value="Add class Session" type="button" onclick="showGrpMemberSearchPageCalenderLeave(#{onlineClassDetailsController.scheduleID})" />
+                                        <!--/ <p:commandButton value="Add class Session" type="button" onclick="PF('dlg2').show();" />-->
+                                        <p:commandButton style="color: green;font-weight: bold;margin-bottom: 20px" value="Add class Session" type="button" onclick="showGrpMemberSearchPageCalenderLeave(#{onlineClassDetailsController.scheduleID})" />
 
-                                    <p:dataTable  var="csl" value="#{onlineClassDetailsController.sessionList}">
-                                        <p:column headerText="Session Date">
-                                            <h:outputText value="#{csl.dateSession}" />
-                                        </p:column>
+                                        <h:dataTable class="table table-responsive"  id="sessionList"  var="csl" value="#{onlineClassDetailsController.sessionList}">
+                                            <h:column >
+                                                <h:outputText value="#{csl.dateSession}" />
+                                            </h:column>
 
-                                        <p:column headerText="Presentation Link">
-                                            <i class="fa fa-file">
-                                                <h:link value="Click to preview class Presentation"  onclick="sessionDetailPage('Presentation','#{csl.sessionId}');">
-                                               
-                                            </h:link>   
-                                           
-                                           </i>
-                                        </p:column>
+                                            <h:column >
+                                                <button class="btn btn-default" type="button" onclick="sessionDetailPage('Presentation', '#{csl.sessionId}');"> <i class="fa fa-eye">Click to preview Resource Links  </i></button>
+                                            </h:column>
+                                            <h:column >
 
-                                        <p:column headerText="Study Ressource link">
-                                             <h:link value="Click to preview Resource Links" onclick="sessionDetailPage('Resource','#{csl.sessionId}');">
-                                                   </h:link> 
-                                        </p:column>
+                                                <button class="btn btn-default" type="button" onclick="sessionDetailPage('Resource', '#{csl.sessionId}');"><i class="fa fa-eye">Click to preview Resource Links</i></button>
 
+                                            </h:column>
+
+                                            <h:column>
+                                                
+                                                <p:commandButton style="color: red;font-weight: bold" value="delete session"   action="#{onlineClassDetailsController.removeSession(csl.sessionId)}" update=":form1:growl :form1:f_session"/>
+                                            </h:column>
+
+                                        </h:dataTable>
+
+                                    </p:fieldset>
+                                </h:panelGroup>
+
+
+                            
+                            <p style="margin-top: 20px;margin-bottom: 20px">
+                               
+                                <h:panelGrid columns="2" border="0" class="table ta" >
+                                            <h:outputLink class="btn btn-primary"  value="onlineClasses.xhtml">
+                                                <f:param name="userId" value="#{onlineClassDetailsController.onlineClassModel.teacherId}"/>
+                                                <i class="fa fa-backward ">&nbsp;<h:outputLabel value="Return to Class List"/></i>
+                                            </h:outputLink>
+                                                                                 
+                                    <h:commandButton class="btn btn-default btn-danger" type="button" value="delete Class" onclick="PF('dlg2').show();" >                                 
+                                    </h:commandButton>
+                                </h:panelGrid>
                                        
-                                    </p:dataTable>
-
-
-                                  
-
-                                </p:fieldset>
-
-                            </h:form>
+                                            
+                                            
+                                       
+                               </p>
                         </p:panel>
+                        <p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true" height="100">
+                            <p>Are you sur you wanna delete this class</p>
+             
+                            <p:commandButton class="btn btn-default btn-danger" actionListener="#{onlineClassDetailsController.deleteClass()}" value="yes" onclick="PF('dlg2').hide();" />                                 
+                             &nbsp;&nbsp;
+                            <h:commandButton class="btn btn-default btn-danger" type="button" value="delete Class" onclick="PF('dlg2').hide();" >                                 
+                                    </h:commandButton>
+                        </p:dialog>
+                        
                     </div>
 
                 </div>
             </div>
-
-
+</o:form>
+           
 
         </ui:define> 
     </ui:composition>

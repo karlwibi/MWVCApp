@@ -70,10 +70,10 @@ public class ClassSessionDAOImpl implements ClassSessionDAO {
         
         try {
 
-            PreparedStatement p = con.prepareStatement("UPDATE classsession"
-                    + "set scheduleclasid=?,"
-                    + "presentationid=?,"
-                    + "sessiondate=?"
+            PreparedStatement p = con.prepareStatement("UPDATE classsession "
+                    + "set scheduleclasid=?, "
+                    + "presentationid=?, "
+                    + "sessiondate=? "
                     + "WHERE sessionid=?");
 
             p.setInt(i++, session.getScheduleClassId());
@@ -109,7 +109,7 @@ public class ClassSessionDAOImpl implements ClassSessionDAO {
         
         try {
 
-            PreparedStatement p = con.prepareStatement(" DELETE FROM classsession"
+            PreparedStatement p = con.prepareStatement(" DELETE FROM classsession "
                     + "WHERE sessionid=?");
 
             p.setInt(i++, session.getSessionId());

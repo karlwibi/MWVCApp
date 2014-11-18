@@ -130,8 +130,19 @@
      
     <error-page>
         <error-code>403</error-code>
-        <location>/faces/user.xhtml</location>
+        <location>/faces/error.xhtml</location>
     </error-page>
+    
+     <error-page>
+        <error-code>404</error-code>
+        <location>/faces/error.xhtml</location>
+    </error-page>
+    
+     <error-page>
+        <error-code>500</error-code>
+        <location>/faces/error.xhtml</location>
+    </error-page>
+    
     
     <context-param>   
         <param-name>primefaces.THEME</param-name>

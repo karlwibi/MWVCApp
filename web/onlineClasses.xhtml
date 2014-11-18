@@ -7,32 +7,43 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
     <ui:composition template="/templates/templateNoNav.xhtml">
-        
-        
+
+
         <ui:define name="headerInfo"> 
 
             <f:metadata>
                 <f:viewParam name="userId" value="#{onlineClassesController.userId}"/>
                 <f:viewAction action="#{onlineClassesController.checkUserType()}" onPostback="false"  />
             </f:metadata>
-            <title>Module WebRTC Video Conferencing</title>
+            <title>Module WebRTC Video Conferencing - Online Classes</title>
         </ui:define>
 
         <ui:define name="menu">
-            
-            
+
+            <div style="margin: 20px">
             <h:form>
-                
-                <nav>
-                    <ul>
-                        <li> <p:link class="btn btn-default" value="Add class" outcome="onlineClass">
-                        <f:param  name="teacherId" value="#{onlineClassesController.userId}" />  
-                    </p:link></li>
-                        
-                    </ul>
-                </nav>
+
+
+                <p:growl id="messages"/>
+
+                <p:menubar>
+                    <p:menuitem  value="New online class" outcome="onlineClass" icon="ui-icon-plus" >
+                        <f:param  name="teacherId" value="#{onlineClassesController.userId}" /> 
+                    </p:menuitem>
+                    <p:menuitem value="Edit profile" url="http://www.primefaces.org" icon="ui-icon-person" />
+
+                    <f:facet name="options">
+                        <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
+                    </f:facet>
+                </p:menubar>
+
+
+
+             
             </h:form>
-        </ui:define> 
+    
+            </div>
+                    </ui:define> 
         <ui:define name="content"> 
 
 
@@ -42,150 +53,135 @@
 
                 <h:form id="form1">
 
-                   
+
                     <p:growl id="msgs" showDetail="true"/>
 
                     <p:dataTable id="userRole1" var="onlineClass" value="#{onlineClassesController.teacherClassList}" editable="true" style="margin-bottom:20px">
                         <f:facet name="header">
-                            Class I Teach
+                            <span class="text-info text-uppercase">Class I Teach</span>
 
                         </f:facet>
 
-                        <p:ajax event="rowEdit" listener="#{onlineClassesController.onRowEdit}" update=":form1:msgs" />
-                        <p:ajax event="rowEditCancel" listener="#{onlineClassesController.onRowCancel}" update=":form1:msgs" />
 
-                        <p:column headerText="title">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{onlineClass.title}" /></f:facet>
-                                <f:facet name="input"><p:inputText id="title" value="#{onineClass.title}"  style="width:100%"/></f:facet>
-                            </p:cellEditor>
+
+                        <p:column headerText="Title">
+
+                            <h:outputText value="#{onlineClass.title}" />
+
                         </p:column>
 
-                        <p:column headerText="description">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{onlineClass.description}" /></f:facet>
-                                <f:facet name="input"><p:inputText id="description" value="#{onlineClass.description}" readonly="true" style="width:100%"/></f:facet>
-                            </p:cellEditor>
+                        <p:column headerText="Description">
+                            <p class="classText article"><h:outputText value="#{onlineClass.description}" /></p>
+
                         </p:column>
 
-                        <p:column headerText="">
-
-
+                        <p:column headerText="Edit">
                             <h:outputLink class="btn btn-default" value="onlineClassDetails.xhtml" > 
                                 <f:param name="onlineClassID" value="#{onlineClass.onlineClassId}"/>
                                 <h:outputLabel value="Edit Class Info"/>
                             </h:outputLink>
 
+                        </p:column>
+
+
+                        <p:column headerText="Room Link">
+
+                            <h:outputLink class="btn btn-default" value="http://localhost:9001/virtualClassTV.html" target="_blank" > 
+                                <f:param name="roomId" value="#{onlineClass.roomid}"/>
+                                <f:param name="userId" value="#{onlineClassesController.userId}"/>
+                                <h:outputLabel >
+                                    join the room #{onliClass.roomid} <i class="fa fa-video-camera"></i> 
+                                </h:outputLabel>
+                            </h:outputLink>
 
 
                         </p:column>
 
 
-                        <p:column headerText="">
+                    </p:dataTable>
+                </h:form>
 
 
-                            <h:outputLink class="btn btn-default" value="http://localhost:9001/virtualClassTV.html?roomId=#{onlineClass.roomid}&amp;userId=#{onlineClassesController.userId}" target="_blank" > join the room #{onliClass.roomid} <i class="fa fa-video-camera"></i> </h:outputLink>
+            </h:panelGroup>
+
+
+            <h:panelGroup id="studentSection" rendered="#{not onlineClassesController.teacher}">
 
 
 
+                <h:form id="form2">
+
+
+                    <p:growl id="msgs" showDetail="true"/>
+
+                    <p:dataTable id="userRole1" var="onlineClass" value="#{onlineClassesController.classList}" editable="true" style="margin-bottom:20px">
+                        <f:facet name="header">
+                            <span class="text-info text-uppercase">Course I take</span>
+                        </f:facet>
+
+                        <p:column headerText="title">
+                            <p:cellEditor>
+                                <h:outputText value="#{onlineClass.title}" />
+                            </p:cellEditor>
                         </p:column>
 
-                        <p:column style="width:32px">
-                            <p:rowEditor />
+                        <p:column headerText="description">
+                            <p:cellEditor>
+                                <h:outputText value="#{onlineClass.description}" />
+                            </p:cellEditor>
                         </p:column>
 
 
 
+                        <p:column headerText="Room Link">
+                            <h:outputLink class="btn btn-default" value="http://localhost:9001/virtualClassTV.html" target="_blank" > 
+                                <f:param name="roomId" value="#{onlineClass.roomid}"/>
+                                <f:param name="userId" value="#{onlineClassesController.userId}"/>
+                                <h:outputLabel >
+                                    join the room #{onliClass.roomid} <i class="fa fa-video-camera"></i> 
+                                </h:outputLabel>
+                            </h:outputLink>
+
+                        </p:column>
                     </p:dataTable>
 
 
                 </h:form>
 
 
-
-                <!--                <ui:repeat var="t" value="{onlineClassesController.teacherClassList}">
-                
-                                    <p:panelGrid >
-                
-                
-                                        <f:facet name="header">
-                
-                                            <p:row>
-                
-                                                <p:column><h:outputText value="title"/></p:column>
-                                                <p:column> <h:outputText value="description"/></p:column>
-                                                <p:column> <h:outputText value="roomid"/></p:column>
-                
-                
-                                            </p:row>
-                
-                                        </f:facet>
-                                        <p:row>
-                
-                                            <p:column><h:outputText value="{t.title}"/></p:column>
-                                            <p:column> <h:outputText value="{t.description}"/></p:column>
-                                            <p:column> <h:outputText value="{t.roomid}"/></p:column>
-                                            <p:column> 
-                                                <h:form target="_blank"> 
-                                                    <h:outputLink class="btn btn-default" value="http://54.187.74.210:9010/virtualClassTV.html?roomId={t.roomid}&amp;userId={onlineClassesController.userId}" target="_blank" > join room {t.roomid} <i class="fa fa-video-camera"></i> </h:outputLink>
-                
-                                                </h:form>
-                                            </p:column>
-                
-                                        </p:row>
-                
-                
-                                    </p:panelGrid>
-                
-                                </ui:repeat>-->
-            </h:panelGroup>
-
-
-            <h:panelGroup id="studentSection" rendered="#{not onlineClassesController.teacher}">
-
-                <ui:repeat var="i" value="#{onlineClassesController.classList}">
-
-                    <p:panelGrid >
-
-
-                        <f:facet name="header">
-
-                            <p:row>
-
-                                <p:column><h:outputText value="title"/></p:column>
-                                <p:column> <h:outputText value="description"/></p:column>
-                                <p:column> <h:outputText value="roomid"/> </p:column>
-
-
-                            </p:row>
-
-                        </f:facet>
-                        <p:row>
-
-                            <p:column><h:outputText value="#{i.title}"/></p:column>
-                            <p:column> <h:outputText value="#{i.description}"/></p:column>
-                            <p:column> 
-                                <h:form target="_blank"> 
-                                    <h:outputLink class="btn btn-default" value="http://54.187.74.210:9010/virtualClassTV.html?roomId=#{i.roomid}&amp;userId=#{onlineClassesController.userId}" target="_blank" > join room <i class="fa fa-video-camera"></i> </h:outputLink>
-
-                                </h:form>
-                            </p:column>
-
-                            <!--                                    <h:outputLink value="http://localhost:9001/index3.html?roomId={i.roomid}" > join room <i class="fa fa-video-camera"></i> </h:outputLink>   </p:column>-->
-
-
-                        </p:row>
-
-
-                    </p:panelGrid>
-
-                </ui:repeat>
             </h:panelGroup>
 
 
 
 
         </ui:define> 
+
+
+
+        <ui:define name="scriptPart">
+            <script>
+
+                function reduceText() {
+                    var $elem = document.querySelectorAll("p.classText"); 		// The element or elements with the text to hide
+                    console.log($elem);
+                    for (var i in $elem) {
+                        console.log($elem[i]);
+                        var $limit = 50;		// The number of characters to show
+                        var $str = $elem[i].innerHTML;	// Getting the text
+                        console.log($str);
+                        var $strtemp = $str.substr(0, $limit);	// Get the visible part of the string
+                        $str = $strtemp + '...' + '<span class="hide">' + $str.substr($limit, $str.length) + '</span>';	// Recompose the string with the span tag wrapped around the hidden part of it
+                        console.log($str);
+                        $elem[i].innerHTML = $str;		// Write the string to the DOM 
+                    }
+
+                }
+
+                reduceText();
+            </script>
+
+
+        </ui:define>
     </ui:composition>
 
 

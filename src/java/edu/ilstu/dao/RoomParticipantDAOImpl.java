@@ -60,7 +60,7 @@ public class RoomParticipantDAOImpl implements RoomParticipantDAO, Serializable 
         Connection con = ConnectionDB.getConnInst();
         try {
 
-            PreparedStatement p = con.prepareStatement("DELETE FROM roomparticipant WHERE onliclassid=? and studentid=?");
+            PreparedStatement p = con.prepareStatement("DELETE FROM roomparticipant WHERE onlineclassid=? and studentid=?");
 
             p.setInt(i++, room.getOnlineClassId());
             p.setInt(i++, room.getStudentId());

@@ -20,6 +20,7 @@
         <h:outputStylesheet library="awesome" name="css/font-awesome.css"/>
         
         <link rel="stylesheet" type="text/css" href="#{resource['css:style.css']}" />
+        <link rel="stylesheet" type="text/css" href="#{resource['css:nav-wizard.bootstrap.css']}" />
     </h:head>
     <h:body>
         <div id="container">
@@ -34,11 +35,11 @@
                 <ui:insert name="menu"/>
                 
                 <section id="section1">
-                    <article>
-                        
+               
+                    <div class="container-fluid" style="margin-top:20px">    
                         <ui:insert name="content"/>
-
-                    </article>
+                    </div>
+                  
                 </section>
 
             </div>

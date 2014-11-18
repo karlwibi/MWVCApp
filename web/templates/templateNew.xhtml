@@ -20,6 +20,7 @@
         <!--<link rel="stylesheet" type="text/css" href="{resource['css:font-awesome.css']}" />-->
         <h:outputStylesheet library="awesome" name="css/font-awesome.css"/>
         <link rel="stylesheet" type="text/css" href="#{resource['css:style.css']}" />
+        <link rel="stylesheet" type="text/css" href="#{resource['css:nav-wizard.bootstrap.css']}" />
     </h:head>
     <h:body>
         <div id="container">
@@ -37,12 +38,14 @@
                     </ul>
                 </nav>
                 <section id="section1">
-                    <article>
-                        
-                        <ui:insert name="content"/>
+                    
+                    <div class="container-fluid" style="margin-top:20px">
+                       
+                         <ui:insert name="content"/>
+                    </div>
+                       
 
-                    </article>
-                </section>
+                            </section>
 
             </div>
             <footer> <p> Karl Wilhelm Bissereth | Copyright 2014</p><section id="footerImage">
@@ -52,80 +55,9 @@
         <!--javaScript and Jquery files-->
         <script src="#{resource['js:bootstrap.js']}"></script>
         <script src="#{resource['js:alertify.js']}"></script>
-        <script type="text/javascript">
-            
-         
-            var counter=0;
-            var numberOfFiles=0;
-            
-            function startProcess(){
-                
-                if(counter==0){
-                    numberOfFiles=PF('fileVar').files.length;
-                    
-                    
-                }
-                
-            }
-            
-            function finalProcess(){
-                    counter++;
-               console.log("number of files "+numberOfFiles);
-                console.log("counter: "+counter);
-                console.log(PF('fileVar').files.length);
-                if(counter == numberOfFiles){
-                    PF('dlg2').hide();
-                    alertify.setting('notifier','position', 'top-right');
-                      alertify.success('The files were uploaded successfully !'); 
-                      checkFirstVisit();
-                      location.reload();
-                }
-            };
-            
-    var isRefresh=false;
-    
-    var delete_cookie = function(name) {
-    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-};
-    function checkFirstVisit() {
-        if(document.cookie.indexOf('firstVisit')==-1) {
-            // cookie doesn't exist, create it now
-            document.cookie = 'firstVisit=1';
-
-            }
-            else {
-    // not first visit, so alert
-                isRefresh=true;
-                alert('You refreshed!');
-            }
-       }
-           
-                    
-              window.onresize = function ()
-            {
-
-                window.resizeTo(800, 800);
-                window.moveTo(145, 235);
-            };
-            window.onclick = function ()
-            {
-                window.resizeTo(800, 800);
-                window.moveTo(145, 235);
-            };
-
-            window.onunload = function () {
-                if ((window.opener)&amp;&amp;(!window.opener.closed)) {
-                    if(isRefresh){
-                        isRefresh=false;
-                    }else{
-                        delete_cookie('firstVisit');
-                        window.opener.popUpClosed();
-                    }
-            
-                    
-                }
-            };
-        </script>
+       
+        <ui:insert name="scriptPart" />
+       
  
     </h:body>
 </html>
