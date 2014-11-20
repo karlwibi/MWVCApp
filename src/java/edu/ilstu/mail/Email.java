@@ -5,7 +5,8 @@
 package edu.ilstu.mail;
 
 import com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type;
-import edu.ilstu.controller.RoomParticipant;
+import edu.ilstu.controller.RoomParticipantController;
+import edu.ilstu.helper.Property;
 import edu.ilstu.model.OnlineClassModel;
 import edu.ilstu.model.RoomParticipantModel;
 import edu.ilstu.model.StudentModel;
@@ -31,7 +32,11 @@ import java.io.StringWriter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
-
+import org.jsoup.Jsoup;
+import org.jsoup.helper.Validate;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 /**
  *
@@ -47,33 +52,33 @@ public class Email {
     private String HOST = "smtp.gmail.com"; // "smtp.ilstu.edu"
     private int onlineClassId;
     private int sessionId;
+    private String username;
+    private String firstname;
+    private String lastName;
     private Session session;
 
     public Email() {
-        
-         final String username="ridma.reutar@gmail.com";
-         final String password="Ar1q2w3e";
-         
+
+        final String username = "ridma.reutar@gmail.com";
+        final String password = "Ar1q2w3e";
+
         properties = System.getProperties();
         // Setup mail server
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
         properties.setProperty("mail.smtp.host", HOST);
         properties.put("mail.smtp.port", "587");
-        
-        
+
        // properties.setProperty("mail.user", "yourID"); // if needed
-       // properties.setProperty("mail.password", "yourPassword"); // if needed
-        
+        // properties.setProperty("mail.password", "yourPassword"); // if needed
         // Get the default Session object.
         //session = Session.getDefaultInstance(properties);
-         session= Session.getInstance(properties, new Authenticator(){
+        session = Session.getInstance(properties, new Authenticator() {
             @Override
-            protected  PasswordAuthentication getPasswordAuthentication(){
+            protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username, password);
-            } 
-         });
-
+            }
+        });
 
     }
 
@@ -86,48 +91,119 @@ public class Email {
         this.messageType = messageType;
     }
 
+    
+    public String studentEnrollMail(String firstname, String username, String password,String emailAddress, String classTitle){
+        
+        Address[] recipientAddresses = null;
+        String status = null;
+        recipientAddresses = new InternetAddress[1];
+        OnlineClassModel ocm = null;
+        String subject=null;
+        
+        // Set Subject: header field
+//            ocm = new OnlineClassModel();
+//            ocm.setOnlineClassId(onlineClassId);
+//            ocm = ocm.getAClass();
+            
+            subject="Enrollment Confirmation for your online Class: "+classTitle;
+            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/emailTemplate/email.html");
+
+            //File source=new File(path+"/resources/emailTemplate/email.html");
+            InputStream in=null;
+        try {
+            in = new FileInputStream(path);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            in = new BufferedInputStream(in);
+
+            StringWriter writer = new StringWriter();
+        try {
+            IOUtils.copy(in, writer);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+         Document doc = Jsoup.parse(writer.toString());
+         
+         
+         //setting the tittle and user firstname
+        Element  div= doc.select("p.classTitle").first();
+         div.html(classTitle+" Online class");
+         
+         //setting the user tittle
+         div= doc.select("div.title").first();
+         div.html("<h3> hi "+firstname+",</h3>");
+         
+        
+        //putting the message
+         div=doc.select("div.message").first();
+         div.html("<p> You are now enrolled into the Online class "+classTitle+". Please click on the link below to access "
+                 + "your online class management website in order to gain access to the Virtual rooms.<br/><br/>"
+                 + "your credentials are: <br/>"
+                 + "Username:"+username
+                 + "<br/>password:"+password
+                 + "<br/><br/>"
+                 + "<a href='"+Property.getApplicationLink()+"'>Click here to access your online course management</a></p>");
+         
+            String emailMessage = doc.toString();
+            
+            
+        
+        try {
+            recipientAddresses[0] = new InternetAddress(emailAddress);
+        } catch (AddressException ex) {
+            Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        System.out.println(emailMessage);
+        sendMail(getSession(), recipientAddresses, subject, emailMessage);
+        
+        return status;
+    }
+    
     public String onlineClassCreateMessage() {
-        OnlineClassModel ocm=null;
+        OnlineClassModel ocm = null;
         Address[] recipientAddresses = null;
 
         String status = null;
-       
+
         //setting the student email from the list 
-        
-            //get all the information for the class 
-            RoomParticipantModel participant = new RoomParticipantModel();
-            participant.setOnlineClassId(onlineClassId);
-            //getting the room participant info
-            List<RoomParticipantModel> participantList = new ArrayList();
-            participantList = participant.getAllParticipantForRoom();
-            //intializing the Internet AddressArray 
-            recipientAddresses = new InternetAddress[participantList.size()];
+        //get all the information for the class 
+        RoomParticipantModel participant = new RoomParticipantModel();
+        participant.setOnlineClassId(onlineClassId);
+        //getting the room participant info
+        List<RoomParticipantModel> participantList = new ArrayList();
+        participantList = participant.getAllParticipantForRoom();
+        //intializing the Internet AddressArray 
+        recipientAddresses = new InternetAddress[participantList.size()];
+
 //adding the student email address to the recipientaddress queue
-            int i=0;
-            for (RoomParticipantModel aPartcipant : participantList) {
-                int studentId = aPartcipant.getStudentId();
-                StudentModel aStudent = new StudentModel();
-                //getting the student information
-                aStudent = aStudent.getStudentById(studentId);
-                //adding to the recipientAddresses Array variable
-                try {
-                    recipientAddresses[i]=new InternetAddress(aStudent.getEmail());
-                } catch (AddressException ex) {
-                    Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                i++;
+        int i = 0;
+        for (RoomParticipantModel aPartcipant : participantList) {
+            int studentId = aPartcipant.getStudentId();
+            StudentModel aStudent = new StudentModel();
+            //getting the student information
+            aStudent = aStudent.getStudentById(studentId);
+            //adding to the recipientAddresses Array variable
+            try {
+                recipientAddresses[i] = new InternetAddress(aStudent.getEmail());
+            } catch (AddressException ex) {
+                Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            sendMail(getSession(), recipientAddresses);
+            i++;
+        }
 
-        
-            
-         
+        sendMail(getSession(), recipientAddresses, null, null);
 
-     
         return status;
     }
 
+    /**
+     * send session create message
+     * @return 
+     */
     public String sessionCreateMessage() {
         String status = null;
         // Get the default Session object.
@@ -136,10 +212,13 @@ public class Email {
         return status;
     }
 
-    
-    public void sendMail(Session session, Address[] recipientAddresses){
-        
-        OnlineClassModel ocm=null;
+    /**
+     * send email via smtp
+     * @param session
+     * @param recipientAddresses 
+     */
+    private void sendMail(Session session, Address[] recipientAddresses, String subject, String emailMessage) {
+
         
 
         try {
@@ -154,29 +233,8 @@ public class Email {
                     recipientAddresses);
 
             
-            
-             // Set Subject: header field
-            ocm=new OnlineClassModel();
-            ocm.setOnlineClassId(onlineClassId);
-            ocm=ocm.getAClass();
-            message.setSubject("Access granted to the Online class: "+ocm.getTitle());
+            message.setSubject(subject);
 
-            String path=FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/emailTemplate/email.html");
-            
-            //File source=new File(path+"/resources/emailTemplate/email.html");
-            
-            InputStream in = new FileInputStream(path);
-            in = new BufferedInputStream(in);
-
-            
-            StringWriter writer= new StringWriter();
-            IOUtils.copy(in, writer);
-            // Send the actual HTML message, as big as you like
-            
-            String emailMessage = writer.toString();
-            String escapedText= StringEscapeUtils.escapeHtml4(emailMessage);
-            escapedText=String.format(escapedText, ocm.getTitle());
-            emailMessage=StringEscapeUtils.unescapeHtml4(escapedText);
             // creates message part
             MimeBodyPart messageBodyPart = new MimeBodyPart();
             messageBodyPart.setContent(emailMessage, "text/html");
@@ -201,21 +259,16 @@ public class Email {
 
             //putting everything together
 //            multipart.addBodyPart(imagePart);
-
             // Send message
             message.setContent(multipart);
             Transport.send(message);
             System.out.println("Sent message successfully....");
         } catch (MessagingException mex) {
             mex.printStackTrace();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
+        
         }
     }
-    
-    
+
     /**
      * @return the to
      */
@@ -340,6 +393,48 @@ public class Email {
      */
     public void setSession(Session session) {
         this.session = session;
+    }
+
+    /**
+     * @return the username
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * @param username the username to set
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * @return the firstname
+     */
+    public String getFirstname() {
+        return firstname;
+    }
+
+    /**
+     * @param firstname the firstname to set
+     */
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    /**
+     * @return the lastName
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * @param lastName the lastName to set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
 }

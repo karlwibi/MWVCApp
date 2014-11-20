@@ -138,10 +138,10 @@
         <location>/faces/error.xhtml</location>
     </error-page>
     
-     <error-page>
+<!--     <error-page>
         <error-code>500</error-code>
         <location>/faces/error.xhtml</location>
-    </error-page>
+    </error-page>-->
     
     
     <context-param>   

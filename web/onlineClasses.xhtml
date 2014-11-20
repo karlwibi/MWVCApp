@@ -33,7 +33,7 @@
                     <p:menuitem value="Edit profile" url="http://www.primefaces.org" icon="ui-icon-person" />
 
                     <f:facet name="options">
-                        <p:commandButton type="button" value="Logout" icon="ui-icon-extlink" />
+                        <p:commandButton actionListener="#{loginController.signOut()}" value="Logout" icon="ui-icon-extlink" />
                     </f:facet>
                 </p:menubar>
 
@@ -112,23 +112,23 @@
                 <h:form id="form2">
 
 
-                    <p:growl id="msgs" showDetail="true"/>
+                    <p:growl id="msgs2" showDetail="true"/>
 
-                    <p:dataTable id="userRole1" var="onlineClass" value="#{onlineClassesController.classList}" editable="true" style="margin-bottom:20px">
+                    <p:dataTable id="userRole2" var="onlineClass" value="#{onlineClassesController.classList}" editable="true" style="margin-bottom:20px">
                         <f:facet name="header">
                             <span class="text-info text-uppercase">Course I take</span>
                         </f:facet>
 
                         <p:column headerText="title">
-                            <p:cellEditor>
+                            
                                 <h:outputText value="#{onlineClass.title}" />
-                            </p:cellEditor>
+                            
                         </p:column>
 
                         <p:column headerText="description">
-                            <p:cellEditor>
+                            
                                 <h:outputText value="#{onlineClass.description}" />
-                            </p:cellEditor>
+                            
                         </p:column>
 
 

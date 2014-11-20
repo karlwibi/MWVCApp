@@ -12,6 +12,7 @@ package edu.ilstu.helper;
 public class Property {
     
     private static String savePath="/ProjectRTC/home/ubuntu/var/onlineClass_";
+    private static String applicationLink="http://localhost:8181/MWVCApp/";
     private static String webRtcURL="";
     private static String smtpServer="";
     private static String smtpPort="";
@@ -100,6 +101,20 @@ public class Property {
      */
     public static void setSmtpPassword(String aSmtpPassword) {
         smtpPassword = aSmtpPassword;
+    }
+
+    /**
+     * @return the applicationLink
+     */
+    public static String getApplicationLink() {
+        return applicationLink;
+    }
+
+    /**
+     * @param aApplicationLink the applicationLink to set
+     */
+    public static void setApplicationLink(String aApplicationLink) {
+        applicationLink = aApplicationLink;
     }
     
     

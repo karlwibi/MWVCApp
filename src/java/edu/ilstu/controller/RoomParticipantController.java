@@ -7,6 +7,7 @@ package edu.ilstu.controller;
 
 import edu.ilstu.admin.UserLogin;
 import edu.ilstu.admin.UserLoginRole;
+import edu.ilstu.mail.Email;
 import edu.ilstu.model.OnlineClassModel;
 import edu.ilstu.model.RoomParticipantModel;
 import edu.ilstu.model.ScheduleClassModel;
@@ -40,7 +41,7 @@ import org.primefaces.model.UploadedFile;
  */
 @ManagedBean
 @SessionScoped
-public class RoomParticipant implements Serializable {
+public class RoomParticipantController implements Serializable {
 
     private int roomid;
     private RoomParticipantModel rpm;
@@ -56,13 +57,13 @@ public class RoomParticipant implements Serializable {
     /**
      * Creates a new instance of RoomParticipant
      */
-    public RoomParticipant() {
+    public RoomParticipantController() {
 
     }
 
     public void init() {
 
-        RoomParticipant roomParticipant = (RoomParticipant) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("roomParticipant");
+        RoomParticipantController roomParticipant = (RoomParticipantController) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("roomParticipant");
 
         if (roomParticipant != null) {
             rpm = null;
@@ -85,7 +86,7 @@ public class RoomParticipant implements Serializable {
 
         rpm = new RoomParticipantModel();
         rpm.setOnlineClassId(ocm.getOnlineClassId());
-        
+
         studentModel = new StudentModel();
         setStudentList(studentModel.getAllStudents());
 
@@ -233,6 +234,9 @@ public class RoomParticipant implements Serializable {
         this.selectedStudents2 = selectedStudents2;
     }
 
+    /**
+     * add student to the classList
+     */
     public void addStudentToClass() {
 
         for (Iterator<String> i = selectedStudents.iterator(); i.hasNext();) {
@@ -253,6 +257,9 @@ public class RoomParticipant implements Serializable {
 
     }
 
+    /**
+     * remove student from the class list
+     */
     public void removeStudentFromClass() {
 
         for (Iterator<String> i = selectedStudents2.iterator(); i.hasNext();) {
@@ -273,6 +280,9 @@ public class RoomParticipant implements Serializable {
 
     }
 
+    /**
+     * add all student in the list to the class
+     */
     public void addAll() {
 
         for (Iterator<StudentModel> i = studentList.iterator(); i.hasNext();) {
@@ -293,34 +303,48 @@ public class RoomParticipant implements Serializable {
         }
     }
 
+    /**
+     * save information for student entered manually
+     *
+     * @return
+     */
     public String submitM() {
 
-        
         if (!studentListManual.isEmpty()) {
 
             for (StudentModel s : studentListManual) {
-                String username=generateUsername(s.getFname(), s.getLname());
-                String Password=passwordGenerator();
+                String username = generateUsername(s.getFname(), s.getLname());
+                String Password = passwordGenerator();
                 s.setIs_a('s');
                 s.setUserid(s.saveUser());
-               
+
                 //creating user account and setting role
-                UserLogin ul=new UserLogin(username, Password, s.getUserid());
+                UserLogin ul = new UserLogin(username, Password, s.getUserid());
                 ul.createLogin();
-                UserLoginRole ulr=new UserLoginRole(username, "student");
+
+                UserLoginRole ulr = new UserLoginRole(username, "student");
                 ulr.setUserRole();
-                
+
                 //adding student to the room
                 rpm = new RoomParticipantModel();
                 rpm.setOnlineClassId(ocm.getOnlineClassId());
                 rpm.setStudentId(s.getUserid());
                 rpm.addParticipant();
+
+                //Generating email
+                Email email = new Email();
+               
+                if (s.getEmail() != null) {
+
+                    email.studentEnrollMail(s.getFname(),username,Password, s.getEmail(), ocm.getTitle());
+
+                }
+
             }
 
         }
 
-       studentListManual.clear();
-        
+        studentListManual.clear();
 
         //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         int id = ocm.getTeacherId();
@@ -361,9 +385,12 @@ public class RoomParticipant implements Serializable {
         this.studentListManual = studentListManual;
     }
 
+    /**
+     * Saving information using the pre-existing student list
+     *
+     * @return
+     */
     public String save() {
-
-      
 
         if (!studentList2.isEmpty()) {
 
@@ -384,16 +411,20 @@ public class RoomParticipant implements Serializable {
         int id = ocm.getTeacherId();
         System.out.println("id for teacher that just create the room :" + id);
         return "onlineClasses.xhtml?faces-redirect=true&userId=" + id;
-        
+
     }
 
-    
-    public String submitE(){
-        
+    /**
+     * Create user using an excel sheet
+     *
+     * @return
+     */
+    public String submitE() {
+
         try {
-            String result="";
+            String result = "";
             InputStream input = file.getInputstream();
-            
+
             HSSFWorkbook workbook = new HSSFWorkbook(input);
             HSSFSheet worksheet = workbook.getSheetAt(0);
 
@@ -401,60 +432,68 @@ public class RoomParticipant implements Serializable {
             Iterator<Row> rowIterator = worksheet.rowIterator();
 
             while (rowIterator.hasNext()) {
-                int id=0;
-                StudentModel sm=new StudentModel();
-                UserLogin ul=new UserLogin();
-                
-                
+                int id = 0;
+                StudentModel sm = new StudentModel();
+                UserLogin ul = new UserLogin();
+
                 Row row = rowIterator.next();
 
                 Cell cellA1 = row.getCell(0);
                 String a1Val = cellA1.getStringCellValue();//getting the firstname
                 sm.setFname(a1Val);
-                
+
                 Cell cellB1 = row.getCell(1);
                 String b1Val = cellB1.getStringCellValue();//getting the lastname
                 sm.setLname(b1Val);
-                
+
                 Cell cellC1 = row.getCell(2);
                 int c1Val = (int) cellC1.getNumericCellValue();//gettting the uid
-                
-                
+
                 Cell cellF1 = row.getCell(5);
                 String F1Val = cellF1.getStringCellValue();//getting the major
                 sm.setMajor(F1Val);
                 sm.setIs_a('s');
-                id=sm.saveUser();
-                               
+
+                Cell cellE1 = row.getCell(7);
+                String E1Val = cellE1.getStringCellValue();//getting the email address
+                sm.setEmail(E1Val);
+
+                id = sm.saveUser();
+
                 Cell cellD1 = row.getCell(3);
                 String d1Val = cellD1.getStringCellValue();//getting the username
+
                 ul.setUsername(d1Val);
                 ul.setPassword(passwordGenerator());
                 ul.setUserId(id);
-                ul.createLogin();
-                
-                UserLoginRole ulr =new UserLoginRole(d1Val,"student");
-                
+                ul.createLogin();//creating the user login
+
+                UserLoginRole ulr = new UserLoginRole(d1Val, "student");
+                ulr.setUserRole();//creating the role
+
                 rpm = new RoomParticipantModel();
                 rpm.setOnlineClassId(ocm.getOnlineClassId());
                 rpm.setStudentId(id);
                 rpm.addParticipant();
-                
+
                 result = result + a1Val + " | " + b1Val + " | " + c1Val + " | " + d1Val + " | " + F1Val + "\n";
 
                 System.out.println(result);
             }
         } catch (IOException ex) {
-            Logger.getLogger(RoomParticipant.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RoomParticipantController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
+
         int id = ocm.getTeacherId();
         System.out.println("id for teacher that just create the room :" + id);
         return "onlineClasses.xhtml?faces-redirect=true&userId=" + id;
     }
-    
+
+    /**
+     * generates password for users
+     *
+     * @return
+     */
     public String passwordGenerator() {
 
         String password = "";
@@ -475,6 +514,13 @@ public class RoomParticipant implements Serializable {
 
     }
 
+    /**
+     * Generate username when student are insert Manually
+     *
+     * @param firstName
+     * @param lastName
+     * @return
+     */
     public String generateUsername(String firstName, String lastName) {
 
         String usernameGenerate = "";
@@ -505,7 +551,5 @@ public class RoomParticipant implements Serializable {
     public void setFile(UploadedFile file) {
         this.file = file;
     }
-    
-    
-    
+
 }

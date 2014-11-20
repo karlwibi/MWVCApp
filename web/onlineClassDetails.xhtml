@@ -45,14 +45,14 @@
         </ui:define>
 
         <ui:define name="content"> 
-       <o:form id="form1">
+            <o:form id="form1">
 
-            <div class="ui-grid ui-grid-responsive">
-                <div class="ui-grid-row">
-                    <div class="ui-grid-col-12">
+                <div class="ui-grid ui-grid-responsive">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-12">
 
-                        <p:panel id="basic" header="Online class detail"  style="margin-bottom:20px">
-                     
+                            <p:panel id="basic" header="Online class detail"  style="margin-bottom:20px">
+
                                 <p:growl id="growl" showDetail="true" sticky="true" />  
 
                                 <p:panel id="classDetail" style="margin-bottom:20px" >
@@ -88,6 +88,11 @@
 
                                 <p:fieldset id="f_enroll" legend="Enrolled Student" style="margin-bottom:20px">
 
+                                    <h:outputLink class="btn btn-default" style="margin-top: 20px;margin-bottom: 20px;" value="roomParticipant.xhtml" > 
+                                        <f:param name="roomid" value="#{onlineClassDetailsController.onlineClassModel.roomid}"/>
+                                        <h:outputLabel value="Add Student to class"/>
+                                    </h:outputLink> 
+                                    
                                     <h:dataTable id="student_list" class="table" var="st" value="#{onlineClassDetailsController.listEnrollStudent}" border="0">
 
                                         <h:column>
@@ -129,7 +134,7 @@
                                             </h:column>
 
                                             <h:column>
-                                                
+
                                                 <p:commandButton style="color: red;font-weight: bold" value="delete session"   action="#{onlineClassDetailsController.removeSession(csl.sessionId)}" update=":form1:growl :form1:f_session"/>
                                             </h:column>
 
@@ -139,39 +144,39 @@
                                 </h:panelGroup>
 
 
-                            
-                            <p style="margin-top: 20px;margin-bottom: 20px">
-                               
-                                <h:panelGrid columns="2" border="0" class="table ta" >
-                                            <h:outputLink class="btn btn-primary"  value="onlineClasses.xhtml">
-                                                <f:param name="userId" value="#{onlineClassDetailsController.onlineClassModel.teacherId}"/>
-                                                <i class="fa fa-backward ">&nbsp;<h:outputLabel value="Return to Class List"/></i>
-                                            </h:outputLink>
-                                                                                 
-                                    <h:commandButton class="btn btn-default btn-danger" type="button" value="delete Class" onclick="PF('dlg2').show();" >                                 
-                                    </h:commandButton>
-                                </h:panelGrid>
-                                       
-                                            
-                                            
-                                       
-                               </p>
-                        </p:panel>
-                        <p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true" height="100">
-                            <p>Are you sur you wanna delete this class</p>
-             
-                            <p:commandButton class="btn btn-default btn-danger" actionListener="#{onlineClassDetailsController.deleteClass()}" value="yes" onclick="PF('dlg2').hide();" />                                 
-                             &nbsp;&nbsp;
-                            <h:commandButton class="btn btn-default btn-danger" type="button" value="delete Class" onclick="PF('dlg2').hide();" >                                 
-                                    </h:commandButton>
-                        </p:dialog>
-                        
-                    </div>
 
+                                <p style="margin-top: 20px;margin-bottom: 20px">
+
+                                    <h:panelGrid columns="2" border="0" class="table ta" >
+                                        <h:outputLink class="btn btn-primary"  value="onlineClasses.xhtml">
+                                            <f:param name="userId" value="#{onlineClassDetailsController.onlineClassModel.teacherId}"/>
+                                            <i class="fa fa-backward ">&nbsp;<h:outputLabel value="Return to Class List"/></i>
+                                        </h:outputLink>
+
+                                        <h:commandButton class="btn btn-default btn-danger" type="button" value="delete Class" onclick="PF('dlg2').show();" >                                 
+                                        </h:commandButton>
+                                    </h:panelGrid>
+
+
+
+
+                                </p>
+                            </p:panel>
+                            <p:dialog header="Modal Dialog" widgetVar="dlg2" modal="true" height="100">
+                                <p>Are you sur you wanna delete this class</p>
+
+                                <p:commandButton class="btn btn-default btn-danger" actionListener="#{onlineClassDetailsController.deleteClass()}" value="yes" onclick="PF('dlg2').hide();" />                                 
+                                &nbsp;&nbsp;
+                                <h:commandButton class="btn btn-default btn-danger" type="button" value="delete Class" onclick="PF('dlg2').hide();" >                                 
+                                </h:commandButton>
+                            </p:dialog>
+
+                        </div>
+
+                    </div>
                 </div>
-            </div>
-</o:form>
-           
+            </o:form>
+
 
         </ui:define> 
     </ui:composition>

@@ -92,16 +92,16 @@ public class OnlineClassesController {
     public void checkUserType() {
 
         
-        if (teacherModel.getTeacherById(userId).getUserid() != 0) {
+        if (teacherModel.getTeacherById(userId)!=null) {
             System.out.println("teacher");
             teacher = true;
-            setUserModel(teacherModel.getTeacherById(userId));
+            userModel=teacherModel.getTeacherById(userId);
             loadteacherClasses();
 
         } else {
             System.out.println("student");
             teacher = false;
-            setUserModel(studentModel.getStudentById(userId));
+            userModel=studentModel.getStudentById(userId);
             loadStudentClasses();
         }
 

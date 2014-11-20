@@ -8,8 +8,8 @@
     <ui:composition template="/templates/templateNoNav.xhtml">
         <ui:define name="headerInfo"> 
             <f:metadata>
-                <f:viewParam name="roomid" value="#{roomParticipant.roomid}"/>
-                <f:viewAction action="#{roomParticipant.init()}" onPostback="false" />
+                <f:viewParam name="roomid" value="#{roomParticipantController.roomid}"/>
+                <f:viewAction action="#{roomParticipantController.init()}" onPostback="false" />
             </f:metadata>
             <title>Module WebRTC Video Conferencing</title>
 
@@ -28,13 +28,13 @@
             <p:panel header="Class Information">
                 <h:panelGrid columns="2" border="0" class="table">
                     <p:outputLabel class="text-uppercase text-info" value="Insert student for Room :"/>
-                    <p:outputLabel  class="text-info "     value="#{roomParticipant.roomid}"/>
+                    <p:outputLabel  class="text-info "     value="#{roomParticipantController.roomid}"/>
                     
                     <p:outputLabel class="text-info "     value="Class title: "/>
-                     <p:outputLabel  class="text-info "     value="#{roomParticipant.ocm.title}"/>
+                     <p:outputLabel  class="text-info "     value="#{roomParticipantController.ocm.title}"/>
                      
                     <p:outputLabel class="text-info "    value="Class Description:"/>
-                     <p:outputLabel  class="text-info "     value="#{roomParticipant.ocm.description}"/>
+                     <p:outputLabel  class="text-info "     value="#{roomParticipantController.ocm.description}"/>
                 </h:panelGrid>
 
             </p:panel>
@@ -46,17 +46,17 @@
 
                             <p:commandButton  value="+">
                                 <!--                                <i class="fa fa-plus"></i>-->
-                                <f:ajax listener="#{roomParticipant.extend}"
+                                <f:ajax listener="#{roomParticipantController.extend}"
                                         execute="firstForm" 
                                         render="firstForm" />
                             </p:commandButton>
                             <p:commandButton   value="-">
                                 <!--<i class="fa fa-minus-circle"></i>-->
-                                <f:ajax listener="#{roomParticipant.unExtend()}"
+                                <f:ajax listener="#{roomParticipantController.unExtend()}"
                                         execute="firstForm" 
                                         render="firstForm" />
                             </p:commandButton>
-                            <ui:repeat var="s" value="#{roomParticipant.studentListManual}" >
+                            <ui:repeat var="s" value="#{roomParticipantController.studentListManual}" >
                                 <p:panelGrid columns="3">
 
                                     <p:inputText placeholder="Student First name" value="#{s.fname}"/>
@@ -67,7 +67,7 @@
 
                             </ui:repeat>
                             <br/>
-                            <p:commandButton value="submit" action="#{roomParticipant.submitM()}"/>
+                            <p:commandButton value="submit" action="#{roomParticipantController.submitM()}"/>
                         </p:panel>
 
 
@@ -83,9 +83,9 @@
                         <p:panel>
                             <p:growl id="messages" showDetail="true" />
 
-                            <p:fileUpload value="#{roomParticipant.file}" mode="simple" />
+                            <p:fileUpload value="#{roomParticipantController.file}" mode="simple" />
 
-                            <p:commandButton value="Submit" ajax="false" action="#{roomParticipant.submitE()}"  />
+                            <p:commandButton value="Submit" ajax="false" action="#{roomParticipantController.submitE()}"  />
                         </p:panel>
 
 
@@ -98,39 +98,39 @@
                             <h:panelGrid columns="3"  border="0"  >
                                 <h:panelGroup>
                                     <h3><small>Non-enrolled Student</small></h3>
-                                    <h:selectManyListbox  id="availableList" style="width: 100%;height: 150px; margin: 20px;" value="#{roomParticipant.selectedStudents}">
-                                        <f:selectItems value="#{roomParticipant.studentList}" var="s" itemLabel="#{s.fname}" itemValue="#{s.userid}"/> 
+                                    <h:selectManyListbox  id="availableList" style="width: 100%;height: 150px; margin: 20px;" value="#{roomParticipantController.selectedStudents}">
+                                        <f:selectItems value="#{roomParticipantController.studentList}" var="s" itemLabel="#{s.fname}" itemValue="#{s.userid}"/> 
                                     </h:selectManyListbox>
                                 </h:panelGroup>
                                 <h:panelGroup>
 
                                     <h:panelGrid columns="1" border="0" class="text-center" style="margin: 50px">
                                         <h:commandButton value="&gt;">
-                                            <f:ajax  listener="#{roomParticipant.addStudentToClass()}" execute="availableList" render="selectedList availableList"  />
+                                            <f:ajax  listener="#{roomParticipantController.addStudentToClass()}" execute="availableList" render="selectedList availableList"  />
                                         </h:commandButton>
                                         <h:commandButton value="&gt;&gt;">
-                                            <f:ajax  listener="#{roomParticipant.addAll()}"  render="selectedList availableList"  />
+                                            <f:ajax  listener="#{roomParticipantController.addAll()}"  render="selectedList availableList"  />
                                         </h:commandButton>
 
                                         <h:commandButton value="&lt;">
-                                            <f:ajax  listener="#{roomParticipant.removeStudentFromClass}" execute="selectedList" render="selectedList availableList"  />
+                                            <f:ajax  listener="#{roomParticipantController.removeStudentFromClass}" execute="selectedList" render="selectedList availableList"  />
 
                                         </h:commandButton>
                                         <h:commandButton value="&lt;&lt;">
-                                            <f:ajax  listener="#{roomParticipant.removeAll()}"  render="selectedList availableList"  />
+                                            <f:ajax  listener="#{roomParticipantController.removeAll()}"  render="selectedList availableList"  />
                                         </h:commandButton>    
                                     </h:panelGrid>
                                 </h:panelGroup>
                                 <h:panelGroup>
                                     <h3><small>Enrolled Student</small></h3>
-                                    <h:selectManyListbox id="selectedList" style="width: 100%; height: 150px;margin: 20px;" value="#{roomParticipant.selectedStudents2}">
-                                        <f:selectItems value="#{roomParticipant.studentList2}" var="s" itemLabel="#{s.fname}" itemValue="#{s.userid}"/> 
+                                    <h:selectManyListbox id="selectedList" style="width: 100%; height: 150px;margin: 20px;" value="#{roomParticipantController.selectedStudents2}">
+                                        <f:selectItems value="#{roomParticipantController.studentList2}" var="s" itemLabel="#{s.fname}" itemValue="#{s.userid}"/> 
                                     </h:selectManyListbox>
                                 </h:panelGroup>
                             </h:panelGrid>
 
 
-                            <p:commandButton value="Save" action="#{roomParticipant.save()}"/>
+                            <p:commandButton value="Save" action="#{roomParticipantController.save()}"/>
 
 
                         </h:form>

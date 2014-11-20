@@ -142,7 +142,7 @@ public class StudentDAOImpl implements StudentDAO, Serializable {
         try {
 
             PreparedStatement p = con.prepareStatement("Select u.userid as userid,fname,lname,securityq,securitya,email,phone,street,city,state,zipcode,country,is_a, major  "
-                    + " FROM user u"
+                    + " FROM user u "
                     + " INNER JOIN student s "
                     + " WHERE u.userid=s.userid AND u.userid=?");
             p.setInt(j++, userid);

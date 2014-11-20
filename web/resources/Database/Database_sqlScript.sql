@@ -90,9 +90,7 @@ starttime time,
 endtime time,
 constraint scheduleclass_scheduleclassid_pk primary key (scheduleclassid),
 constraint scheduleclass_onlineclassid_fk foreign key (onlineclassid)
-	references onlineclass (onlineclassid) ON DELETE CASCADE,
-constraint scheduleclass_startdate_uk unique (startdate),
-constraint scheduleclass_enddate_uk unique (enddate)
+	references onlineclass (onlineclassid) ON DELETE CASCADE
 );
 
 create table roomparticipant(
