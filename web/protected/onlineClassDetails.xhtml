@@ -19,6 +19,7 @@
             <h:outputStylesheet library="awesome" name="css/font-awesome.css"/>
             <f:metadata>
                 <f:viewParam name="onlineClassID" value="#{onlineClassDetailsController.onlineClassID}"/>
+                <f:viewParam name="userId" value="#{onlineClassDetailsController.userId}"/>
                 <f:viewAction action="#{onlineClassDetailsController._init()}" onPostback="false"  />
             </f:metadata>
 
@@ -59,34 +60,39 @@
                                     <h:panelGrid id="panel_info" columns="2" border="0" width="100%" style="margin-bottom:20px">
 
                                         <p:outputLabel value="Title" for="OC_Title"/>
-                                        <p:inputText class="form-control" value="#{onlineClassDetailsController.onlineClassModel.title}" id="OC_Title"/>
+                                        <p:inputText disabled="#{not onlineClassDetailsController.teacher}" class="form-control" value="#{onlineClassDetailsController.onlineClassModel.title}" id="OC_Title"/>
                                         <p:outputLabel value="description" for="OC_description"/>
-                                        <p:inputTextarea class="form-control" value="#{onlineClassDetailsController.onlineClassModel.description}" id="OC_description"/>
+                                        <p:inputTextarea disabled="#{not onlineClassDetailsController.teacher}" class="form-control" value="#{onlineClassDetailsController.onlineClassModel.description}" id="OC_description"/>
 
                                     </h:panelGrid>
                                     <p:fieldset id="f_schedule" legend="Schedule"  style="margin-bottom:20px">
                                         <h:panelGrid columns="2" border="0" width="100%" >
 
                                             <p:outputLabel value="Start Date" for="OC_StartDate"/>
-                                            <p:calendar id="OC_StartDate" style="width: 300px" value="#{onlineClassDetailsController.scheduleClassModel.start_Date}"/>
+                                            <p:calendar disabled="#{not onlineClassDetailsController.teacher}" id="OC_StartDate" style="width: 300px" value="#{onlineClassDetailsController.scheduleClassModel.start_Date}"/>
 
-                                            <p:outputLabel value="description" for="OC_EndDate"/>
-                                            <p:calendar id="OC_EndDate" style="width: 300px"  value="#{onlineClassDetailsController.scheduleClassModel.end_Date}"/>
+                                            <p:outputLabel value="end date" for="OC_EndDate"/>
+                                            <p:calendar disabled="#{not onlineClassDetailsController.teacher}" id="OC_EndDate" style="width: 300px"  value="#{onlineClassDetailsController.scheduleClassModel.end_Date}"/>
 
-                                            <p:outputLabel value="Session debut hour:" for="OC_StartSessionHour"/>
-                                            <pe:timePicker  id="OC_StartSessionHour" class="form-control" value="#{onlineClassDetailsController.scheduleClassModel.start_Time}" mode="spinner" />
+                                            <p:outputLabel value="Session start hour:" for="OC_StartSessionHour"/>
+                                            <pe:timePicker disabled="#{not onlineClassDetailsController.teacher}"  id="OC_StartSessionHour" class="form-control" value="#{onlineClassDetailsController.scheduleClassModel.start_Time}" mode="spinner" />
 
                                             <p:outputLabel value="session end hour:" for="OC_EndSessionhur"/>
-                                            <pe:timePicker  id="OC_EndSessionhur" class="form-control" value="#{onlineClassDetailsController.scheduleClassModel.end_Time}" mode="spinner" />
+                                            <pe:timePicker disabled="#{not onlineClassDetailsController.teacher}"  id="OC_EndSessionhur" class="form-control" value="#{onlineClassDetailsController.scheduleClassModel.end_Time}" mode="spinner" />
+
+                                            <h:outputLabel  for="tzname" value="Select timeZone"/>
+                                            <h:selectOneListbox disabled="#{not onlineClassDetailsController.teacher}"  value="#{onlineClassDetailsController.scheduleClassModel.tzname}" size="1">
+                                                <f:selectItems  value="#{onlineClassDetailsController.tznames}"/> 
+                                            </h:selectOneListbox>
                                         </h:panelGrid>
                                     </p:fieldset>
                                     <p class="text-right">
-                                        <p:commandButton style="color: green;font-weight: bold" value="Update class info" action="#{onlineClassDetailsController.updateClassInfo()}" update="growl"/>  
+                                        <p:commandButton rendered="#{onlineClassDetailsController.teacher}" style="color: green;font-weight: bold" value="Update class info" action="#{onlineClassDetailsController.updateClassInfo()}" update="growl"/>  
                                     </p>
                                 </p:panel>
 
 
-                                <p:fieldset id="f_enroll" legend="Enrolled Student" style="margin-bottom:20px">
+                                <p:fieldset rendered="#{onlineClassDetailsController.teacher}" id="f_enroll" legend="Enrolled Student" style="margin-bottom:20px">
 
                                     <h:outputLink class="btn btn-default" style="margin-top: 20px;margin-bottom: 20px;" value="roomParticipant.xhtml" > 
                                         <f:param name="roomid" value="#{onlineClassDetailsController.onlineClassModel.roomid}"/>
@@ -117,7 +123,7 @@
                                         <h:inputHidden value="#{onlineClassDetailsController.scheduleID}"/>
 
                                         <!--/ <p:commandButton value="Add class Session" type="button" onclick="PF('dlg2').show();" />-->
-                                        <p:commandButton style="color: green;font-weight: bold;margin-bottom: 20px" value="Add class Session" type="button" onclick="showGrpMemberSearchPageCalenderLeave(#{onlineClassDetailsController.scheduleID})" />
+                                        <p:commandButton rendered="#{onlineClassDetailsController.teacher}" style="color: green;font-weight: bold;margin-bottom: 20px" value="Add class Session" type="button" onclick="showGrpMemberSearchPageCalenderLeave(#{onlineClassDetailsController.scheduleID})" />
 
                                         <h:dataTable class="table table-responsive"  id="sessionList"  var="csl" value="#{onlineClassDetailsController.sessionList}">
                                             <h:column >
@@ -135,7 +141,7 @@
 
                                             <h:column>
 
-                                                <p:commandButton style="color: red;font-weight: bold" value="delete session"   action="#{onlineClassDetailsController.removeSession(csl.sessionId)}" update=":form1:growl :form1:f_session"/>
+                                                <p:commandButton rendered="#{onlineClassDetailsController.teacher}" style="color: red;font-weight: bold" value="delete session"   action="#{onlineClassDetailsController.removeSession(csl.sessionId)}" update=":form1:growl :form1:f_session"/>
                                             </h:column>
 
                                         </h:dataTable>
@@ -149,11 +155,11 @@
 
                                     <h:panelGrid columns="2" border="0" class="table ta" >
                                         <h:outputLink class="btn btn-primary"  value="onlineClasses.xhtml">
-                                            <f:param name="userId" value="#{onlineClassDetailsController.onlineClassModel.teacherId}"/>
+                                            <f:param name="userId" value="#{onlineClassDetailsController.userId}"/>
                                             <i class="fa fa-backward ">&nbsp;<h:outputLabel value="Return to Class List"/></i>
                                         </h:outputLink>
 
-                                        <h:commandButton class="btn btn-default btn-danger" type="button" value="delete Class" onclick="PF('dlg2').show();" >                                 
+                                        <h:commandButton rendered="#{onlineClassDetailsController.teacher}" class="btn btn-default btn-danger" type="button" value="delete Class" onclick="PF('dlg2').show();" >                                 
                                         </h:commandButton>
                                     </h:panelGrid>
 

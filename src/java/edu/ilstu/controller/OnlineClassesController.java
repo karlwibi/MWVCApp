@@ -5,6 +5,7 @@
  */
 package edu.ilstu.controller;
 
+import edu.ilstu.helper.Property;
 import edu.ilstu.model.OnlineClassModel;
 import edu.ilstu.model.RoomParticipantModel;
 import edu.ilstu.model.ScheduleClassModel;
@@ -12,8 +13,19 @@ import edu.ilstu.model.StudentModel;
 import edu.ilstu.model.TeacherModel;
 import edu.ilstu.model.UserModel;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
@@ -38,11 +50,15 @@ public class OnlineClassesController {
     private UserModel userModel;
     private int userId;
     private boolean teacher;
+    private boolean showClass;
+    private boolean showConnectButton;
     private ArrayList<RoomParticipantModel> classEnrollmentList;
     private ArrayList<OnlineClassModel> classList; //may need another list for professor
 
     private ArrayList<OnlineClassModel> teacherClassList;
     private ArrayList<ScheduleClassModel> teacherSchedule;
+    private String webrtcURL;
+    private int counter;
 
     /**
      * Creates a new instance of OnlineCalssesController
@@ -70,6 +86,7 @@ public class OnlineClassesController {
             roomParticipant = i.next();
             onlineClassModel.setOnlineClassId(roomParticipant.getOnlineClassId());
             classList.add(onlineClassModel.getAClass());
+            //modifyclass
 
         }
 
@@ -78,12 +95,13 @@ public class OnlineClassesController {
     private void loadteacherClasses() {
 
         //get the online classe id 
-      
         onlineClassModel.setTeacherId(userId);
-      //get all schedule for a specific teacher
+        //get all schedule for a specific teacher
         for (Iterator<OnlineClassModel> i = (onlineClassModel.getClassesByTeacherID()).iterator(); i.hasNext();) {
-           
-              getTeacherClassList().add(i.next());
+
+            OnlineClassModel ocm = i.next();
+            getTeacherClassList().add(ocm);
+            //modifyclass
 
         }
 
@@ -91,32 +109,29 @@ public class OnlineClassesController {
 
     public void checkUserType() {
 
-        
-        if (teacherModel.getTeacherById(userId)!=null) {
+        if (teacherModel.getTeacherById(userId) != null) {
             System.out.println("teacher");
             teacher = true;
-            userModel=teacherModel.getTeacherById(userId);
+            userModel = teacherModel.getTeacherById(userId);
             loadteacherClasses();
 
         } else {
             System.out.println("student");
             teacher = false;
-            userModel=studentModel.getStudentById(userId);
+            userModel = studentModel.getStudentById(userId);
             loadStudentClasses();
         }
 
     }
 
-    
-    
-     public void onRowEdit(RowEditEvent event) {
-        
+    public void onRowEdit(RowEditEvent event) {
+
     }
-     
+
     public void onRowCancel(RowEditEvent event) {
-       
+
     }
-    
+
     /**
      * @return the roomParticipant
      */
@@ -288,7 +303,88 @@ public class OnlineClassesController {
     public void openWebrtcWindow(int roomId) throws IOException {
 
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        externalContext.redirect("http://54.187.74.210:9010/virtualClassTV.html?roomId="+roomId+"&userId="+userId);
+        externalContext.redirect("http://54.187.74.210:9010/virtualClassTV.html?roomId=" + roomId + "&userId=" + userId);
     }
 
+    /**
+     * @return the webrtcURL
+     */
+    public String getWebrtcURL() {
+        return Property.getWebRtcURL();
+    }
+
+    public boolean displayClass(int onlineClassID) {
+
+        Calendar calendar = Calendar.getInstance();
+        ScheduleClassModel scm = new ScheduleClassModel(onlineClassID);
+        scm = scm.getScheduleByOnlineClassID();
+        scm.setStart_Date(scm.getStartDate());
+        scm.setEnd_Date(scm.getEndDate());
+        scm.setStart_Time(scm.getStartTime());
+        scm.setEnd_Time(scm.getEndTime());
+        showClass = false;
+
+        
+        
+        
+        java.util.Date serverDate = ScheduleClassModel.utcToTimeZonecheck(calendar.getTime(), scm.getTzname());
+
+        System.out.println(serverDate);
+            System.out.println(scm.getStart_Time());
+        if ((serverDate.before(scm.getEnd_Date())) || serverDate.equals(scm.getEnd_Date())) {
+
+            showClass = true;
+        }
+
+        return showClass;
+    }
+
+    public boolean displayButton(int onlineClassID) {
+
+        Calendar calendar = Calendar.getInstance();
+        ScheduleClassModel scm = new ScheduleClassModel(onlineClassID);
+        scm = scm.getScheduleByOnlineClassID();
+        scm.setStart_Date(scm.getStartDate());
+        scm.setEnd_Date(scm.getEndDate());
+        scm.setStart_Time(scm.getStartTime());
+        scm.setEnd_Time(scm.getEndTime());
+
+        showConnectButton = false;
+
+        java.util.Date serverDate = ScheduleClassModel.utcToTimeZonecheck(calendar.getTime(), scm.getTzname());
+
+        if ((serverDate.before(scm.getEnd_Date())) || serverDate.equals(scm.getEnd_Date())) {
+            DateFormat utcFormat = new SimpleDateFormat("HH:mm:ss");
+
+            String dateAsString = utcFormat.format(serverDate);
+
+            try {
+                serverDate = utcFormat.parse(dateAsString);
+            } catch (ParseException ex) {
+                Logger.getLogger(OnlineClassesController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            System.out.println(serverDate);
+            System.out.println(scm.getStart_Time());
+
+            if (serverDate.getTime() >= scm.getStart_Time().getTime() && serverDate.getTime() <= scm.getEnd_Time().getTime()) {
+
+                showConnectButton = true;
+            }
+
+        }
+
+        return showConnectButton;
+    }
+
+    /**
+     * @return the counter
+     */
+    public int getCounter() {
+        return counter;
+    }
+
+    public void increaseCounter() {
+        counter++;
+    }
 }

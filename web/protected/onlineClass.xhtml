@@ -46,10 +46,15 @@
                         <p:calendar id="enddate"  style="width: 500px;" value="#{onlineClassController.endDate}"/>
 
                         <h:outputLabel  for="starttime" value="Class Start Time"/>
-                        <pe:timePicker class="form-control"  id="starttime" value="#{onlineClassController.startTime}" mode="spinner" />
+                        <pe:timePicker class="form-control"  id="starttime" value="#{onlineClassController.startTime}" label="Return start Time" mode="spinner" />
 
                         <h:outputLabel  for="endtime" value="Class End Time"/>
-                        <pe:timePicker  id="endtime" class="form-control" value="#{onlineClassController.endTime}" mode="spinner" />
+                        <pe:timePicker  id="endtime" class="form-control" value="#{onlineClassController.endTime}" mode="spinner" label="Return end Time" />
+                        
+                        <h:outputLabel  for="tzname"  value="Select timeZone"/>
+                        <h:selectOneListbox style="width: 500px;" value="#{onlineClassController.scm.tzname}" size="1">
+                            <f:selectItems  value="#{onlineClassController.tznames}"/> 
+                        </h:selectOneListbox>
 
                     </h:panelGrid>
         

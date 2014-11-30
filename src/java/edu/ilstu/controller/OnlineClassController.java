@@ -17,6 +17,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
@@ -36,6 +37,7 @@ public class OnlineClassController {
     private java.util.Date startTime;
     private java.util.Date endTime;
     private int teacherId;
+    private String[] tznames;
     //private DateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy");
     
     
@@ -45,6 +47,8 @@ public class OnlineClassController {
     public OnlineClassController() {
         ocm=new OnlineClassModel();
         scm=new ScheduleClassModel();
+        tznames=TimeZone.getAvailableIDs();
+        scm.setTzname("America/Chicago");//set default to chicago
     }
 
     /**
@@ -96,7 +100,7 @@ public class OnlineClassController {
         //inserting data into the scheduleclass table
         scm.saveSchedule();
        
-      return  "roomParticipant.xhtml?faces-redirect=true&roomid="+ocm.getRoomid();
+      return  "/protected/roomParticipant.xhtml?faces-redirect=true&roomid="+ocm.getRoomid();
     }
 
     /**
@@ -167,6 +171,20 @@ public class OnlineClassController {
      */
     public void setTeacherId(int teacherId) {
         this.teacherId = teacherId;
+    }
+
+    /**
+     * @return the tznames
+     */
+    public String[] getTznames() {
+        return tznames;
+    }
+
+    /**
+     * @param tznames the tznames to set
+     */
+    public void setTznames(String[] tznames) {
+        this.tznames = tznames;
     }
     
     

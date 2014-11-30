@@ -49,7 +49,7 @@ public class Email {
     private String message;
     private String messageType;
     private Properties properties;
-    private String HOST = "smtp.gmail.com"; // "smtp.ilstu.edu"
+    private String HOST = Property.getSmtpServer(); // "smtp.ilstu.edu"
     private int onlineClassId;
     private int sessionId;
     private String username;
@@ -59,15 +59,15 @@ public class Email {
 
     public Email() {
 
-        final String username = "ridma.reutar@gmail.com";
-        final String password = "Ar1q2w3e";
+        final String username = Property.getSmtpUsername();
+        final String password = Property.getSmtpPassword();
 
         properties = System.getProperties();
         // Setup mail server
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
         properties.setProperty("mail.smtp.host", HOST);
-        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.port", Property.getSmtpPort());
 
        // properties.setProperty("mail.user", "yourID"); // if needed
         // properties.setProperty("mail.password", "yourPassword"); // if needed

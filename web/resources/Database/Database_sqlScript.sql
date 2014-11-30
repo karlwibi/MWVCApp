@@ -88,6 +88,7 @@ startdate date,
 enddate date,
 starttime time,
 endtime time,
+tzname varchar(100), 
 constraint scheduleclass_scheduleclassid_pk primary key (scheduleclassid),
 constraint scheduleclass_onlineclassid_fk foreign key (onlineclassid)
 	references onlineclass (onlineclassid) ON DELETE CASCADE
@@ -169,7 +170,7 @@ Constraint prezicontent_preziid_uk unique(preziid)
 create table studytool(
 ressourceid int,
 articlelink longtext,
-videoslink longtext,
+description longtext,
 
 constraint studytool_ressourceid_pk primary key (ressourceid),
 constraint studytool_ressourceid_fk foreign key (ressourceid)

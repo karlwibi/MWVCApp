@@ -27,12 +27,12 @@ public class StudyToolDAOimpl extends RessourceDAOImpl implements StudyToolDAO {
         Connection con = ConnectionDB.getConnInst();
         try {
 
-            PreparedStatement p = con.prepareStatement("INSERT INTO studytool (ressourceid,articlelink,videoslink)"
+            PreparedStatement p = con.prepareStatement("INSERT INTO studytool (ressourceid,articlelink,description)"
                     + "VALUES(?,?,?)");
 
             p.setInt(i++, identity);
             p.setString(i++, ressource.getArticleLink());
-            p.setString(i++, ressource.getVideolink());
+            p.setString(i++, ressource.getDescription());
 
             p.executeUpdate();
 
@@ -62,11 +62,11 @@ public class StudyToolDAOimpl extends RessourceDAOImpl implements StudyToolDAO {
         try {
 
             PreparedStatement p = con.prepareStatement("UPDATE studytool set articlelink=?,"
-                    + "videoslink=? "
+                    + "description=? "
                     + "WHERE ressourceid=?");
 
             p.setString(i++, ressource.getArticleLink());
-            p.setString(i++, ressource.getVideolink());
+            p.setString(i++, ressource.getDescription());
             p.setInt(i++, ressource.getRessourceId());
 
             p.executeUpdate();
@@ -101,7 +101,7 @@ public class StudyToolDAOimpl extends RessourceDAOImpl implements StudyToolDAO {
 
         try {
 
-            PreparedStatement p = con.prepareStatement("Select r.ressourceid as ressourceid,teacherid,datecreated,onlineclassid,has_prezi,has_reveal, has_studytool,articlelink,videoslink "
+            PreparedStatement p = con.prepareStatement("Select r.ressourceid as ressourceid,teacherid,datecreated,onlineclassid,has_prezi,has_reveal, has_studytool,articlelink,description "
                     + " FROM ressource r"
                     + " INNER JOIN studytool s "
                     + " WHERE r.ressourceid=s.ressourceid AND s.ressourceid=?");
@@ -121,7 +121,7 @@ public class StudyToolDAOimpl extends RessourceDAOImpl implements StudyToolDAO {
                 studyToolModel.setHasReveal(rs.getString(i++).charAt(0));
                 studyToolModel.setHasStudyTool(rs.getString(i++).charAt(0));
                 studyToolModel.setArticleLink(rs.getString(i++));
-                studyToolModel.setVideolink(rs.getString(i++));
+                studyToolModel.setDescription(rs.getString(i++));
 
             }
 
@@ -154,7 +154,7 @@ public class StudyToolDAOimpl extends RessourceDAOImpl implements StudyToolDAO {
 
         try {
 
-            PreparedStatement p = con.prepareStatement("Select r.ressourceid as ressourceid,teacherid,datecreated,onlineclassid,has_prezi,has_reveal, has_studytool,articlelink,videoslink "
+            PreparedStatement p = con.prepareStatement("Select r.ressourceid as ressourceid,teacherid,datecreated,onlineclassid,has_prezi,has_reveal, has_studytool,articlelink,description "
                     + " FROM ressource r"
                     + " INNER JOIN studytool s "
                     + " WHERE r.ressourceid=s.ressourceid AND r.onlineclassid=?");
@@ -174,7 +174,7 @@ public class StudyToolDAOimpl extends RessourceDAOImpl implements StudyToolDAO {
                 studyToolModel.setHasReveal(rs.getString(i++).charAt(0));
                 studyToolModel.setHasStudyTool(rs.getString(i++).charAt(0));
                 studyToolModel.setArticleLink(rs.getString(i++));
-                studyToolModel.setVideolink(rs.getString(i++));
+                studyToolModel.setDescription(rs.getString(i++));
 
                 list.add(studyToolModel);
             }

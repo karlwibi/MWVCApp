@@ -66,6 +66,7 @@ public class LoginController {
                 setLogin(new UserLogin());
                 getLogin().setUsername(request.getUserPrincipal().getName());
                 
+             
                 if(getLogin().getLogin()!=null){
                     setLogin(getLogin().getLogin());
 
@@ -94,7 +95,7 @@ public class LoginController {
             if (getUrl() != null) {
                 context.redirect(getUrl());
             } else {
-                context.redirect(context.getRequestContextPath()+"/faces/onlineClasses.xhtml?userId="+user.getUserid());
+                context.redirect(context.getRequestContextPath()+"/faces/protected/onlineClasses.xhtml?userId="+user.getUserid());
             }
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
@@ -111,7 +112,7 @@ public class LoginController {
         setUrl(null);
 
         try {
-            context.redirect(context.getRequestContextPath() + "/faces/login.xhtml");
+            context.redirect(context.getRequestContextPath());
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }

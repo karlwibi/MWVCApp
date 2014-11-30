@@ -16,6 +16,7 @@ import edu.ilstu.model.ScheduleClassModel;
 import edu.ilstu.model.SessionResourceModel;
 import edu.ilstu.model.StudentModel;
 import edu.ilstu.model.StudyToolModel;
+import edu.ilstu.model.TeacherModel;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -29,6 +30,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
@@ -54,8 +56,10 @@ public class onlineClassDetailsController implements Serializable {
 
     private int onlineClassID;
     private int scheduleID;
+    private int userId;
     private String StudyToolType;
     private String presentationFlag;
+    private boolean teacher;
     private boolean preziValid;
     private boolean slideValid;
     private boolean uploadDone;
@@ -78,6 +82,7 @@ public class onlineClassDetailsController implements Serializable {
     private ArrayList<StudentModel> listEnrollStudent;
     private List<String> uploadedFiles;
     private Map<String, InputStream> tempUploadFiles;
+    private String[] tznames;
 
     /**
      * Creates a new instance of onlineClassDetailsController
@@ -92,6 +97,10 @@ public class onlineClassDetailsController implements Serializable {
         preziValid = false;
         slideValid = true;
         setUploadDone(false);
+        
+        //checking the user type
+        TeacherModel tm=new TeacherModel();
+        teacher = tm.getTeacherById(userId)!=null;//check to see if it's a teacher
 
         //initialize the fileupload list
         uploadedFiles = new ArrayList<>();
@@ -108,6 +117,10 @@ public class onlineClassDetailsController implements Serializable {
         scheduleClassModel = scheduleClassModel.getScheduleByOnlineClassID();
         scheduleID = scheduleClassModel.getScheduleClassId();
 
+        //initialize timezone list
+        tznames=TimeZone.getAvailableIDs();
+        
+        
         //initialize class session;study model; and
         sessionModel = new ClassSessionModel();
         sessionModel.setScheduleClassId(scheduleID);
@@ -228,12 +241,20 @@ public class onlineClassDetailsController implements Serializable {
                 sessionResourceModel = new SessionResourceModel();
                 //setting the session resource attributes
                 sessionResourceModel.setSessionId(sessionId);
+                stm.setOnlineClassId(onlineClassID);
                 sessionResourceModel.setResourceId(stm.createStudyTool());
                 //create the session ressource
                 sessionResourceModel.createSessionRessource();
             }
 
         }
+        
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Session Created", "the sesssion was created successfully. please close the window and return to the online class detail page"));
+
+        
     }
 
     /**
@@ -316,6 +337,7 @@ public class onlineClassDetailsController implements Serializable {
             scm.setEnd_Date(scheduleClassModel.getEndDate());
             scm.setStart_Time(scheduleClassModel.getStartTime());
             scm.setEnd_Time(scheduleClassModel.getEndTime());
+            scm.setTzname(scheduleClassModel.getTzname());
             scm.saveSchedule();
         }
 
@@ -358,7 +380,7 @@ public class onlineClassDetailsController implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext context = facesContext.getExternalContext();
         try {
-            context.redirect(context.getRequestContextPath() + "/faces/onlineClasses.xhtml?faces-redirect=true&userId="+userId);
+            context.redirect(context.getRequestContextPath() + "/faces/protected/onlineClasses.xhtml?faces-redirect=true&userId="+userId);
         } catch (IOException ex) {
             Logger.getLogger(onlineClassDetailsController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -728,4 +750,49 @@ public class onlineClassDetailsController implements Serializable {
         this.uploadDone = uploadDone;
     }
 
+    /**
+     * @return the userId
+     */
+    public int getUserId() {
+        return userId;
+    }
+
+    /**
+     * @param userId the userId to set
+     */
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    /**
+     * @return the teacher
+     */
+    public boolean isTeacher() {
+        return teacher;
+    }
+
+    /**
+     * @param teacher the teacher to set
+     */
+    public void setTeacher(boolean teacher) {
+        this.teacher = teacher;
+    }
+
+    /**
+     * @return the tznames
+     */
+    public String[] getTznames() {
+        return tznames;
+    }
+
+    /**
+     * @param tznames the tznames to set
+     */
+    public void setTznames(String[] tznames) {
+        this.tznames = tznames;
+    }
+
+    
+    
+    
 }

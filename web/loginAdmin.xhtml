@@ -16,17 +16,12 @@
 
             <div class="row">
                 <div class="col-lg-8">
-                    <form style="margin:0; width: 100%" name="loginForm" class="form-signin" role="form" method="POST" action="j_security_check">
+                    <form name="loginForm" class="form-signin" role="form" method="POST" action="j_security_check">
 
-                        <h2 class="form-signin-heading">admin login</h2>
-
-                        <input class="form-control" type="text" required="true"  value="UserName"     name="j_username" onBlur="if (this.value == '')
-                                    this.value = 'UserName'" onFocus="if (this.value == 'UserName')
-                                                this.value = ''"/>
-
-                        <input  class="form-control" type="password" required="true" value="Password"  name="j_password" onBlur="if (this.value == '')
-                                    this.value = 'Password'" onFocus="if (this.value == 'Password')
-                                                this.value = ''"/>
+                        <label for="usernameInput">username: </label>
+                        <input id="usernameInput" class="form-control" type="text" required="true"  name="j_username" />
+                        <label for="passwordInput">password: </label>
+                        <input id="passwordInput"  class="form-control" type="password" required="true" name="j_password" />
 
                         <input class="btn btn-lg btn-primary btn-block" type="submit" value="Login"/>
 
@@ -34,7 +29,7 @@
 
 
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4 text-center">
                     <h:graphicImage library="img" name="webrtc_logo.png" />     
                 </div>
             </div>

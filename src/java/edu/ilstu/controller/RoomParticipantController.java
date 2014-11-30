@@ -5,6 +5,7 @@
  */
 package edu.ilstu.controller;
 
+import com.jcabi.aspects.Async;
 import edu.ilstu.admin.UserLogin;
 import edu.ilstu.admin.UserLoginRole;
 import edu.ilstu.mail.Email;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
@@ -332,11 +334,12 @@ public class RoomParticipantController implements Serializable {
                 rpm.addParticipant();
 
                 //Generating email
-                Email email = new Email();
+               // Email email = new Email();
                
                 if (s.getEmail() != null) {
 
-                    email.studentEnrollMail(s.getFname(),username,Password, s.getEmail(), ocm.getTitle());
+                    //email.studentEnrollMail(s.getFname(),username,Password, s.getEmail(), ocm.getTitle());
+                    sendMessage(s.getFname(),username,Password, s.getEmail(), ocm.getTitle());
 
                 }
 
@@ -349,7 +352,7 @@ public class RoomParticipantController implements Serializable {
         //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         int id = ocm.getTeacherId();
         System.out.println("id for teacher that just create the room :" + id);
-        return "onlineClasses.xhtml?faces-redirect=true&userId=" + id;
+        return "/protected/onlineClasses.xhtml?faces-redirect=true&userId=" + id;
     }
 
     private void initStudentManualList() {
@@ -410,7 +413,7 @@ public class RoomParticipantController implements Serializable {
         //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         int id = ocm.getTeacherId();
         System.out.println("id for teacher that just create the room :" + id);
-        return "onlineClasses.xhtml?faces-redirect=true&userId=" + id;
+        return "/protected/onlineClasses.xhtml?faces-redirect=true&userId=" + id;
 
     }
 
@@ -479,6 +482,15 @@ public class RoomParticipantController implements Serializable {
                 result = result + a1Val + " | " + b1Val + " | " + c1Val + " | " + d1Val + " | " + F1Val + "\n";
 
                 System.out.println(result);
+                
+                //Generating email
+                //Email email = new Email();
+               
+                if (sm.getEmail() != null) {
+
+                   // email.studentEnrollMail(sm.getFname(),d1Val,ul.getPassword(), sm.getEmail(), ocm.getTitle());
+                    sendMessage(sm.getFname(),d1Val,ul.getPassword(), sm.getEmail(), ocm.getTitle());
+                }
             }
         } catch (IOException ex) {
             Logger.getLogger(RoomParticipantController.class.getName()).log(Level.SEVERE, null, ex);
@@ -486,7 +498,7 @@ public class RoomParticipantController implements Serializable {
 
         int id = ocm.getTeacherId();
         System.out.println("id for teacher that just create the room :" + id);
-        return "onlineClasses.xhtml?faces-redirect=true&userId=" + id;
+        return "/protected/onlineClasses.xhtml?faces-redirect=true&userId=" + id;
     }
 
     /**
@@ -552,4 +564,13 @@ public class RoomParticipantController implements Serializable {
         this.file = file;
     }
 
+    
+    @Async
+    private void sendMessage(String fname, String username, String password, String emailAddress, String classTitle) {
+      Email email = new Email();
+      email.studentEnrollMail(fname,username,password, emailAddress, classTitle);
+      
+        
+    }
+    
 }
