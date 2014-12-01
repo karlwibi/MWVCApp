@@ -100,7 +100,7 @@ public class LoginFilter implements Filter {
         
 
         String requestURL = httpreq.getRequestURI();
-       System.out.println(requestURL);
+
         if (requestURL.equals("/MWVCApp/")) {
 
             setIsLogin(true);

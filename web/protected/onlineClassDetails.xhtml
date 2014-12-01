@@ -45,6 +45,30 @@
 
         </ui:define>
 
+        
+        <ui:define name="menu">
+
+            <div style="margin: 20px">
+                <h:form>
+
+
+                    <p:growl id="messages"/>
+
+                    <p:menubar>
+                        <p:menuitem   value="Home" outcome="onlineClasses" icon="ui-icon-home" >
+                            <f:param  name="userId" value="#{onlineClassDetailsController.userId}" /> 
+                        </p:menuitem>
+
+                        <f:facet name="options">
+                            <p:commandButton actionListener="#{loginController.signOut()}" value="Logout" icon="ui-icon-extlink" />
+                        </f:facet>
+                    </p:menubar>
+
+                </h:form>
+
+            </div>
+        </ui:define> 
+        
         <ui:define name="content"> 
             <o:form id="form1">
 
@@ -81,7 +105,7 @@
                                             <pe:timePicker disabled="#{not onlineClassDetailsController.teacher}"  id="OC_EndSessionhur" class="form-control" value="#{onlineClassDetailsController.scheduleClassModel.end_Time}" mode="spinner" />
 
                                             <h:outputLabel  for="tzname" value="Select timeZone"/>
-                                            <h:selectOneListbox disabled="#{not onlineClassDetailsController.teacher}"  value="#{onlineClassDetailsController.scheduleClassModel.tzname}" size="1">
+                                            <h:selectOneListbox id="tzname" disabled="#{not onlineClassDetailsController.teacher}"  value="#{onlineClassDetailsController.scheduleClassModel.tzname}" size="1">
                                                 <f:selectItems  value="#{onlineClassDetailsController.tznames}"/> 
                                             </h:selectOneListbox>
                                         </h:panelGrid>
@@ -110,7 +134,7 @@
                                         </h:column>
 
                                         <h:column>
-                                            <p:commandButton style="color: red;font-weight: bold" value="Remove"   action="#{onlineClassDetailsController.removeStudent(st.userid, st.fname)}" update=":form1:growl :form1:student_list"/>
+                                            <p:commandButton style="color: red;font-weight: bold" value="Remove"   action="#{onlineClassDetailsController.removeStudent(st.userid, st.fname)}" update=":form1:growl" oncomplete="reloadPage();"/>
                                         </h:column>
                                     </h:dataTable>
 
@@ -141,7 +165,7 @@
 
                                             <h:column>
 
-                                                <p:commandButton rendered="#{onlineClassDetailsController.teacher}" style="color: red;font-weight: bold" value="delete session"   action="#{onlineClassDetailsController.removeSession(csl.sessionId)}" update=":form1:growl :form1:f_session"/>
+                                                <p:commandButton rendered="#{onlineClassDetailsController.teacher}" style="color: red;font-weight: bold" value="delete session"   action="#{onlineClassDetailsController.removeSession(csl.sessionId)}" update=":form1:growl" oncomplete="reloadPage();"/>
                                             </h:column>
 
                                         </h:dataTable>
@@ -156,10 +180,10 @@
                                     <h:panelGrid columns="2" border="0" class="table ta" >
                                         <h:outputLink class="btn btn-primary"  value="onlineClasses.xhtml">
                                             <f:param name="userId" value="#{onlineClassDetailsController.userId}"/>
-                                            <i class="fa fa-backward ">&nbsp;<h:outputLabel value="Return to Class List"/></i>
+                                            <i class="fa fa-backward ">&nbsp;<h:outputLabel style="color: white" value="Return to Class List"/></i>
                                         </h:outputLink>
 
-                                        <h:commandButton rendered="#{onlineClassDetailsController.teacher}" class="btn btn-default btn-danger" type="button" value="delete Class" onclick="PF('dlg2').show();" >                                 
+                                        <h:commandButton rendered="#{onlineClassDetailsController.teacher}" class="btn btn-danger" type="button" value="delete Class" onclick="PF('dlg2').show();" >                                 
                                         </h:commandButton>
                                     </h:panelGrid>
 
@@ -185,6 +209,20 @@
 
 
         </ui:define> 
+        
+        
+         <ui:define name="scriptPart">
+            <script>
+                
+                
+                function reloadPage(){
+                    location.reload(true);    
+                }
+            </script>
+
+
+        </ui:define>
+        
     </ui:composition>
 
 

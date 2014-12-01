@@ -38,95 +38,95 @@
             <div class="ui-grid ui-grid-responsive">
                 <div class="row">
                     <div class="col-lg-12">
-                    
+
 
                         <p:panel style="width: 750px"  header="Online Class Session Settings">
 
-                        <p class="text-info"> <p:outputLabel value="Session Date : " />
-                            <p:calendar  value="#{onlineClassDetailsController.sessionModel.dateSession}">
-                                <p:ajax event="dateSelect" listener="#{onlineClassDetailsController.checkIfDateInRange()}" update="growl"/>
-                            </p:calendar>
-                        </p>
+                            <p class="text-info"> <p:outputLabel value="Session Date : " />
+                                <p:calendar  value="#{onlineClassDetailsController.sessionModel.dateSession}">
+                                    <p:ajax event="dateSelect" listener="#{onlineClassDetailsController.checkIfDateInRange()}" update="growl"/>
+                                </p:calendar>
+                            </p>
 
-                        <p:fieldset id="presentation" legend="Presentation Resource" style=" margin-bottom: 20px">
-
-
-                            <p:selectOneRadio class="radio" id="console" value="#{onlineClassDetailsController.presentationFlag}">
-                                <f:selectItem itemLabel="PowerPoint Slide Image" itemValue="slide" />                   
-
-                                <f:selectItem itemLabel="Prezi presentation ID" itemValue="prezi" />
-                                <p:ajax process="console"  listener="#{onlineClassDetailsController.presentationListener()}" update="presentation prezi pptSlide"/>
-
-                            </p:selectOneRadio>
-                            <h:panelGrid class="table" id="prezi" rendered="#{onlineClassDetailsController.preziValid}" columns="2" border="0" width="100%">
-
-                                <p:outputLabel class="text-info" value="Insert prezi Presentation ID:"/>
-
-                                <p:inputText class="form-control" id="preziId" value="#{onlineClassDetailsController.preziContentModel.preziId}"  />   
+                            <p:fieldset id="presentation" legend="Presentation Resource" style=" margin-bottom: 20px">
 
 
-                            </h:panelGrid>
-                            <h:panelGrid class="table" id="pptSlide" rendered="#{onlineClassDetailsController.slideValid}" columns="1" border="0" width="100%">
+                                <p:selectOneRadio class="radio" id="console" value="#{onlineClassDetailsController.presentationFlag}">
+                                    <f:selectItem itemLabel="PowerPoint Slide Image" itemValue="slide" />                   
 
-                                <p:commandButton value="Click Here to upload your Powerpoint Slide Images" type="button" onclick="PF('dlg2').show();" />
+                                    <f:selectItem itemLabel="Prezi presentation ID" itemValue="prezi" />
+                                    <p:ajax process="console"  listener="#{onlineClassDetailsController.presentationListener()}" update="presentation prezi pptSlide"/>
 
-                               
-                                <ui:repeat id="uploadlist" var="list" value="#{onlineClassDetailsController.uploadedFiles}">
-                                                                      
+                                </p:selectOneRadio>
+                                <h:panelGrid class="table" id="prezi" rendered="#{onlineClassDetailsController.preziValid}" columns="2" border="0" width="100%">
+
+                                    <p:outputLabel class="text-info" value="Insert prezi Presentation ID:"/>
+
+                                    <p:inputText class="form-control" id="preziId" value="#{onlineClassDetailsController.preziContentModel.preziId}"  />   
+
+
+                                </h:panelGrid>
+                                <h:panelGrid class="table" id="pptSlide" rendered="#{onlineClassDetailsController.slideValid}" columns="1" border="0" width="100%">
+
+                                    <p:commandButton value="Click Here to upload your Powerpoint Slide Images" type="button" onclick="PF('dlg2').show();" />
+
+
+                                    <ui:repeat id="uploadlist" var="list" value="#{onlineClassDetailsController.uploadedFiles}">
+
                                         #{list}<br/>
                                     </ui:repeat>
 
-                            </h:panelGrid>
-
-
-
-                        </p:fieldset>
-
-                        <p:fieldset id="tool" legend="Study Resource">
-                            <ui:repeat var="studyTool" value="#{onlineClassDetailsController.listStudyResource}">
-                                <h:panelGrid  columns="2" border="0" width="100%" class="table" >
-
-                                    <p:inputText  class="form-control" placeholder="insert the resource link" value="#{studyTool.articleLink}"/>
-                                    <p:inputTextarea class="form-control" rows="3" placeholder="insert a description" value="#{studyTool.description}"/>
-                                    
-                                    
                                 </h:panelGrid>
-                            </ui:repeat>
-                            <p:commandButton value="+" style="color: green;font-weight: bold">
-                                <f:ajax listener="#{onlineClassDetailsController.extend}"
-                                        execute="formOne"
-                                        render="formOne" 
 
-                                        />
-                            </p:commandButton>
-                            <p:commandButton value="-" style="color: red;font-weight: bold">
-                                <f:ajax listener="#{onlineClassDetailsController.unExtend()}"
-                                        execute="formOne"
-                                        render="formOne" 
 
-                                        />
-                            </p:commandButton>
 
-                        </p:fieldset>
-                        <p:commandButton class="btn btn-default" widgetVar="submitSession" value="submit" action="#{onlineClassDetailsController.createSession()}" onclick="PF('submitSession').disable()"/>
-                        <p:commandButton class="btn btn-default"    onclick="closeWindow()" value="close"/>
-                    </p:panel>
-</div>
+                            </p:fieldset>
+
+                            <p:fieldset id="tool" legend="Study Resource">
+                                <ui:repeat var="studyTool" value="#{onlineClassDetailsController.listStudyResource}">
+                                    <h:panelGrid  columns="2" border="0" width="100%" class="table" >
+
+                                        <p:inputText  class="form-control" placeholder="insert the resource link" value="#{studyTool.articleLink}"/>
+                                        <p:inputTextarea class="form-control" rows="3" placeholder="insert a description" value="#{studyTool.description}"/>
+
+
+                                    </h:panelGrid>
+                                </ui:repeat>
+                                <p:commandButton value="+" style="color: green;font-weight: bold">
+                                    <f:ajax listener="#{onlineClassDetailsController.extend}"
+                                            execute="formOne"
+                                            render="formOne" 
+
+                                            />
+                                </p:commandButton>
+                                <p:commandButton value="-" style="color: red;font-weight: bold">
+                                    <f:ajax listener="#{onlineClassDetailsController.unExtend()}"
+                                            execute="formOne"
+                                            render="formOne" 
+
+                                            />
+                                </p:commandButton>
+
+                            </p:fieldset>
+                            <p:commandButton class="btn btn-default" widgetVar="submitSession" value="submit" action="#{onlineClassDetailsController.createSession()}" onclick="PF('submitSession').disable()" update="growl"/>
+                            <p:commandButton class="btn btn-default"    onclick="closeWindow()" value="close"/>
+                        </p:panel>
+                    </div>
                 </div>
             </div>
-        </h:form>
+       </h:form>
 
-        <p:dialog header="Upload Slide Files" widgetVar="dlg2" modal="true" height="100">
-            <h:form  enctype="multipart/form-data" >
+       <p:dialog header="Upload Slide Files" widgetVar="dlg2" modal="true" height="100">
+           <h:form  enctype="multipart/form-data" >
 
-                <p:fileUpload id="fileUp" widgetVar="fileVar" fileUploadListener="#{onlineClassDetailsController.handleFileUpload}"  mode="advanced" dragDropSupport="false" 
-                              onstart="startProcess();" oncomplete="finalProcess();" multiple="true" update="messages" sizeLimit="1000000000" fileLimit="100" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+               <p:fileUpload id="fileUp" widgetVar="fileVar" fileUploadListener="#{onlineClassDetailsController.handleFileUpload}"  mode="advanced" dragDropSupport="false" 
+                             onstart="startProcess();" oncomplete="finalProcess();" multiple="true" update="messages" sizeLimit="1000000000" fileLimit="100" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
 
-                <p:growl widgetVar="uploadMessages" id="messages" showDetail="true" life="5000" /> 
+               <p:growl widgetVar="uploadMessages" id="messages" showDetail="true" life="5000" /> 
 
-            
-            </h:form>
-        </p:dialog>   
+
+           </h:form>
+       </p:dialog>   
 
 
 

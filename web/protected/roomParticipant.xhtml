@@ -17,9 +17,9 @@
         </ui:define>
         <ui:define name="menu">
             <ul style="margin: 20px" class="nav nav-pills nav-wizard">
-                <li ><a  href="#" data-toggle="tab">Create Class</a><div class="nav-arrow"></div></li>
+                <li ><a  href="#" style="pointer-events:none;" onclick="return false" data-toggle="tab">Create Class</a><div class="nav-arrow"></div></li>
                 <!--<li class="active"><div class="nav-wedge"></div><a href="#" data-toggle="tab">Add Room Participant</a><div class="nav-arrow"></div></li>-->
-                <li class="active"><div class="nav-wedge"></div><a href="#" data-toggle="tab">Add Room Participant</a></li>
+                <li class="active"><div class="nav-wedge"></div><a href="#" style="pointer-events:none;" onclick="return false" data-toggle="tab">Add Room Participant</a></li>
             </ul>
         </ui:define>
 
@@ -141,7 +141,13 @@
                 </p:tab>
             </p:tabView>
 
-
+            <p:panel>
+                 <p:link class="btn btn-primary btn-warning" value="cancel" outcome="onlineClasses">
+                     <f:param  name="userId" value="#{roomParticipantController.ocm.teacherId}" /> 
+                        
+                    </p:link>
+                    
+            </p:panel>
 
 
 

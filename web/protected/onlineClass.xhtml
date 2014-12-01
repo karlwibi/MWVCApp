@@ -20,58 +20,60 @@
         </ui:define>
         <ui:define name="menu">
             <ul style="margin: 20px" class="nav nav-pills nav-wizard">
-                <li class="active"><a  href="#" onclick="return false" data-toggle="tab">Create Class</a><div class="nav-arrow"></div></li>
+                <li class="active"><a  href="#" style="pointer-events:none;" onclick="return false" data-toggle="tab">Create Class</a><div class="nav-arrow"></div></li>
                 <!--<li><div class="nav-wedge"></div><a href="#" data-toggle="tab">Add Room participant</a><div class="nav-arrow"></div></li>-->
-                <li><div class="nav-wedge"></div><a href="#" data-toggle="tab">Add Room participant</a></li>
+                <li><div class="nav-wedge"></div><a href="#" onclick="return false" style="pointer-events:none;" data-toggle="tab">Add Room participant</a></li>
             </ul>
         </ui:define>
         <ui:define name="content"> 
-          
-                <h:form role="form">
 
-                    <p:panel header="Create a new online class">
-                        <p:panel>
-                    <h:panelGrid class="table" columns="2" border="0">
-                        
-                        <h:outputLabel  for="title" value="Title"/>
-                        <h:inputText id="title" class="form-control" value="#{onlineClassController.ocm.title}"/>
+            <h:form role="form">
 
-                        <h:outputLabel  for="description" value="Description"/>
-                        <h:inputTextarea id="description" class="form-control" value="#{onlineClassController.ocm.description}"/>
+                <p:panel header="Create a new online class">
+                    <p:panel>
+                        <h:panelGrid class="table" columns="2" border="0">
 
-                        <h:outputLabel  for="startdate" value="Class Start Date"/>
-                        <p:calendar id="startdate" style="width: 500px;" value="#{onlineClassController.startDate}"/>
+                            <h:outputLabel  for="title" value="Title"/>
+                            <h:inputText id="title" class="form-control" value="#{onlineClassController.ocm.title}"/>
 
-                        <h:outputLabel  for="enddate" value="Class End Date"/>
-                        <p:calendar id="enddate"  style="width: 500px;" value="#{onlineClassController.endDate}"/>
+                            <h:outputLabel  for="description" value="Description"/>
+                            <h:inputTextarea id="description" class="form-control" value="#{onlineClassController.ocm.description}"/>
 
-                        <h:outputLabel  for="starttime" value="Class Start Time"/>
-                        <pe:timePicker class="form-control"  id="starttime" value="#{onlineClassController.startTime}" label="Return start Time" mode="spinner" />
+                            <h:outputLabel  for="startdate" value="Class Start Date"/>
+                            <p:calendar id="startdate" style="width: 500px;" value="#{onlineClassController.startDate}"/>
 
-                        <h:outputLabel  for="endtime" value="Class End Time"/>
-                        <pe:timePicker  id="endtime" class="form-control" value="#{onlineClassController.endTime}" mode="spinner" label="Return end Time" />
-                        
-                        <h:outputLabel  for="tzname"  value="Select timeZone"/>
-                        <h:selectOneListbox style="width: 500px;" value="#{onlineClassController.scm.tzname}" size="1">
-                            <f:selectItems  value="#{onlineClassController.tznames}"/> 
-                        </h:selectOneListbox>
+                            <h:outputLabel  for="enddate" value="Class End Date"/>
+                            <p:calendar id="enddate"  style="width: 500px;" value="#{onlineClassController.endDate}"/>
 
-                    </h:panelGrid>
-        
-                        </p:panel>
-                            
-                            
-                        
-                        
+                            <h:outputLabel  for="starttime" value="Class Start Time"/>
+                            <pe:timePicker class="form-control"  id="starttime" value="#{onlineClassController.startTime}" label="Return start Time" mode="spinner" />
+
+                            <h:outputLabel  for="endtime" value="Class End Time"/>
+                            <pe:timePicker  id="endtime" class="form-control" value="#{onlineClassController.endTime}" mode="spinner" label="Return end Time" />
+
+                            <h:outputLabel  for="tzname"  value="Select timeZone"/>
+                            <h:selectOneListbox style="width: 500px;" value="#{onlineClassController.scm.tzname}" size="1">
+                                <f:selectItems  value="#{onlineClassController.tznames}"/> 
+                            </h:selectOneListbox>
+
+                        </h:panelGrid>
+
                     </p:panel>
-                    
-                    
 
+                </p:panel>
 
-
+                <h:panelGrid columns="2" border="0">
+                
                     <p:commandButton style="margin: 20px" class="btn btn-primary" action="#{onlineClassController.addClass()}" value="Create Class"/>
-                </h:form>
-            
+                    <p:link class="btn btn-warning" value="cancel" outcome="onlineClasses">
+                        <f:param  name="userId" value="#{onlineClassController.teacherId}" /> 
+                        
+                    </p:link>
+                    
+                </h:panelGrid>
+                
+            </h:form>
+
         </ui:define> 
     </ui:composition>
 </html>

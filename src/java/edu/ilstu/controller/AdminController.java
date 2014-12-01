@@ -5,9 +5,13 @@
  */
 package edu.ilstu.controller;
 
+import com.jcabi.aspects.Async;
 import edu.ilstu.admin.UserLogin;
 import edu.ilstu.admin.UserLoginRole;
+import edu.ilstu.dao.UserDAO;
+import edu.ilstu.dao.UserDAOImpl;
 import edu.ilstu.helper.Property;
+import edu.ilstu.mail.Email;
 import edu.ilstu.model.TeacherModel;
 import edu.ilstu.model.UserModel;
 import java.util.ArrayList;
@@ -151,6 +155,10 @@ public class AdminController {
         ulr=new UserLoginRole(username,role);
         ulr.setUserRole();
         
+        if(tm.getEmail()!=null){
+            sendMessage(username, username, password, email);
+        }
+        
     }
 
     public void reset(){
@@ -173,18 +181,34 @@ public class AdminController {
     }
      
     public void onRowCancel(RowEditEvent event) {
-        FacesMessage msg = new FacesMessage("Following user was removed", ((UserLoginRole) event.getObject()).getUsername());
-        
-        UserLogin ul=new UserLogin();
-        ul.setUsername(((UserLoginRole) event.getObject()).getUsername());
-        ul.deleteLogin();
-        
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+//        FacesMessage msg = new FacesMessage("Following user was removed", ((UserLoginRole) event.getObject()).getUsername());
+//        
+//        UserLogin ul=new UserLogin();
+//        ul.setUsername(((UserLoginRole) event.getObject()).getUsername());
+//        ul.deleteLogin();
+//        
+//        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     
-    public void onRowRemove(RowEditEvent event) {
+    public void onRowRemove(String username) {
        // FacesMessage msg = new FacesMessage("Edit Cancelled", ((UserLoginRole) event.getObject()).getUsername());
         //FacesContext.getCurrentInstance().addMessage(null, msg);
+        
+        
+        FacesMessage msg = new FacesMessage("Following user was removed", username);
+        
+        UserLogin ul=new UserLogin();
+        ul.setUsername(username);
+        ul=ul.getLogin();
+        
+        UserDAO udao= new UserDAOImpl();
+        UserModel um=udao.getUserBy(ul.getUserId());
+        
+        um.deleteUser();
+        //ul.deleteLogin();
+        
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        
     }
     /**
      * @return the username
@@ -414,5 +438,12 @@ public class AdminController {
         
         Property.saveWebRTCAppInfo();
         
+    }
+    
+    @Async
+    private void sendMessage(String fname, String username, String password, String emailAddress) {
+        Email email = new Email();
+        email.sendCredentialMessageToTeacher(fname, username, password, emailAddress);
+
     }
 }

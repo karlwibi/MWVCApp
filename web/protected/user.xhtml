@@ -3,62 +3,94 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-     
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      >
-    <ui:composition template="/templates/template.xhtml">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition template="/templates/templateNoNav.xhtml">
         <ui:define name="headerInfo"> 
-            <title>Module WebRTC Video Conferencing</title>
+            <title>Module WebRTC Video Conferencing - user profile</title>
+
+            <f:metadata>
+                <f:viewParam name="userId" value="#{userController.userId}"/>
+                <f:viewAction action="#{userController._init()}" onPostback="false"  />
+            </f:metadata>
+
         </ui:define>
+        <ui:define name="menu">
+
+            <div style="margin: 20px">
+                <h:form>
+
+
+                    <p:growl id="messages"/>
+
+                    <p:menubar>
+                        <p:menuitem   value="Home" outcome="onlineClasses" icon="ui-icon-home" >
+                            <f:param  name="userId" value="#{userController.userId}" /> 
+                        </p:menuitem>
+
+
+
+                        <f:facet name="options">
+                            <p:commandButton actionListener="#{loginController.signOut()}" value="Logout" icon="ui-icon-extlink" />
+                        </f:facet>
+                    </p:menubar>
+
+
+
+
+                </h:form>
+
+            </div>
+        </ui:define> 
         <ui:define name="content"> 
-            <div class="row">
--
-                <h:form class="form-horizontal ">
+            <div class="container">
 
-                    <h:panelGrid  columns="3" >
+                <h:form id="formProfile" class="form-horizontal ">
 
-                        Email:
-                        <h:inputText class="form-control" id="email" value="#{userController.email}" label="Email">
-                        </h:inputText>
-                        <h:message id="emailMessage" for="email" style="color:red" />
-                        username: 
-                        <h:inputText class="form-control" id="userID" value="#{userController.username}" label="Username" >
-                            
-                        </h:inputText>
-                        <h:panelGroup>
-                            <h:message id="usernameMessage" for="userID" style="color:red" /> 
-                            <h:outputText value="" id="messageUsernameCheck"/>
+                    <p:growl id="msgs2" showDetail="true"/>
+                    <h:panelGrid   columns="1" border="0" width="50%" >
+                        <h:panelGrid   class="table" columns="2" border="0" >
+
+                            <h:outputLabel class="text-info text-capitalize" for="firstname" value="Firstname:"/>
+                            <h:inputText class="form-control" id="firstname" required="true" pt:type="text" pt:placeholder="Enter first name" value="#{userController.firstName}" />
+
+                            <h:outputLabel class="text-info text-capitalize" for="lastname" value="Lastname:"/>
+                            <h:inputText class="form-control" id="lastname" required="true" pt:type="text" pt:placeholder="Enter Last Name" value="#{userController.lastName}"/>
+
+                            <h:outputLabel class="text-info text-capitalize" for="username" value="username:"/>
+                            <h:inputText class="form-control" id="username" required="false" disabled="true" pt:type="text" pt:placeholder="Enter your username" value="#{userController.username}"/>
+
+                            <h:outputLabel class="text-info text-capitalize" for="password" value="password:"/>
+                            <p:password redisplay="true" class="form-control" id="password" match="confirmPassword" required="true" pt:type="password" pt:placeholder="Enter password" value="#{userController.password}"/>
+
+                            <h:outputLabel class="text-info text-capitalize" for="confirmPassword" value="confirm password:"/>
+                            <p:password redisplay="true" class="form-control" id="confirmPassword" required="true" pt:type="password" pt:placeholder="Re-Enter password" value="#{userController.password}"/>
+
+                            <h:outputLabel class="text-info text-capitalize" for="email" value="email:" />
+                            <h:inputText  class="form-control" id="email" required="true" pt:type="email" value="#{userController.email}" pt:placeholder="Enter email"  />
+
+                        </h:panelGrid>           
+
+
+                        <h:panelGroup class="form-group">
+                            <p:commandButton widgetVar="updateProfile" class="btn btn-default" value="update profile" action="#{userController.update()}"  update=":formProfile:msgs2" />
+
                         </h:panelGroup>
-
-                        password: 
-                        <h:inputSecret class="form-control" id="pass" value="#{userController.password}" label="Pasword" >
-                        </h:inputSecret>
-                        <h:message id="passwordMessage" for="pass" style="color:red" /> 
-                        Confirm Password:
-                        <h:inputSecret  class="form-control" id="confirmPass"  label="Confirm Pasword" >
-                        </h:inputSecret>
-                        <h:message id="confirmPasswordMessage" for="confirmPass" style="color:red" />
-
-                        
-                        <h:selectOneRadio value="#{userController.is_a}">
-                            <f:selectItem itemValue="t" itemLabel="Teacher" />
-                            <f:selectItem itemValue="s" itemLabel="student" />
-                        </h:selectOneRadio>
-
-
-
-
-
                     </h:panelGrid>
-                    
-                    <h:commandButton  class="btn btn-primary btn-sm" value="submit"  action="#{userController.submit()}"/> &nbsp;&nbsp;
-                    <input   class="btn btn-primary btn-sm" type="reset" value="reset"/>
+
                 </h:form>
 
                 <h:messages globalOnly="true" style="color: red "/>
 
             </div>
         </ui:define> 
+
+
+
+
     </ui:composition>
 </html>
 

@@ -131,6 +131,8 @@ public class OnlineClassesController {
     public void onRowCancel(RowEditEvent event) {
 
     }
+    
+    
 
     /**
      * @return the roomParticipant
@@ -300,11 +302,11 @@ public class OnlineClassesController {
         this.teacherClassList = teacherClassList;
     }
 
-    public void openWebrtcWindow(int roomId) throws IOException {
-
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        externalContext.redirect("http://54.187.74.210:9010/virtualClassTV.html?roomId=" + roomId + "&userId=" + userId);
-    }
+//    public void openWebrtcWindow(int roomId) throws IOException {
+//
+//        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+//        externalContext.redirect("http://54.187.74.210:9010/virtualClassTV.html?roomId=" + roomId + "&userId=" + userId);
+//    }
 
     /**
      * @return the webrtcURL
@@ -323,14 +325,10 @@ public class OnlineClassesController {
         scm.setStart_Time(scm.getStartTime());
         scm.setEnd_Time(scm.getEndTime());
         showClass = false;
+ 
+        java.util.Date serverDate = ScheduleClassModel.utcToTimeZonecheck(calendar.getTime(),calendar.getTimeZone().getID(), scm.getTzname());
 
         
-        
-        
-        java.util.Date serverDate = ScheduleClassModel.utcToTimeZonecheck(calendar.getTime(), scm.getTzname());
-
-        System.out.println(serverDate);
-            System.out.println(scm.getStart_Time());
         if ((serverDate.before(scm.getEnd_Date())) || serverDate.equals(scm.getEnd_Date())) {
 
             showClass = true;
@@ -339,6 +337,13 @@ public class OnlineClassesController {
         return showClass;
     }
 
+    /**
+     * check to see if the Join room
+     * button can be displayed
+     *
+     * @param onlineClassID
+     * @return 
+     */
     public boolean displayButton(int onlineClassID) {
 
         Calendar calendar = Calendar.getInstance();
@@ -351,7 +356,7 @@ public class OnlineClassesController {
 
         showConnectButton = false;
 
-        java.util.Date serverDate = ScheduleClassModel.utcToTimeZonecheck(calendar.getTime(), scm.getTzname());
+        java.util.Date serverDate = ScheduleClassModel.utcToTimeZonecheck(calendar.getTime(),calendar.getTimeZone().getID(), scm.getTzname());
 
         if ((serverDate.before(scm.getEnd_Date())) || serverDate.equals(scm.getEnd_Date())) {
             DateFormat utcFormat = new SimpleDateFormat("HH:mm:ss");
@@ -366,8 +371,8 @@ public class OnlineClassesController {
 
             System.out.println(serverDate);
             System.out.println(scm.getStart_Time());
-
-            if (serverDate.getTime() >= scm.getStart_Time().getTime() && serverDate.getTime() <= scm.getEnd_Time().getTime()) {
+             System.out.println(scm.getEnd_Time());
+             if (serverDate.getTime() >= scm.getStart_Time().getTime() && serverDate.getTime() <= scm.getEnd_Time().getTime()) {
 
                 showConnectButton = true;
             }

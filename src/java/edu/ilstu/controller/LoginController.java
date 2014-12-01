@@ -85,7 +85,7 @@ public class LoginController {
             facesContext.addMessage(null, new FacesMessage("Login failed."));
             try {
                 setMessage(e.getMessage());
-                context.redirect("errorLogin.xhtml");
+                context.redirect("loginAdmin_failure.xhtml");
             } catch (IOException ex) {
                 Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
             }

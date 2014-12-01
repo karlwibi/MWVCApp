@@ -302,33 +302,41 @@ public class ScheduleClassModel implements Serializable {
         this.tzname = tzname;
     }
 
-    public static java.util.Date utcToTimeZonecheck(java.util.Date serverUtcTime, String timeZone) {
+    public static java.util.Date utcToTimeZonecheck(java.util.Date serverUtcTime, String ftimeZone,String timeZone) {
 
         // Construct FROM and TO TimeZone instances
-        TimeZone fromTimeZone = TimeZone.getTimeZone("UTC");
+        TimeZone fromTimeZone = TimeZone.getTimeZone(ftimeZone);
         TimeZone toTimeZone = TimeZone.getTimeZone(timeZone);
 
 // Get a Calendar instance using the default time zone and locale.
         Calendar calendar = Calendar.getInstance();
- // Set the calendar's time with the given date
+        // Set the calendar's time with the given date
         calendar.setTimeZone(fromTimeZone);
         calendar.setTime(serverUtcTime);
 
         System.out.println("Input: " + calendar.getTime() + " in " + fromTimeZone.getDisplayName());
 
-        // FROM TimeZone to UTC
-        calendar.add(Calendar.MILLISECOND, fromTimeZone.getRawOffset() * -1);
+//         FROM TimeZone to UTC
+        if (!fromTimeZone.equals(toTimeZone)) {
+            calendar.add(Calendar.MILLISECOND, fromTimeZone.getRawOffset() * -1);
 
-        if (fromTimeZone.inDaylightTime(calendar.getTime())) {
-            calendar.add(Calendar.MILLISECOND, calendar.getTimeZone().getDSTSavings() * -1);
+            if (fromTimeZone.inDaylightTime(calendar.getTime())) {
+                calendar.add(Calendar.MILLISECOND, calendar.getTimeZone().getDSTSavings() * -1);
+            }
         }
 
 // UTC to TO TimeZone
-        calendar.add(Calendar.MILLISECOND, toTimeZone.getRawOffset());
+       
+        if (!fromTimeZone.equals(toTimeZone)) {
 
-        if (toTimeZone.inDaylightTime(calendar.getTime())) {
-            calendar.add(Calendar.MILLISECOND, toTimeZone.getDSTSavings());
+            calendar.add(Calendar.MILLISECOND, toTimeZone.getRawOffset());
+
+            if (toTimeZone.inDaylightTime(calendar.getTime())) {
+                calendar.add(Calendar.MILLISECOND, toTimeZone.getDSTSavings());
+            }
         }
+
+        System.out.println("output: " + calendar.getTime() + " in " + toTimeZone.getDisplayName());
 
         return calendar.getTime();
 

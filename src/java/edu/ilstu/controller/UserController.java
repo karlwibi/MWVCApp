@@ -5,12 +5,16 @@
  */
 package edu.ilstu.controller;
 
+import edu.ilstu.admin.UserLogin;
+import edu.ilstu.dao.UserDAO;
+import edu.ilstu.dao.UserDAOImpl;
 import edu.ilstu.model.StudentModel;
 import edu.ilstu.model.TeacherModel;
 import edu.ilstu.model.UserModel;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.ExternalContext;
@@ -27,72 +31,59 @@ import javax.servlet.http.HttpServletResponse;
 @RequestScoped
 public class UserController {
 
+    private int userId;
     private String email;
     private String username;
     private String password;
     private String firstName;
     private String lastName;
     private UserModel aUserModel;
-    private char is_a;
-    private int id;
+    
 
     /**
      * Creates a new instance of UserController
      */
     public UserController() {
 
-        if (!LoginController.isIsLogin()) {
-
-            FacesContext faces = FacesContext.getCurrentInstance();
-            ExternalContext context = faces.getExternalContext();
-
-            HttpServletRequest req=(HttpServletRequest) context.getRequest();            
-            
-            String originalURI = req.getRequestURL().toString();
-
-            if (originalURI == null) {
-                originalURI = req.getRequestURI();
-            }
-
-            LoginController.setUrl(originalURI);
-
-            try {
-                context.redirect("faces/login.xhtml");
-//            HttpServletResponse response = (HttpServletResponse) context.getResponse();
-//            try {
-//                response.sendRedirect("/login.xhtml");
-//                faces.responseComplete(); // need this or will get "Cannot forward after response has been committed"
-//                // exception. It bypasses the Render Response phase
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-            } catch (IOException ex) {
-                Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
     }
 
-    public String submit() {
-        if (getIs_a() == 't') {
-            System.out.println("it's a teacher");
-            aUserModel = new TeacherModel();
-        } else {
-            aUserModel = new StudentModel();
-        }
-
-        aUserModel.setEmail(getEmail());
-        //remember to set the username there
-        //remember to set the password there
-        aUserModel.setIs_a(is_a);
-
-        id = aUserModel.saveUser();
-
-//        UserDAO udao = new UserDAOImpl();
-//        udao.createNewUser(aUserModel);
-        return "onlineClass.xhtml?faces-redirect=true&teacherId=" + id;
+    public void _init(){
+        
+        UserDAO udao= new UserDAOImpl();
+        UserModel um= udao.getUserBy(userId);
+        UserLogin ul=new UserLogin();
+        ul.setUserId(userId);
+        ul=ul.getLoginById();
+        
+        firstName=um.getFname();
+        lastName=um.getLname();
+        username=ul.getUsername();
+        password=ul.getPassword();
+        email=um.getEmail();
+        
     }
-
+    
+    public void update() {
+        UserDAO udao= new UserDAOImpl();
+        UserModel um= udao.getUserBy(userId);
+        UserLogin ul=new UserLogin();
+        ul.setUserId(userId);
+        ul=ul.getLoginById();
+        
+        um.setFname(firstName);
+        um.setLname(lastName);
+        um.setEmail(email);
+        
+        ul.setPassword(password);
+        
+        um.updateUser();
+        ul.updateLogin();
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info:", "your profile was updated!"));
+    }
+    
+   
     /**
      * @return the email
      */
@@ -135,20 +126,7 @@ public class UserController {
         this.password = password;
     }
 
-    /**
-     * @return the is_a
-     */
-    public char getIs_a() {
-        return is_a;
-    }
-
-    /**
-     * @param is_a the is_a to set
-     */
-    public void setIs_a(char is_a) {
-        this.is_a = is_a;
-    }
-
+    
     /**
      * @return the aUserModel
      */
@@ -163,4 +141,48 @@ public class UserController {
         this.aUserModel = aUserModel;
     }
 
+    /**
+     * @return the userId
+     */
+    public int getUserId() {
+        return userId;
+    }
+
+    /**
+     * @param userId the userId to set
+     */
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    /**
+     * @return the firstName
+     */
+    public String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * @param firstName the firstName to set
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * @return the lastName
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * @param lastName the lastName to set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    
+    
 }

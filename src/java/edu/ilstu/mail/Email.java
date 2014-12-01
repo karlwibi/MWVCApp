@@ -69,7 +69,7 @@ public class Email {
         properties.setProperty("mail.smtp.host", HOST);
         properties.put("mail.smtp.port", Property.getSmtpPort());
 
-       // properties.setProperty("mail.user", "yourID"); // if needed
+        // properties.setProperty("mail.user", "yourID"); // if needed
         // properties.setProperty("mail.password", "yourPassword"); // if needed
         // Get the default Session object.
         //session = Session.getDefaultInstance(properties);
@@ -91,135 +91,186 @@ public class Email {
         this.messageType = messageType;
     }
 
-    
-    public String studentEnrollMail(String firstname, String username, String password,String emailAddress, String classTitle){
-        
+    public String studentEnrollMail(String firstname, String username, String password, String emailAddress, String classTitle) {
+
         Address[] recipientAddresses = null;
         String status = null;
         recipientAddresses = new InternetAddress[1];
         OnlineClassModel ocm = null;
-        String subject=null;
-        
+        String subject = null;
+
         // Set Subject: header field
 //            ocm = new OnlineClassModel();
 //            ocm.setOnlineClassId(onlineClassId);
 //            ocm = ocm.getAClass();
-            
-            subject="Enrollment Confirmation for your online Class: "+classTitle;
-            String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/emailTemplate/email.html");
+        subject = "Enrollment Confirmation for your online Class: " + classTitle;
+        String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/emailTemplate/email.html");
 
-            //File source=new File(path+"/resources/emailTemplate/email.html");
-            InputStream in=null;
+        //File source=new File(path+"/resources/emailTemplate/email.html");
+        InputStream in = null;
         try {
             in = new FileInputStream(path);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
         }
-            in = new BufferedInputStream(in);
+        in = new BufferedInputStream(in);
 
-            StringWriter writer = new StringWriter();
+        StringWriter writer = new StringWriter();
         try {
             IOUtils.copy(in, writer);
-            
+
         } catch (IOException ex) {
             Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-         Document doc = Jsoup.parse(writer.toString());
-         
-         
-         //setting the tittle and user firstname
-        Element  div= doc.select("p.classTitle").first();
-         div.html(classTitle+" Online class");
-         
-         //setting the user tittle
-         div= doc.select("div.title").first();
-         div.html("<h3> hi "+firstname+",</h3>");
-         
-        
+        Document doc = Jsoup.parse(writer.toString());
+
+        //setting the tittle and user firstname
+        Element div = doc.select("p.classTitle").first();
+        div.html(classTitle + " Online class");
+
+        //setting the user tittle
+        div = doc.select("div.title").first();
+        div.html("<h3> hi " + firstname + ",</h3>");
+
         //putting the message
-         div=doc.select("div.message").first();
-         div.html("<p> You are now enrolled into the Online class "+classTitle+". Please click on the link below to access "
-                 + "your online class management website in order to gain access to the Virtual rooms.<br/><br/>"
-                 + "your credentials are: <br/>"
-                 + "Username:"+username
-                 + "<br/>password:"+password
-                 + "<br/><br/>"
-                 + "<a href='"+Property.getApplicationLink()+"'>Click here to access your online course management</a></p>");
-         
-            String emailMessage = doc.toString();
-            
-            
-        
+        div = doc.select("div.message").first();
+        div.html("<p> You are now enrolled into the Online class " + classTitle + ". Please click on the link below to access "
+                + "your online class management website in order to gain access to the Virtual rooms.<br/><br/>"
+                + "your credentials are: <br/>"
+                + "Username:" + username
+                + "<br/>password:" + password
+                + "<br/><br/>"
+                + "<a href='" + Property.getApplicationLink() + "'>Click here to access your online course management</a></p>");
+
+        String emailMessage = doc.toString();
+
         try {
             recipientAddresses[0] = new InternetAddress(emailAddress);
         } catch (AddressException ex) {
             Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        System.out.println(emailMessage);
+
         sendMail(getSession(), recipientAddresses, subject, emailMessage);
-        
-        return status;
-    }
-    
-    public String onlineClassCreateMessage() {
-        OnlineClassModel ocm = null;
-        Address[] recipientAddresses = null;
-
-        String status = null;
-
-        //setting the student email from the list 
-        //get all the information for the class 
-        RoomParticipantModel participant = new RoomParticipantModel();
-        participant.setOnlineClassId(onlineClassId);
-        //getting the room participant info
-        List<RoomParticipantModel> participantList = new ArrayList();
-        participantList = participant.getAllParticipantForRoom();
-        //intializing the Internet AddressArray 
-        recipientAddresses = new InternetAddress[participantList.size()];
-
-//adding the student email address to the recipientaddress queue
-        int i = 0;
-        for (RoomParticipantModel aPartcipant : participantList) {
-            int studentId = aPartcipant.getStudentId();
-            StudentModel aStudent = new StudentModel();
-            //getting the student information
-            aStudent = aStudent.getStudentById(studentId);
-            //adding to the recipientAddresses Array variable
-            try {
-                recipientAddresses[i] = new InternetAddress(aStudent.getEmail());
-            } catch (AddressException ex) {
-                Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            i++;
-        }
-
-        sendMail(getSession(), recipientAddresses, null, null);
 
         return status;
     }
+
+//    public String onlineClassCreateMessage() {
+//        OnlineClassModel ocm = null;
+//        Address[] recipientAddresses = null;
+//
+//        String status = null;
+//
+//        //setting the student email from the list 
+//        //get all the information for the class 
+//        RoomParticipantModel participant = new RoomParticipantModel();
+//        participant.setOnlineClassId(onlineClassId);
+//        //getting the room participant info
+//        List<RoomParticipantModel> participantList = new ArrayList();
+//        participantList = participant.getAllParticipantForRoom();
+//        //intializing the Internet AddressArray 
+//        recipientAddresses = new InternetAddress[participantList.size()];
+//
+////adding the student email address to the recipientaddress queue
+//        int i = 0;
+//        for (RoomParticipantModel aPartcipant : participantList) {
+//            int studentId = aPartcipant.getStudentId();
+//            StudentModel aStudent = new StudentModel();
+//            //getting the student information
+//            aStudent = aStudent.getStudentById(studentId);
+//            //adding to the recipientAddresses Array variable
+//            try {
+//                recipientAddresses[i] = new InternetAddress(aStudent.getEmail());
+//            } catch (AddressException ex) {
+//                Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            i++;
+//        }
+//
+//        sendMail(getSession(), recipientAddresses, null, null);
+//
+//        return status;
+//    }
 
     /**
-     * send session create message
+     * 
+     * @param firstname
+     * @param username
+     * @param password
+     * @param emailAddress
+     * 
      * @return 
      */
-    public String sessionCreateMessage() {
+    public String sendCredentialMessageToTeacher(String firstname, String username, String password, String emailAddress) {
+        Address[] recipientAddresses = null;
         String status = null;
+        recipientAddresses = new InternetAddress[1];
+        OnlineClassModel ocm = null;
+        String subject = null;
         // Get the default Session object.
-        setSession(Session.getDefaultInstance(getProperties()));
+        
+        subject = "Account Created for the webRtc online class module";
+        String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/resources/emailTemplate/email.html");
+
+        //File source=new File(path+"/resources/emailTemplate/email.html");
+        InputStream in = null;
+        try {
+            in = new FileInputStream(path);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
+       }
+        in = new BufferedInputStream(in);
+
+        StringWriter writer = new StringWriter();
+        try {
+            IOUtils.copy(in, writer);
+
+        } catch (IOException ex) {
+            Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Document doc = Jsoup.parse(writer.toString());
+
+        //setting the tittle and user firstname
+        Element div = doc.select("p.classTitle").first();
+        div.html(" Online class - new account");
+
+        //setting the user tittle
+        div = doc.select("div.title").first();
+        div.html("<h3> hi " + firstname + ",</h3>");
+
+        //putting the message
+        div = doc.select("div.message").first();
+        div.html("<p> Please find below the credentials to access the webRtc online classe module<br/><br/>"
+                + "<br/>"
+                + "Username:" + username
+                + "<br/>password:" + password
+                + "<br/><br/>"
+                + "<a href='" + Property.getApplicationLink() + "'>Click here to access your online course management</a></p>");
+
+        String emailMessage = doc.toString();
+
+        try {
+            recipientAddresses[0] = new InternetAddress(emailAddress);
+        } catch (AddressException ex) {
+            Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        sendMail(getSession(), recipientAddresses, subject, emailMessage);
+
+        
 
         return status;
     }
 
     /**
      * send email via smtp
+     *
      * @param session
-     * @param recipientAddresses 
+     * @param recipientAddresses
      */
     private void sendMail(Session session, Address[] recipientAddresses, String subject, String emailMessage) {
-
-        
 
         try {
             // Create a default MimeMessage object.
@@ -232,7 +283,6 @@ public class Email {
             message.addRecipients(Message.RecipientType.TO,
                     recipientAddresses);
 
-            
             message.setSubject(subject);
 
             // creates message part
@@ -265,7 +315,7 @@ public class Email {
             System.out.println("Sent message successfully....");
         } catch (MessagingException mex) {
             mex.printStackTrace();
-        
+
         }
     }
 

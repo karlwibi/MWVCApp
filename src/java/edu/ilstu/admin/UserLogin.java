@@ -78,6 +78,15 @@ public class UserLogin {
 
     }
 
+    public UserLogin getLoginById() {
+
+        UserLoginDAO uldao = new UserLoginDAOImpl();
+
+        UserLogin returnValue = uldao.getLogin(this.userId);
+
+        return returnValue;
+
+    }
     /**
      * @return the username
      */

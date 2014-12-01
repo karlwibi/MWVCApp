@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pe="http://primefaces.org/ui/extensions">
-    
+
     <ui:composition template="/templates/templateNoNav.xhtml">
         <ui:define name="headerInfo"> 
 
@@ -19,27 +19,27 @@
 
             <div class="row">
                 <div class="col-lg-8">
-            <h:form class="form-signin" role="form">
-                <h:outputLabel for="usernameInput" value="username :"/>
+                    <h:form class="form-signin" role="form">
+                        <h:outputLabel for="usernameInput" value="username :"/>
 
 
-                <h:inputText class="form-control" id="usernameInput" value="#{loginController.username}" 
-                             required="true" />
-                <br />
-                <h:outputLabel for="passwordInput" value="password :"/>
+                        <h:inputText class="form-control" id="usernameInput" value="#{loginController.username}" 
+                                     required="true" />
+                        <br />
+                        <h:outputLabel for="passwordInput" value="password :"/>
 
-                <h:inputSecret class="form-control" id="passwordInput" value="#{loginController.password}" 
-                               required="true" />
-                <br />
-                <h:commandButton class="btn btn-lg btn-primary btn-block" type="submit" value="submit" action="#{loginController.signIn()}" />
-            </h:form>
-         
+                        <h:inputSecret class="form-control" id="passwordInput" value="#{loginController.password}" 
+                                       required="true" />
+                        <br />
+                        <h:commandButton class="btn btn-lg btn-primary btn-block" type="submit" value="submit" action="#{loginController.signIn()}" />
+                    </h:form>
+
                 </div>
                 <div class="col-lg-4">
-           <h:graphicImage library="img" name="webrtc_logo.png" />         
+                    <h:graphicImage library="img" name="webrtc_logo.png" />         
                 </div>
             </div>
-           
+
 
         </ui:define> 
     </ui:composition>

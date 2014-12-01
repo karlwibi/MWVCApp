@@ -27,10 +27,14 @@
                     <p:growl id="messages"/>
 
                     <p:menubar>
-                        <p:menuitem  value="New online class" outcome="onlineClass" icon="ui-icon-plus" >
+                        <p:menuitem  rendered="#{onlineClassesController.teacher}" value="New online class" outcome="onlineClass" icon="ui-icon-plus" >
                             <f:param  name="teacherId" value="#{onlineClassesController.userId}" /> 
                         </p:menuitem>
-                        <p:menuitem value="Edit profile" url="http://www.primefaces.org" icon="ui-icon-person" />
+                        <p:menuitem value="Edit profile" outcome="user" icon="ui-icon-person">
+                             <f:param  name="userId" value="#{onlineClassesController.userId}" /> 
+                          
+                        </p:menuitem>
+                            
 
                         <f:facet name="options">
                             <p:commandButton actionListener="#{loginController.signOut()}" value="Logout" icon="ui-icon-extlink" />

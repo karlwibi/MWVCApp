@@ -3,9 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.ilstu.controller;
-
 
 import edu.ilstu.dao.OnlineClassDAO;
 import edu.ilstu.dao.OnlineClassDAOImpl;
@@ -29,7 +27,6 @@ import javax.faces.bean.RequestScoped;
 @RequestScoped
 public class OnlineClassController {
 
-    
     private OnlineClassModel ocm;
     private ScheduleClassModel scm;
     private java.util.Date startDate;
@@ -39,17 +36,18 @@ public class OnlineClassController {
     private int teacherId;
     private String[] tznames;
     //private DateFormat dateFormat = new SimpleDateFormat("mm/dd/yyyy");
-    
-    
+
     /**
      * Creates a new instance of OnlineClassController
      */
     public OnlineClassController() {
-        ocm=new OnlineClassModel();
-        scm=new ScheduleClassModel();
-        tznames=TimeZone.getAvailableIDs();
+        ocm = new OnlineClassModel();
+        scm = new ScheduleClassModel();
+        tznames = TimeZone.getAvailableIDs();
         scm.setTzname("America/Chicago");//set default to chicago
     }
+
+    
 
     /**
      * @return the ocm
@@ -79,28 +77,26 @@ public class OnlineClassController {
         this.scm = scm;
     }
 
-   
-    
-    public String addClass(){
-        int identity=0;
-                
+    public String addClass() {
+        int identity = 0;
+
         //inserting data into the onliclass table
         ocm.setTeacherId(teacherId);
-        identity=ocm.saveClass();
-        
+        identity = ocm.saveClass();
+
         scm.setOnlineClassId(identity);
-        
+
         scm.setStartDate(new java.sql.Date(startDate.getTime()));
 
         scm.setEndDate(new java.sql.Date(endDate.getTime()));
-      //change the object date from java.util.date to java.sql.date before setting the date into scheduleClassModel
+        //change the object date from java.util.date to java.sql.date before setting the date into scheduleClassModel
         scm.setStartTime(new java.sql.Time(new java.sql.Date(startTime.getTime()).getTime()));
         scm.setEndTime(new java.sql.Time(new java.sql.Date(getEndTime().getTime()).getTime()));
-        
+
         //inserting data into the scheduleclass table
         scm.saveSchedule();
-       
-      return  "/protected/roomParticipant.xhtml?faces-redirect=true&roomid="+ocm.getRoomid();
+
+        return "/protected/roomParticipant.xhtml?faces-redirect=true&roomid=" + ocm.getRoomid();
     }
 
     /**
@@ -186,7 +182,5 @@ public class OnlineClassController {
     public void setTznames(String[] tznames) {
         this.tznames = tznames;
     }
-    
-    
-    
+
 }

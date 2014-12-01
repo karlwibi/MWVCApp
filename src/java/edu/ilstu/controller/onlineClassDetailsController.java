@@ -97,10 +97,10 @@ public class onlineClassDetailsController implements Serializable {
         preziValid = false;
         slideValid = true;
         setUploadDone(false);
-        
+
         //checking the user type
-        TeacherModel tm=new TeacherModel();
-        teacher = tm.getTeacherById(userId)!=null;//check to see if it's a teacher
+        TeacherModel tm = new TeacherModel();
+        teacher = tm.getTeacherById(userId) != null;//check to see if it's a teacher
 
         //initialize the fileupload list
         uploadedFiles = new ArrayList<>();
@@ -118,9 +118,8 @@ public class onlineClassDetailsController implements Serializable {
         scheduleID = scheduleClassModel.getScheduleClassId();
 
         //initialize timezone list
-        tznames=TimeZone.getAvailableIDs();
-        
-        
+        tznames = TimeZone.getAvailableIDs();
+
         //initialize class session;study model; and
         sessionModel = new ClassSessionModel();
         sessionModel.setScheduleClassId(scheduleID);
@@ -157,7 +156,6 @@ public class onlineClassDetailsController implements Serializable {
 
     }
 
-    
     public void createSession() {
         int sessionId = 0;
         int revealId = 0;
@@ -226,8 +224,7 @@ public class onlineClassDetailsController implements Serializable {
                         IOUtils.closeQuietly(input);
                     }
                     //inserting into the database
-                    System.out.println("File without full Path: " + file.getAbsolutePath());
-                    System.out.println("File full Path: " + file.getAbsolutePath());
+
                     contentModel.setContentText(file.getAbsolutePath());
                     contentModel.createContent();
 
@@ -248,13 +245,11 @@ public class onlineClassDetailsController implements Serializable {
             }
 
         }
-        
-        
+
         FacesContext context = FacesContext.getCurrentInstance();
 
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Session Created", "the sesssion was created successfully. please close the window and return to the online class detail page"));
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Session Created", "the sesssion was created successfully. please close the window and return to the online class detail page"));
 
-        
     }
 
     /**
@@ -267,8 +262,7 @@ public class onlineClassDetailsController implements Serializable {
     }
 
     /**
-     * Remove the extra 
-     * line from list
+     * Remove the extra line from list
      */
     public void unExtend() {
 
@@ -279,9 +273,7 @@ public class onlineClassDetailsController implements Serializable {
     }
 
     /**
-     * check if Date is 
-     * in the schedule range
-     * date for the class
+     * check if Date is in the schedule range date for the class
      */
     public void checkIfDateInRange() {
 
@@ -294,7 +286,6 @@ public class onlineClassDetailsController implements Serializable {
         }
     }
 
-    
     public void presentationListener() {
 
         if (presentationFlag.equals("slide")) {
@@ -347,45 +338,45 @@ public class onlineClassDetailsController implements Serializable {
     }
 
     /**
-     * remove the student from the 
-     * class list
-     * @param studenId 
+     * remove the student from the class list
+     *
+     * @param studenId
      */
-    public void removeStudent(int studenId, String studentName){
-     
+    public void removeStudent(int studenId, String studentName) {
+
         RoomParticipantModel rp = new RoomParticipantModel(this.onlineClassID, studenId);
         rp.deleteParticipant();
         FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info:", "Student "+ studentName +" was removed"));
-        
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info:", "Student " + studentName + " was removed"));
+
     }
-    
-    
-    public void removeSession(int sessionId){
-        
-        ClassSessionModel csm= new ClassSessionModel();
+
+    public void removeSession(int sessionId) {
+
+        ClassSessionModel csm = new ClassSessionModel();
         csm.setSessionId(sessionId);
         csm.deleteClassSession();
-        
+
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info:", "session was removed"));
-        
+
     }
-    
-    public void deleteClass(){
-        
-        int userId=onlineClassModel.getTeacherId();
+
+    public void deleteClass() {
+
+        int userId = onlineClassModel.getTeacherId();
         onlineClassModel.deleteClass();
-        
+
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext context = facesContext.getExternalContext();
         try {
-            context.redirect(context.getRequestContextPath() + "/faces/protected/onlineClasses.xhtml?faces-redirect=true&userId="+userId);
+            context.redirect(context.getRequestContextPath() + "/faces/protected/onlineClasses.xhtml?faces-redirect=true&userId=" + userId);
         } catch (IOException ex) {
             Logger.getLogger(onlineClassDetailsController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
+
     /**
      * @return the onlineClassModel
      */
@@ -792,7 +783,4 @@ public class onlineClassDetailsController implements Serializable {
         this.tznames = tznames;
     }
 
-    
-    
-    
 }

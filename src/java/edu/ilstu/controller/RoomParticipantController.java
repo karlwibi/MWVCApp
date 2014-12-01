@@ -334,12 +334,11 @@ public class RoomParticipantController implements Serializable {
                 rpm.addParticipant();
 
                 //Generating email
-               // Email email = new Email();
-               
+                // Email email = new Email();
                 if (s.getEmail() != null) {
 
                     //email.studentEnrollMail(s.getFname(),username,Password, s.getEmail(), ocm.getTitle());
-                    sendMessage(s.getFname(),username,Password, s.getEmail(), ocm.getTitle());
+                    sendMessage(s.getFname(), username, Password, s.getEmail(), ocm.getTitle());
 
                 }
 
@@ -351,7 +350,7 @@ public class RoomParticipantController implements Serializable {
 
         //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         int id = ocm.getTeacherId();
-        System.out.println("id for teacher that just create the room :" + id);
+
         return "/protected/onlineClasses.xhtml?faces-redirect=true&userId=" + id;
     }
 
@@ -397,12 +396,20 @@ public class RoomParticipantController implements Serializable {
 
         if (!studentList2.isEmpty()) {
 
-            for (Iterator<StudentModel> i = studentList2.iterator(); i.hasNext();) {
+            for (StudentModel sm : studentList2) {
                 rpm = new RoomParticipantModel();
                 rpm.setOnlineClassId(ocm.getOnlineClassId());
-                rpm.setStudentId(i.next().getUserid());
+                rpm.setStudentId(sm.getUserid());
                 rpm.addParticipant();
 
+                //get the username and password
+                UserLogin ul = new UserLogin();
+                ul.setUserId(sm.getUserid());
+                ul = ul.getLoginById();
+
+                if (sm.getEmail() != null) {
+                    sendMessage(sm.getFname(), ul.getUsername(), ul.getPassword(), sm.getEmail(), ocm.getTitle());
+                }
             }
 
         }
@@ -412,7 +419,7 @@ public class RoomParticipantController implements Serializable {
 
         //FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         int id = ocm.getTeacherId();
-        System.out.println("id for teacher that just create the room :" + id);
+
         return "/protected/onlineClasses.xhtml?faces-redirect=true&userId=" + id;
 
     }
@@ -482,14 +489,13 @@ public class RoomParticipantController implements Serializable {
                 result = result + a1Val + " | " + b1Val + " | " + c1Val + " | " + d1Val + " | " + F1Val + "\n";
 
                 System.out.println(result);
-                
+
                 //Generating email
                 //Email email = new Email();
-               
                 if (sm.getEmail() != null) {
 
-                   // email.studentEnrollMail(sm.getFname(),d1Val,ul.getPassword(), sm.getEmail(), ocm.getTitle());
-                    sendMessage(sm.getFname(),d1Val,ul.getPassword(), sm.getEmail(), ocm.getTitle());
+                    // email.studentEnrollMail(sm.getFname(),d1Val,ul.getPassword(), sm.getEmail(), ocm.getTitle());
+                    sendMessage(sm.getFname(), d1Val, ul.getPassword(), sm.getEmail(), ocm.getTitle());
                 }
             }
         } catch (IOException ex) {
@@ -497,7 +503,7 @@ public class RoomParticipantController implements Serializable {
         }
 
         int id = ocm.getTeacherId();
-        System.out.println("id for teacher that just create the room :" + id);
+
         return "/protected/onlineClasses.xhtml?faces-redirect=true&userId=" + id;
     }
 
@@ -564,13 +570,11 @@ public class RoomParticipantController implements Serializable {
         this.file = file;
     }
 
-    
     @Async
     private void sendMessage(String fname, String username, String password, String emailAddress, String classTitle) {
-      Email email = new Email();
-      email.studentEnrollMail(fname,username,password, emailAddress, classTitle);
-      
-        
+        Email email = new Email();
+        email.studentEnrollMail(fname, username, password, emailAddress, classTitle);
+
     }
-    
+
 }
